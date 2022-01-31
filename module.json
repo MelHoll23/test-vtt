@@ -1,0 +1,9 @@
+{
+    "name": "gameboard-support",
+    "title": "LastGameboard Support",
+    "description": "A module that enabled Foundry to be played on the LastGameboard",
+    "author": "LastGameboard",
+    "version": "1.0.0",
+    "minimumCoreVersion": "9.0.0",
+    "scripts": ["scripts/setup.js"]
+  }
