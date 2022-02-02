@@ -50,14 +50,14 @@ function onTokMessageReceived(tokMessage) {
 
 function moveTokenToLocation(actorId, tokMessage) {
 	if(tokenMoveEventMap[actorId] == tokMessage.sessionId) {
-		console.log("mouseMove/up",window.innerWidth * tokMessage.xPosition,
-		 window.innerWidth * tokMessage.yPosition)
+		console.log("mouseMove/up",window.innerWidth * tokMessage.positionX,
+		 window.innerWidth * tokMessage.positionY)
 		var evtMove = new MouseEvent("mousemove", {
 			view: window,
 			bubbles: true,
 			cancelable: true,
-			clientX: window.innerWidth * tokMessage.xPosition,
-			clientY: window.innerWidth * tokMessage.yPosition,
+			clientX: window.innerWidth * tokMessage.positionX,
+			clientY: window.innerWidth * tokMessage.positionY,
 		});
 		var evtUp = new MouseEvent("mouseUp", {
 			view: window,
@@ -67,23 +67,23 @@ function moveTokenToLocation(actorId, tokMessage) {
 		$(document).dispatchEvent(evtMove);
 		$(document).dispatchEvent(evtUp);
 	} else {
-		console.log("mouseDown",window.innerWidth * tokMessage.xPosition,
-		 window.innerWidth * tokMessage.yPosition)
+		console.log("mouseDown",window.innerWidth * tokMessage.positionX,
+		 window.innerWidth * tokMessage.positionY)
 		tokenMoveEventMap[actorId] = tokMessage.sessionId;
 		var evtDown = new MouseEvent("mousedown", {
 			view: window,
 			bubbles: true,
 			cancelable: true,
-			clientX: window.innerWidth * tokMessage.xPosition,
-			clientY: window.innerWidth * tokMessage.yPosition,
+			clientX: window.innerWidth * tokMessage.positionX,
+			clientY: window.innerWidth * tokMessage.positionY,
 		});
 		$(document).dispatchEvent(evtDown);
 	}
 
  	//Move token (local vs pushing data)
 
-	// var canvasX = calculateCanvasPosition(tokMessage.xPosition); // TODO calculate location based on zoom/pan of canvas
-	// var canvasY = tokMessage.yPosition; 
+	// var canvasX = calculateCanvasPosition(tokMessage.positionX); // TODO calculate location based on zoom/pan of canvas
+	// var canvasY = tokMessage.positionY; 
 
  	// _token.setPosition(canvasX, canvasY);
 }
