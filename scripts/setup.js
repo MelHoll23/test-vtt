@@ -36,9 +36,9 @@ var tokenMoveEventMap = {};
 
 function onTokMessageReceived(tokMessage) {
 	console.log(tokMessage);
-	var actorMap = game && game.settings ? game.settings.get('gameboard', 'actorIdMap') : {}; 
+	//var actorMap = game && game.settings ? game.settings.get('gameboard', 'actorIdMap') : {}; 
 
-	var actorId = actorMap[tokMessage.typeId];
+	//var actorId = actorMap[tokMessage.typeId];
 
 	//Check if token is paired already, if so move token to location on board
 	//if(actorId) {
@@ -64,6 +64,8 @@ function moveTokenToLocation(actorId, tokMessage) {
 		});
 		$(document).dispatchEvent(evtMove);
 		$(document).dispatchEvent(evtUp);
+		console.log("mouseMove/up",window.innerWidth * tokMessage.xPosition,
+		 window.innerWidth * tokMessage.yPosition)
 	} else {
 		tokenMoveEventMap[actorId] = tokMessage.sessionId;
 		var evtDown = new MouseEvent("mousedown", {
@@ -73,6 +75,8 @@ function moveTokenToLocation(actorId, tokMessage) {
 			clientX: window.innerWidth * tokMessage.xPosition,
 			clientY: window.innerWidth * tokMessage.yPosition,
 		});
+		console.log("mouseDown",window.innerWidth * tokMessage.xPosition,
+		 window.innerWidth * tokMessage.yPosition)
 		$(document).dispatchEvent(evtDown);
 	}
 
