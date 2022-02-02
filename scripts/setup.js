@@ -42,7 +42,7 @@ function onTokMessageReceived(tokMessage) {
 
 	//Check if token is paired already, if so move token to location on board
 	//if(actorId) {
-		moveTokenToLocation(actorId, tokMessage);
+		moveTokenToLocation("testId", tokMessage);
 	// } else {
 	// 	pairToken(tokMessage);
 	// }
