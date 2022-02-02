@@ -50,6 +50,8 @@ function onTokMessageReceived(tokMessage) {
 
 function moveTokenToLocation(actorId, tokMessage) {
 	if(tokenMoveEventMap[actorId] == tokMessage.sessionId) {
+		console.log("mouseMove/up",window.innerWidth * tokMessage.xPosition,
+		 window.innerWidth * tokMessage.yPosition)
 		var evtMove = new MouseEvent("mousemove", {
 			view: window,
 			bubbles: true,
@@ -64,9 +66,9 @@ function moveTokenToLocation(actorId, tokMessage) {
 		});
 		$(document).dispatchEvent(evtMove);
 		$(document).dispatchEvent(evtUp);
-		console.log("mouseMove/up",window.innerWidth * tokMessage.xPosition,
-		 window.innerWidth * tokMessage.yPosition)
 	} else {
+		console.log("mouseDown",window.innerWidth * tokMessage.xPosition,
+		 window.innerWidth * tokMessage.yPosition)
 		tokenMoveEventMap[actorId] = tokMessage.sessionId;
 		var evtDown = new MouseEvent("mousedown", {
 			view: window,
@@ -75,8 +77,6 @@ function moveTokenToLocation(actorId, tokMessage) {
 			clientX: window.innerWidth * tokMessage.xPosition,
 			clientY: window.innerWidth * tokMessage.yPosition,
 		});
-		console.log("mouseDown",window.innerWidth * tokMessage.xPosition,
-		 window.innerWidth * tokMessage.yPosition)
 		$(document).dispatchEvent(evtDown);
 	}
 
@@ -91,6 +91,7 @@ function moveTokenToLocation(actorId, tokMessage) {
 // function calculateCanvasPosition(position){
 // 	var viewPosition = canvas.scene._viewPosition;
 // 	var scale = viewPosition.scale;
+// 	//Need to figure out visible canvas width to screen width?
 // 	var width = canvas.dimensions.sceneWidth + canvas.dimensions.paddingX;
 // 	var height = canvas.dimensions.sceneHeight + canvas.dimensions.paddingY;
 
