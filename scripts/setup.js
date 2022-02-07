@@ -42,7 +42,7 @@ function onTokMessageReceived(tokMessage) {
 
 	//Check if token is paired already, if so move token to location on board
 	//if(actorId) {
-		moveTokenToLocation("testId", JSON.parse(tokMessage));
+		moveTokenToLocation("testId", JSON.parse(tokMessage)[0]);
 	// } else {
 	// 	pairToken(tokMessage);
 	// }
@@ -81,6 +81,7 @@ function moveTokenToLocation(actorId, tokMessage) {
 	// }
 
  	//Move token (local vs pushing data)
+	 console.log("tok", tokMessage.positionX, tokMessage.positionY);
 
 	var positions = calculateCanvasPosition(tokMessage.positionX, tokMessage.positionY); // TODO calculate location based on zoom/pan of canvas
  	console.log("positions", positions.x, positions.y);
@@ -101,14 +102,16 @@ function calculateCanvasPosition(positionX, positionY){
 	canvas.scene._viewPosition.x + (window.innerWidth * (1 + scale))/2
 	canvas.scene._viewPosition.y + (window.innerHeight * (1 + scale))/2
 
-	var bottomX = viewPosition.x + (width * (1 + scale))/2; 
-	var bottomY = viewPosition.y + (height * (1 + scale))/2; 
+	var topX = viewPosition.x - (width * (1 + scale))/2; 
+	var topY = viewPosition.y - (height * (1 + scale))/2; 
 
 	var distanceDiffX = (positionX * window.innerWidth) * (1 + scale);
 	var distanceDiffY = (positionY * window.innerHeight) * (1 + scale);
 
-	actualPositionX = bottomX - distanceDiffX;
-	actualPositionY = bottomY - distanceDiffY;
+	console.log("diff", distanceDiffX, distanceDiffY);
+
+	actualPositionX = topX + distanceDiffX;
+	actualPositionY = topY + distanceDiffY;
 
 	console.log("x, y, scale, actualX, actualY", viewPosition.x, viewPosition.y, scale, actualPositionX, actualPositionY);
 
