@@ -86,7 +86,9 @@ function moveTokenToLocation(actorId, tokMessage) {
 	var positions = calculateCanvasPosition(tokMessage.positionX, tokMessage.positionY);
  	console.log("positions", positions.x, positions.y);
 	_token.setPosition(positions.x, positions.y);
-	_token.setAngle(((tokMessage.angle + 3) * 60) % 360)
+	_token.rotate(((tokMessage.angle + 3) * 60) % 360);
+
+	//TODO Push location to server
 }
 
 function calculateCanvasPosition(positionX, positionY){
