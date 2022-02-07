@@ -108,19 +108,18 @@ function calculateCanvasPosition(positionX, positionY){
 	var viewPosition = canvas.scene._viewPosition;
 	var scale = viewPosition.scale;
 
-	var width =  window.innerWidth;
-	var height = window.innerHeight;
+	var canvasViewWidth =  window.innerWidth * (1 + scale);
+	var canvasViewHeight = window.innerHeight * (1 + scale);
 
-	console.log("width/height:", width, height);
+	console.log("canvasWidth/canvasHeight:", canvasViewWidth, canvasViewHeight);
 
-	// canvas.scene._viewPosition.x + (window.innerWidth * (1 + scale))/2
-	// canvas.scene._viewPosition.y + (window.innerHeight * (1 + scale))/2
+	var topX = viewPosition.x - canvasViewWidth/2; 
+	var topY = viewPosition.y - canvasViewHeight/2; 
 
-	var topX = viewPosition.x - (width * (1 + scale))/2; 
-	var topY = viewPosition.y - (height * (1 + scale))/2; 
+	console.log("topx/y", topX, topY);
 
-	var distanceDiffX = positionX * (window.innerWidth * (1 + scale));
-	var distanceDiffY = positionY * (window.innerHeight * (1 + scale));
+	var distanceDiffX = positionX * canvasViewWidth;
+	var distanceDiffY = positionY * canvasViewHeight;
 
 	console.log("diff", distanceDiffX, distanceDiffY);
 
