@@ -42,7 +42,7 @@ function onTokMessageReceived(tokMessage) {
 
 	//Check if token is paired already, if so move token to location on board
 	//if(actorId) {
-		moveTokenToLocation("testId", JSON.parse(tokMessage)[0]);
+		moveTokenToLocation("testId", JSON.parse(tokMessage)[0]); //TODO fix return type to not be an array
 	// } else {
 	// 	pairToken(tokMessage);
 	// }
@@ -83,17 +83,16 @@ function moveTokenToLocation(actorId, tokMessage) {
  	//Move token (local vs pushing data)
 	 console.log("tok", tokMessage.positionX, tokMessage.positionY);
 
-	var positions = calculateCanvasPosition(tokMessage.positionX, tokMessage.positionY); // TODO calculate location based on zoom/pan of canvas
+	var positions = calculateCanvasPosition(tokMessage.positionX, tokMessage.positionY);
  	console.log("positions", positions.x, positions.y);
-	 console.log("token", _token);
 	_token.setPosition(positions.x, positions.y);
+	_token.setAngle(((tokMessage.angle + 3) * 60) % 360)
 }
 
 function calculateCanvasPosition(positionX, positionY){
 	var viewPosition = canvas.scene._viewPosition;
 	var scale = viewPosition.scale;
 
-	//Need to figure out visible canvas width to screen width?
 	var width =  window.innerWidth;
 	var height = window.innerHeight;
 
@@ -112,6 +111,8 @@ function calculateCanvasPosition(positionX, positionY){
 
 	actualPositionX = topX + distanceDiffX;
 	actualPositionY = topY + distanceDiffY;
+
+	//TODO adjust for miniature token size (center instead of at top left corner)
 
 	console.log("x, y, scale, actualX, actualY", viewPosition.x, viewPosition.y, scale, actualPositionX, actualPositionY);
 
