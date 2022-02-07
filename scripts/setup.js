@@ -49,58 +49,66 @@ function onTokMessageReceived(tokMessage) {
 }
 
 function moveTokenToLocation(actorId, tokMessage) {
-	if(tokenMoveEventMap[actorId] == tokMessage.sessionId) {
-		console.log("mouseMove/up",window.innerWidth, tokMessage.positionX,
-		 window.innerHeight, tokMessage.positionY)
-		var evtMove = new MouseEvent("mousemove", {
-			view: window,
-			bubbles: true,
-			cancelable: true,
-			clientX: window.innerWidth * tokMessage.positionX,
-			clientY: window.innerHeight * tokMessage.positionY,
-		});
-		var evtUp = new MouseEvent("mouseUp", {
-			view: window,
-			bubbles: true,
-			cancelable: true,
-		});
-		$(document).dispatchEvent(evtMove);
-		$(document).dispatchEvent(evtUp);
-	} else {
-		console.log("mouseDown",window.innerWidth, tokMessage.positionX,
-		 window.innerHeight, tokMessage.positionY)
-		tokenMoveEventMap[actorId] = tokMessage.sessionId;
-		var evtDown = new MouseEvent("mousedown", {
-			view: window,
-			bubbles: true,
-			cancelable: true,
-			clientX: window.innerWidth * tokMessage.positionX,
-			clientY: window.innerHeight * tokMessage.positionY,
-		});
-		$(document).dispatchEvent(evtDown);
-	}
+	// if(tokenMoveEventMap[actorId] == tokMessage.sessionId) {
+	// 	console.log("mouseMove/up",window.innerWidth, tokMessage.positionX,
+	// 	 window.innerHeight, tokMessage.positionY)
+	// 	var evtMove = new MouseEvent("mousemove", {
+	// 		view: window,
+	// 		bubbles: true,
+	// 		cancelable: true,
+	// 		clientX: window.innerWidth * tokMessage.positionX,
+	// 		clientY: window.innerHeight * tokMessage.positionY,
+	// 	});
+	// 	var evtUp = new MouseEvent("mouseUp", {
+	// 		view: window,
+	// 		bubbles: true,
+	// 		cancelable: true,
+	// 	});
+	// 	$(document).dispatchEvent(evtMove);
+	// 	$(document).dispatchEvent(evtUp);
+	// } else {
+	// 	console.log("mouseDown",window.innerWidth, tokMessage.positionX,
+	// 	 window.innerHeight, tokMessage.positionY)
+	// 	tokenMoveEventMap[actorId] = tokMessage.sessionId;
+	// 	var evtDown = new MouseEvent("mousedown", {
+	// 		view: window,
+	// 		bubbles: true,
+	// 		cancelable: true,
+	// 		clientX: window.innerWidth * tokMessage.positionX,
+	// 		clientY: window.innerHeight * tokMessage.positionY,
+	// 	});
+	// 	$(document).dispatchEvent(evtDown);
+	// }
 
  	//Move token (local vs pushing data)
 
-	// var canvasX = calculateCanvasPosition(tokMessage.positionX); // TODO calculate location based on zoom/pan of canvas
-	// var canvasY = tokMessage.positionY; 
-
- 	// _token.setPosition(canvasX, canvasY);
+	var positions = calculateCanvasPosition(tokMessage.positionX, tokMessage.positionY); // TODO calculate location based on zoom/pan of canvas
+ 	console.log(positions);
+	_token.setPosition(...positions);
 }
 
-// function calculateCanvasPosition(position){
-// 	var viewPosition = canvas.scene._viewPosition;
-// 	var scale = viewPosition.scale;
-// 	//Need to figure out visible canvas width to screen width?
-// 	var width = canvas.dimensions.sceneWidth + canvas.dimensions.paddingX;
-// 	var height = canvas.dimensions.sceneHeight + canvas.dimensions.paddingY;
+function calculateCanvasPosition(positionX, positionY){
+	var viewPosition = canvas.scene._viewPosition;
+	var scale = viewPosition.scale;
 
-// 	var topX = viewPosition.x - (width * (1 - scale)/2); 
-// 	var topY = viewPosition.y - (height * (1 - scale)/2); 
+	//Need to figure out visible canvas width to screen width?
+	var width =  window.innerWidth;
+	var height = window.innerHeight;
 
-// 	var bottomX = viewPosition.x + (width * (1 - scale)/2); 
-// 	var bottomY = viewPosition.y + (height * (1 - scale)/2); 
-// }
+	canvas.scene._viewPosition.x + (window.innerWidth * (1 + scale))/2
+	canvas.scene._viewPosition.y + (window.innerHeight * (1 + scale))/2
+
+	var bottomX = viewPosition.x + (width * (1 + scale))/2; 
+	var bottomY = viewPosition.y + (height * (1 + scale))/2; 
+
+	var distanceDiffX = (positionX * window.innerWidth) * (1 + scale);
+	var distanceDiffY = (positionY * window.innerHeight) * (1 + scale);
+
+	actualPositionX = bottomX - distanceDiffX;
+	actualPositionY = bottomY - distanceDiffY;
+
+	return {x: actualPositionX, y: actualPositionY}
+}
 
 function pairToken(tokMessage) {
 	//If not paired, trigger click on canvas and if actor is selected and not paired, pair
