@@ -83,8 +83,9 @@ function moveTokenToLocation(actorId, tokMessage) {
  	//Move token (local vs pushing data)
 
 	var positions = calculateCanvasPosition(tokMessage.positionX, tokMessage.positionY); // TODO calculate location based on zoom/pan of canvas
- 	console.log(positions);
-	_token.setPosition(...positions);
+ 	console.log("positions", positions.x, positions.y);
+	 console.log("token", _token);
+	_token.setPosition(positions.x, positions.y);
 }
 
 function calculateCanvasPosition(positionX, positionY){
