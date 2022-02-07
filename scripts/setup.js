@@ -87,13 +87,20 @@ function moveTokenToLocation(actorId, tokMessage) {
 	var rotation = ((tokMessage.angle + 3) * 60) % 360;
 
  	console.log("positions", positions.x, positions.y);
+	console.log("rotation", tokMessage.angle, rotation)
 
-	_token.setPosition(positions.x, positions.y, {diff: true, render: true});
-	_token.data.update({x: positions.x, y: positions.y, rotation: rotation})
-	_token.rotate(rotation);
+	//_token.setPosition(positions.x, positions.y, {diff: true, render: true});
+	//_token.rotate(rotation);
+	_token.data.update(
+		{
+			x: positions.x, 
+			y: positions.y, 
+			rotation: rotation
+		}, 
+		{diff: true, render: true});
 
-	console.log(tokMessage.angle, ((tokMessage.angle + 3) * 60) % 360);
-
+	_token.refresh()
+	
 	//TODO Push location to server?
 }
 
