@@ -42,7 +42,7 @@ function onTokMessageReceived(tokMessage) {
 
 	//Check if token is paired already, if so move token to location on board
 	//if(actorId) {
-		moveTokenToLocation("testId", tokMessage);
+		moveTokenToLocation("testId", JSON.parse(tokMessage));
 	// } else {
 	// 	pairToken(tokMessage);
 	// }
@@ -96,6 +96,8 @@ function calculateCanvasPosition(positionX, positionY){
 	var width =  window.innerWidth;
 	var height = window.innerHeight;
 
+	console.log("width/height:", width, height);
+
 	canvas.scene._viewPosition.x + (window.innerWidth * (1 + scale))/2
 	canvas.scene._viewPosition.y + (window.innerHeight * (1 + scale))/2
 
@@ -107,6 +109,8 @@ function calculateCanvasPosition(positionX, positionY){
 
 	actualPositionX = bottomX - distanceDiffX;
 	actualPositionY = bottomY - distanceDiffY;
+
+	console.log("x, y, scale, actualX, actualY", viewPosition.x, viewPosition.y, scale, actualPositionX, actualPositionY);
 
 	return {x: actualPositionX, y: actualPositionY}
 }
