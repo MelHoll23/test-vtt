@@ -89,19 +89,14 @@ function moveTokenToLocation(actorId, tokMessage) {
  	console.log("positions", positions.x, positions.y);
 	console.log("rotation", tokMessage.angle, rotation)
 
-	//_token.setPosition(positions.x, positions.y, {diff: true, render: true});
-	//_token.rotate(rotation);
-	_token.data.update(
-		{
-			x: positions.x, 
-			y: positions.y, 
-			rotation: rotation
-		}, 
-		{diff: true, render: true});
+	//canvas.grid.getSnappedPosition() //TODO snap after done moving for a while
 
-	_token.refresh()
-	
-	//TODO Push location to server?
+	//TODO map tokens
+	canvas.scene.tokens.get("aI5BE5F5wS9M3V8n").update({
+		x: positions.x, 
+		y: positions.y,
+		rotation: rotation
+	});
 }
 
 function calculateCanvasPosition(positionX, positionY){
@@ -129,8 +124,8 @@ function calculateCanvasPosition(positionX, positionY){
 	//TODO adjust for miniature token size (center instead of at top left corner)
 
 	console.log("x, y, scale, actualX, actualY", viewPosition.x, viewPosition.y, scale, actualPositionX, actualPositionY);
-
-	return {x: actualPositionX, y: actualPositionY}
+	//{x: actualPositionX, y: actualPositionY}
+	return canvas.grid.getSnappedPosition(actualPositionX, actualPositionY, 1);
 }
 
 function pairToken(tokMessage) {
