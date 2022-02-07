@@ -84,11 +84,17 @@ function moveTokenToLocation(actorId, tokMessage) {
 	 console.log("tok", tokMessage.positionX, tokMessage.positionY);
 
 	var positions = calculateCanvasPosition(tokMessage.positionX, tokMessage.positionY);
- 	console.log("positions", positions.x, positions.y);
-	_token.setPosition(positions.x, positions.y);
-	_token.rotate(((tokMessage.angle + 3) * 60) % 360);
+	var rotation = ((tokMessage.angle + 3) * 60) % 360;
 
-	//TODO Push location to server
+ 	console.log("positions", positions.x, positions.y);
+
+	_token.setPosition(positions.x, positions.y, {diff: true, render: true});
+	_token.data.update({x: positions.x, y: positions.y, rotation: rotation})
+	_token.rotate(rotation);
+
+	console.log(tokMessage.angle, ((tokMessage.angle + 3) * 60) % 360);
+
+	//TODO Push location to server?
 }
 
 function calculateCanvasPosition(positionX, positionY){
@@ -100,14 +106,14 @@ function calculateCanvasPosition(positionX, positionY){
 
 	console.log("width/height:", width, height);
 
-	canvas.scene._viewPosition.x + (window.innerWidth * (1 + scale))/2
-	canvas.scene._viewPosition.y + (window.innerHeight * (1 + scale))/2
+	// canvas.scene._viewPosition.x + (window.innerWidth * (1 + scale))/2
+	// canvas.scene._viewPosition.y + (window.innerHeight * (1 + scale))/2
 
 	var topX = viewPosition.x - (width * (1 + scale))/2; 
 	var topY = viewPosition.y - (height * (1 + scale))/2; 
 
-	var distanceDiffX = (positionX * window.innerWidth) * (1 + scale);
-	var distanceDiffY = (positionY * window.innerHeight) * (1 + scale);
+	var distanceDiffX = positionX * (window.innerWidth * (1 + scale));
+	var distanceDiffY = positionY * (window.innerHeight * (1 + scale));
 
 	console.log("diff", distanceDiffX, distanceDiffY);
 
