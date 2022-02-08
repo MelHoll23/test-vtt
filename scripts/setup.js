@@ -46,7 +46,7 @@ function onTokMessageReceived(tokMessage) {
 	console.log(actorId);
 	//Check if token is paired already, if so move token to location on board
 	if(actorId) {
-		moveTokenToLocation(actorId, parsedTokMessage); 
+		foundry.utils.debounce(moveTokenToLocation(actorId, parsedTokMessage), 1000); 
 	} else {
 		pairToken(actorMap, parsedTokMessage);
 	}
@@ -70,7 +70,7 @@ function moveTokenToLocation(actorId, tokMessage) {
 		x: positions.x, 
 		y: positions.y,
 		rotation: rotation
-	});
+	}, {animate: false});
 }
 
 function calculateCanvasPosition(positionX, positionY){
