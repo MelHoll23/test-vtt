@@ -30,6 +30,10 @@ Hooks.on("canvasInit", () => {
 	console.log("Apply fog of war fix");
     //Fix fog of war crash
     SightLayer.MAXIMUM_FOW_TEXTURE_SIZE = 4096 / 2;
+
+	//TODO Calculate grid size and scale accordingly, disable zoom
+	//canvas.grid.w
+	//canvas.pan({scale: 1})
 });
 
 var debouncedSaveMovement = foundry.utils.debounce((actorId, positions, rotation) => { 
@@ -80,10 +84,10 @@ function calculateCanvasPosition(positionX, positionY){
 
 	var isOnGameboard = game.settings.get("gameboard", "isOnGameboard");
 
-	console.log(window.innerWidth);
+	console.log("calculated width, isOnGameboard", window.innerWidth, isOnGameboard);
 
-	var canvasViewWidth =  (isOnGameaboard ? 1920 : window.innerWidth) * (1 + scale);
-	var canvasViewHeight = (isOnGameaboard ? 1920 : window.innerHeight) * (1 + scale);
+	var canvasViewWidth =  (isOnGameboard ? 1920 : window.innerWidth) * (1 + scale);
+	var canvasViewHeight = (isOnGameboard ? 1920 : window.innerHeight) * (1 + scale);
 
 	//console.log("canvasWidth/canvasHeight:", canvasViewWidth, canvasViewHeight);
 
