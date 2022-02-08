@@ -86,8 +86,11 @@ function calculateCanvasPosition(positionX, positionY){
 
 	console.log("calculated width, isOnGameboard", window.innerWidth, isOnGameboard);
 
-	var canvasViewWidth =  (isOnGameboard ? 1920 : window.innerWidth) * (1 + scale);
-	var canvasViewHeight = (isOnGameboard ? 1920 : window.innerHeight) * (1 + scale);
+	// var canvasViewWidth =  (isOnGameboard ? 1920 : window.innerWidth) * (1 + scale);
+	// var canvasViewHeight = (isOnGameboard ? 1920 : window.innerHeight) * (1 + scale);
+
+	var canvasViewWidth =  1920 * (1 + scale);
+	var canvasViewHeight = 1920 * (1 + scale);
 
 	//console.log("canvasWidth/canvasHeight:", canvasViewWidth, canvasViewHeight);
 
