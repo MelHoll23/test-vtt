@@ -63,13 +63,15 @@ function moveTokenToLocation(actorId, tokMessage) {
 
 	//canvas.grid.getSnappedPosition() //TODO snap after done moving for a while
 
-	//TODO map tokens
+	//TODO debounce, set position and then update on occasion
 	//"aI5BE5F5wS9M3V8n"
-	canvas.scene.tokens.get(actorId).update({
-		x: positions.x, 
-		y: positions.y,
-		rotation: rotation
-	}, {animate: false});
+	// canvas.scene.tokens.get(actorId).update({
+	// 	x: positions.x, 
+	// 	y: positions.y,
+	// 	rotation: rotation
+	// }, {animate: false});
+
+	canvas.scene.tokens.get(actorId)._object.setPosition(positions.x,  positions.y);
 }
 
 function calculateCanvasPosition(positionX, positionY){
