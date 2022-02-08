@@ -62,52 +62,45 @@ function onTokMessageReceived(tokMessage) {
 
 function moveTokenToLocation(actorId, tokMessage) {
  	//Move token (local vs pushing data)
-	//console.log("tok", tokMessage.positionX, tokMessage.positionY);
+	var actor = canvas.scene.tokens.get(actorId);
 
 	var positions = calculateCanvasPosition(tokMessage.positionX, tokMessage.positionY);
 	var rotation = ((tokMessage.angle + 3) * 60) % 360;
 
- 	// console.log("positions", positions.x, positions.y);
-	// console.log("rotation", tokMessage.angle, rotation)
-
 	debouncedSaveMovement(actorId, positions, rotation);
-	//todo set temporary angle
-	canvas.scene.tokens.get(actorId)._object.setPosition(positions.x,  positions.y);
+	//TODO Set temporary angle/position until saving the movement
+	//actor._object.rotation = tokMessage.angle;
+	actor._object.setPosition(positions.x, positions.y);
 }
 
 function calculateCanvasPosition(positionX, positionY){
-	//console.log("tok x/y", positionX, positionY);
 	var viewPosition = canvas.scene._viewPosition;
 	var scale = viewPosition.scale;
 
-	//console.log("viewPosition", JSON.stringify(viewPosition));
-
-	var isOnGameboard = game.settings.get("gameboard", "isOnGameboard");
-
-	console.log("calculated width, isOnGameboard", window.innerWidth, isOnGameboard);
-
+	//var isOnGameboard = game.settings.get("gameboard", "isOnGameboard");
 	// var canvasViewWidth =  (isOnGameboard ? 1920 : window.innerWidth) * (1 + scale);
 	// var canvasViewHeight = (isOnGameboard ? 1920 : window.innerHeight) * (1 + scale);
 
-	var canvasViewWidth =  1920 * (1 + scale);
-	var canvasViewHeight = 1920 * (1 + scale);
-
-	//console.log("canvasWidth/canvasHeight:", canvasViewWidth, canvasViewHeight);
+	var canvasViewWidth =  window.innerWidth * (1 + scale);
+	var canvasViewHeight = window.innerHeight * (1 + scale);
 
 	var topX = viewPosition.x - canvasViewWidth/2; 
 	var topY = viewPosition.y - canvasViewHeight/2; 
 
-	//console.log("topx/y", topX, topY);
-
 	var distanceDiffX = positionX * canvasViewWidth;
 	var distanceDiffY = positionY * canvasViewHeight;
-
-	//console.log("diff", distanceDiffX, distanceDiffY);
 
 	actualPositionX = topX + distanceDiffX;
 	actualPositionY = topY + distanceDiffY;
 
-	//console.log("actualX, actualY",  actualPositionX, actualPositionY);
+	console.log("tok x/y", positionX, positionY);
+	console.log("viewPosition", JSON.stringify(viewPosition));
+	console.log("screen width", window.innerWidth);
+	console.log("canvasWidth/canvasHeight:", canvasViewWidth, canvasViewHeight);
+	console.log("top x/y", topX, topY);
+	console.log("diff", distanceDiffX, distanceDiffY);
+	console.log("actualX, actualY",  actualPositionX, actualPositionY);
+
 	return {x: actualPositionX, y: actualPositionY}
 	//return canvas.grid.getSnappedPosition(actualPositionX, actualPositionY, 1);
 }
@@ -115,7 +108,7 @@ function calculateCanvasPosition(positionX, positionY){
 function pairToken(actorMap, tokMessage) {
 	var positions = calculateCanvasPosition(tokMessage.positionX, tokMessage.positionY);
 	//If not paired, if actor is selected and not paired, pair
-	console.log("Trying to pair at", positions.x, positions.y);
+	console.log("Trying to pair at ", positions.x, positions.y);
 
 	canvas.tokens.ownedTokens.filter(owned => !Object.values(actorMap).includes(owned.data._id)).forEach((token) => {
 		let tokenPosition = new PIXI.Rectangle(token.x, token.y, token.w, token.h);
