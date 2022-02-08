@@ -32,21 +32,25 @@ Hooks.on("canvasInit", () => {
     SightLayer.MAXIMUM_FOW_TEXTURE_SIZE = 4096 / 2;
 });
 
-var tokenMoveEventMap = {};
-
-var debouncedMove = foundry.utils.debounce((actorId, parsedTokMessage) => { moveTokenToLocation(actorId, parsedTokMessage) }, 500); 
+var debouncedSaveMovement = foundry.utils.debounce((actorId, positions, rotation) => { 
+	var snappedPosition = canvas.grid.getSnappedPosition(positions.x, positions.y, 1);
+	canvas.scene.tokens.get(actorId).update({
+			x: snappedPosition.x, 
+			y: snappedPosition.y,
+			rotation: rotation
+		}, {animate: false});
+ }, 500); 
 		
 function onTokMessageReceived(tokMessage) {
 	//console.log(tokMessage);
 	var actorMap = game.settings.get('gameboard', 'actorIdMap');
 
 	var parsedTokMessage = JSON.parse(tokMessage)[0];//TODO handle array
-	var actorId = actorMap[parsedTokMessage.typeId];
+	var actorId = actorMap[parsedTokMessage.typeId]; //"aI5BE5F5wS9M3V8n"
 
-	console.log(actorId);
 	//Check if token is paired already, if so move token to location on board
 	if(actorId) {
-		debouncedMove(actorId, parsedTokMessage);
+		moveTokenToLocation(actorId, parsedTokMessage);
 	} else {
 		pairToken(actorMap, parsedTokMessage);
 	}
@@ -62,16 +66,8 @@ function moveTokenToLocation(actorId, tokMessage) {
  	// console.log("positions", positions.x, positions.y);
 	// console.log("rotation", tokMessage.angle, rotation)
 
-	//canvas.grid.getSnappedPosition() //TODO snap after done moving for a while
-
-	//TODO debounce, set position and then update on occasion
-	//"aI5BE5F5wS9M3V8n"
-	// canvas.scene.tokens.get(actorId).update({
-	// 	x: positions.x, 
-	// 	y: positions.y,
-	// 	rotation: rotation
-	// }, {animate: false});
-
+	debouncedSaveMovement(actorId, positions, rotation);
+	//todo set temporary angle
 	canvas.scene.tokens.get(actorId)._object.setPosition(positions.x,  positions.y);
 }
 
@@ -82,8 +78,12 @@ function calculateCanvasPosition(positionX, positionY){
 
 	//console.log("viewPosition", JSON.stringify(viewPosition));
 
-	var canvasViewWidth =  window.innerWidth * (1 + scale);
-	var canvasViewHeight = window.innerHeight * (1 + scale);
+	var isOnGameboard = game.settings.get("gameboard", "isOnGameboard");
+
+	console.log(window.innerWidth);
+
+	var canvasViewWidth =  (isOnGameaboard ? 1920 : window.innerWidth) * (1 + scale);
+	var canvasViewHeight = (isOnGameaboard ? 1920 : window.innerHeight) * (1 + scale);
 
 	//console.log("canvasWidth/canvasHeight:", canvasViewWidth, canvasViewHeight);
 
