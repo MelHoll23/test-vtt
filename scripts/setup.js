@@ -1,6 +1,5 @@
-
-Hooks.once('init', function() {
-	console.log("Init gameboard config settings");
+Hooks.once('init', () => {
+	console.log("Init Gameboard config settings");
     // Register module settings.
 	game.settings.register('gameboard', 'isOnGameboard', {
 		name: 'OnGameboard',
@@ -28,7 +27,7 @@ Hooks.once('init', function() {
 });
 
 
-Hooks.on("canvasInit", function() { 
+Hooks.on("canvasInit", () => { 
 	console.log("Apply fog of war fix");
     //Fix fog of war crash
     SightLayer.MAXIMUM_FOW_TEXTURE_SIZE = 4096 / 2;
@@ -46,7 +45,7 @@ function onTokMessageReceived(tokMessage) {
 	console.log(actorId);
 	//Check if token is paired already, if so move token to location on board
 	if(actorId) {
-		foundry.utils.debounce(moveTokenToLocation(actorId, parsedTokMessage), 1000); 
+		moveTokenToLocation(actorId, parsedTokMessage); 
 	} else {
 		pairToken(actorMap, parsedTokMessage);
 	}
@@ -78,6 +77,8 @@ function calculateCanvasPosition(positionX, positionY){
 	var viewPosition = canvas.scene._viewPosition;
 	var scale = viewPosition.scale;
 
+	console.log("viewPosition", JSON.stringify(viewPosition));
+
 	var canvasViewWidth =  window.innerWidth * (1 + scale);
 	var canvasViewHeight = window.innerHeight * (1 + scale);
 
@@ -96,7 +97,7 @@ function calculateCanvasPosition(positionX, positionY){
 	actualPositionX = topX + distanceDiffX;
 	actualPositionY = topY + distanceDiffY;
 
-	console.log("x, y, scale, actualX, actualY", viewPosition.x, viewPosition.y, scale, actualPositionX, actualPositionY);
+	console.log("actualX, actualY",  actualPositionX, actualPositionY);
 	return {x: actualPositionX, y: actualPositionY}
 	//return canvas.grid.getSnappedPosition(actualPositionX, actualPositionY, 1);
 }
@@ -104,17 +105,15 @@ function calculateCanvasPosition(positionX, positionY){
 function pairToken(actorMap, tokMessage) {
 	var positions = calculateCanvasPosition(tokMessage.positionX, tokMessage.positionY);
 	//If not paired, if actor is selected and not paired, pair
-	//canvas.tokens.controlled
-	console.log("trying to pair at", positions.x, positions.y);
+	console.log("Trying to pair at", positions.x, positions.y);
 	console.log(canvas.tokens.ownedTokens.length);
 	canvas.tokens.ownedTokens.filter(owned => !Object.values(actorMap).includes(owned.data._id)).forEach((token) => {
 		let tokenPosition = new PIXI.Rectangle(token.x, token.y, token.w, token.h);
 		console.log(tokenPosition.x, tokenPosition.y);
 		if(tokenPosition.contains(positions.x, positions.y)) {
-			console.log("paired!", token.data._id);
+			console.log("Paired!", token.data._id);
 			//pair token
 			actorMap[tokMessage.typeId] = token.data._id;
-			console.log("save actorMap", JSON.stringify(Object.values(actorMap)));
 			game.settings.set("gameboard", "actorIdMap", actorMap);
 		}
 	});
