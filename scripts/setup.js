@@ -44,12 +44,13 @@ function onTokMessageReceived(tokMessage) {
 	} catch{}
 
 	var actorId = actorMap[tokMessage.typeId];
+	var parsedTokMessage = JSON.parse(tokMessage)[0];//TODO handle array
 
 	//Check if token is paired already, if so move token to location on board
 	if(actorId) {
-		moveTokenToLocation(actorId, JSON.parse(tokMessage)[0]); //TODO fix return type to not be an array
+		moveTokenToLocation(actorId, parsedTokMessage); 
 	} else {
-		pairToken(actorMap, tokMessage);
+		pairToken(actorMap, parsedTokMessage);
 	}
 }
 
@@ -75,6 +76,7 @@ function moveTokenToLocation(actorId, tokMessage) {
 }
 
 function calculateCanvasPosition(positionX, positionY){
+	console.log("tok x/y", positionX, positionY);
 	var viewPosition = canvas.scene._viewPosition;
 	var scale = viewPosition.scale;
 
@@ -105,9 +107,11 @@ function pairToken(actorMap, tokMessage) {
 	var positions = calculateCanvasPosition(tokMessage.positionX, tokMessage.positionY);
 	//If not paired, if actor is selected and not paired, pair
 	//canvas.tokens.controlled
+	console.log("trying to pair at", positions.x, positions.y);
+	console.log(canvas.tokens.ownedTokens.length);
 	canvas.tokens.ownedTokens.filter(owned => !Object.values(actorMap).includes(owned.data._id)).forEach((token) => {
 		let tokenPosition = new PIXI.Rectangle(token.x, token.y, token.w, token.h);
-		console.log(tokenPosition)
+		console.log(tokenPosition.x, tokenPosition.y);
 		if(tokenPosition.contains(positions.x, positions.y)) {
 			console.log("paired!", token.data._id);
 			//pair token
