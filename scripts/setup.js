@@ -38,14 +38,14 @@ var tokenMoveEventMap = {};
 
 function onTokMessageReceived(tokMessage) {
 	console.log(tokMessage);
-	var actorMap = {};
-	try {
-		actorMap = game && game.settings ? game.settings.get('gameboard', 'actorIdMap') : {}; 
-	} catch{}
+	var actorMap = game.settings.get('gameboard', 'actorIdMap');
+
+	console.log("actorMap", JSON.stringify(actorMap));
 
 	var actorId = actorMap[tokMessage.typeId];
 	var parsedTokMessage = JSON.parse(tokMessage)[0];//TODO handle array
 
+	console.log(actorId);
 	//Check if token is paired already, if so move token to location on board
 	if(actorId) {
 		moveTokenToLocation(actorId, parsedTokMessage); 
@@ -116,6 +116,7 @@ function pairToken(actorMap, tokMessage) {
 			console.log("paired!", token.data._id);
 			//pair token
 			actorMap[tokMessage.typeId] = token.data._id;
+			console.log("save actorMap", JSON.stringify(actorMap));
 			game.settings.set("gameboard", "actorIdMap", actorMap);
 		}
 	});
