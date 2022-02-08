@@ -95,8 +95,6 @@ function calculateCanvasPosition(positionX, positionY){
 	var topX = viewPosition.x - canvasViewWidth/2; 
 	var topY = viewPosition.y - canvasViewHeight/2; 
 
-	var topX = canvas.stage.transform.worldTransform
-
 	//console.log("topx/y", topX, topY);
 
 	var distanceDiffX = positionX * canvasViewWidth;
