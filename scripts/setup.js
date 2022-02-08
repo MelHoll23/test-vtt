@@ -34,23 +34,21 @@ Hooks.on("canvasInit", () => {
 
 var tokenMoveEventMap = {};
 
-var callsToOnTokMessageReceived = 0;
-var callsToMoveToken = 0;
-
+var debouncedMove = foundry.utils.debounce((actorId, parsedTokMessage) => { moveTokenToLocation(actorId, parsedTokMessage) }, 500); 
+		
 function onTokMessageReceived(tokMessage) {
 	callsToOnTokMessageReceived++;
-	console.log("Message received", callsToOnTokMessageReceived);
-	console.log("Move token", callsToMoveToken);
+	
 	//console.log(tokMessage);
 	var actorMap = game.settings.get('gameboard', 'actorIdMap');
 
 	var parsedTokMessage = JSON.parse(tokMessage)[0];//TODO handle array
 	var actorId = actorMap[parsedTokMessage.typeId];
 
-	//console.log(actorId);
+	console.log(actorId);
 	//Check if token is paired already, if so move token to location on board
 	if(actorId) {
-		foundry.utils.debounce(moveTokenToLocation(actorId, parsedTokMessage), 1000); 
+		debouncedMove(actorId, parsedTokMessage);
 	} else {
 		pairToken(actorMap, parsedTokMessage);
 	}
