@@ -37,8 +37,6 @@ var tokenMoveEventMap = {};
 var debouncedMove = foundry.utils.debounce((actorId, parsedTokMessage) => { moveTokenToLocation(actorId, parsedTokMessage) }, 500); 
 		
 function onTokMessageReceived(tokMessage) {
-	callsToOnTokMessageReceived++;
-	
 	//console.log(tokMessage);
 	var actorMap = game.settings.get('gameboard', 'actorIdMap');
 
@@ -55,7 +53,6 @@ function onTokMessageReceived(tokMessage) {
 }
 
 function moveTokenToLocation(actorId, tokMessage) {
-	callsToMoveToken++;
  	//Move token (local vs pushing data)
 	//console.log("tok", tokMessage.positionX, tokMessage.positionY);
 
