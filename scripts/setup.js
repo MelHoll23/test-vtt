@@ -1,10 +1,11 @@
 
-Hooks.once('init', () => {
+Hooks.once('init', function() {
+	console.log("Init gameboard config settings");
     // Register module settings.
 	game.settings.register('gameboard', 'isOnGameboard', {
 		name: 'OnGameboard',
 		hint: 'True if the instance is running on a gameboard. False if running elsewhere.', 
-		default: isOnGameboard,
+		default: window.isOnGameboard || false,
 		type: Boolean,
 		scope: 'client',
 		config: false
@@ -27,7 +28,8 @@ Hooks.once('init', () => {
 });
 
 
-Hooks.on("canvasInit", () => {
+Hooks.on("canvasInit", function() { 
+	console.log("Apply fog of war fix");
     //Fix fog of war crash
     SightLayer.MAXIMUM_FOW_TEXTURE_SIZE = 4096 / 2;
 });
@@ -36,52 +38,24 @@ var tokenMoveEventMap = {};
 
 function onTokMessageReceived(tokMessage) {
 	console.log(tokMessage);
-	//var actorMap = game && game.settings ? game.settings.get('gameboard', 'actorIdMap') : {}; 
+	var actorMap = {};
+	try {
+		actorMap = game && game.settings ? game.settings.get('gameboard', 'actorIdMap') : {}; 
+	} catch{}
 
-	//var actorId = actorMap[tokMessage.typeId];
+	var actorId = actorMap[tokMessage.typeId];
 
 	//Check if token is paired already, if so move token to location on board
-	//if(actorId) {
-		moveTokenToLocation("testId", JSON.parse(tokMessage)[0]); //TODO fix return type to not be an array
-	// } else {
-	// 	pairToken(tokMessage);
-	// }
+	if(actorId) {
+		moveTokenToLocation(actorId, JSON.parse(tokMessage)[0]); //TODO fix return type to not be an array
+	} else {
+		pairToken(actorMap, tokMessage);
+	}
 }
 
 function moveTokenToLocation(actorId, tokMessage) {
-	// if(tokenMoveEventMap[actorId] == tokMessage.sessionId) {
-	// 	console.log("mouseMove/up",window.innerWidth, tokMessage.positionX,
-	// 	 window.innerHeight, tokMessage.positionY)
-	// 	var evtMove = new MouseEvent("mousemove", {
-	// 		view: window,
-	// 		bubbles: true,
-	// 		cancelable: true,
-	// 		clientX: window.innerWidth * tokMessage.positionX,
-	// 		clientY: window.innerHeight * tokMessage.positionY,
-	// 	});
-	// 	var evtUp = new MouseEvent("mouseUp", {
-	// 		view: window,
-	// 		bubbles: true,
-	// 		cancelable: true,
-	// 	});
-	// 	$(document).dispatchEvent(evtMove);
-	// 	$(document).dispatchEvent(evtUp);
-	// } else {
-	// 	console.log("mouseDown",window.innerWidth, tokMessage.positionX,
-	// 	 window.innerHeight, tokMessage.positionY)
-	// 	tokenMoveEventMap[actorId] = tokMessage.sessionId;
-	// 	var evtDown = new MouseEvent("mousedown", {
-	// 		view: window,
-	// 		bubbles: true,
-	// 		cancelable: true,
-	// 		clientX: window.innerWidth * tokMessage.positionX,
-	// 		clientY: window.innerHeight * tokMessage.positionY,
-	// 	});
-	// 	$(document).dispatchEvent(evtDown);
-	// }
-
  	//Move token (local vs pushing data)
-	 console.log("tok", tokMessage.positionX, tokMessage.positionY);
+	console.log("tok", tokMessage.positionX, tokMessage.positionY);
 
 	var positions = calculateCanvasPosition(tokMessage.positionX, tokMessage.positionY);
 	var rotation = ((tokMessage.angle + 3) * 60) % 360;
@@ -92,7 +66,8 @@ function moveTokenToLocation(actorId, tokMessage) {
 	//canvas.grid.getSnappedPosition() //TODO snap after done moving for a while
 
 	//TODO map tokens
-	canvas.scene.tokens.get("aI5BE5F5wS9M3V8n").update({
+	//"aI5BE5F5wS9M3V8n"
+	canvas.scene.tokens.get(actorId).update({
 		x: positions.x, 
 		y: positions.y,
 		rotation: rotation
@@ -121,14 +96,24 @@ function calculateCanvasPosition(positionX, positionY){
 	actualPositionX = topX + distanceDiffX;
 	actualPositionY = topY + distanceDiffY;
 
-	//TODO adjust for miniature token size (center instead of at top left corner)
-
 	console.log("x, y, scale, actualX, actualY", viewPosition.x, viewPosition.y, scale, actualPositionX, actualPositionY);
-	//{x: actualPositionX, y: actualPositionY}
-	return canvas.grid.getSnappedPosition(actualPositionX, actualPositionY, 1);
+	return {x: actualPositionX, y: actualPositionY}
+	//return canvas.grid.getSnappedPosition(actualPositionX, actualPositionY, 1);
 }
 
-function pairToken(tokMessage) {
-	//If not paired, trigger click on canvas and if actor is selected and not paired, pair
+function pairToken(actorMap, tokMessage) {
+	var positions = calculateCanvasPosition(tokMessage.positionX, tokMessage.positionY);
+	//If not paired, if actor is selected and not paired, pair
+	//canvas.tokens.controlled
+	canvas.tokens.ownedTokens.filter(owned => !Object.values(actorMap).includes(owned.data._id)).forEach((token) => {
+		let tokenPosition = new PIXI.Rectangle(token.x, token.y, token.w, token.h);
+		console.log(tokenPosition)
+		if(tokenPosition.contains(positions.x, positions.y)) {
+			console.log("paired!", token.data._id);
+			//pair token
+			actorMap[tokMessage.typeId] = token.data._id;
+			game.settings.set("gameboard", "actorIdMap", actorMap);
+		}
+	});
 	//If not paired and actor selected is paired, remove previous pairing and re-pair
 }
