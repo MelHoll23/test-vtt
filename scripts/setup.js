@@ -62,7 +62,7 @@ function saveMovement(actor, positions, rotation, snap = true) {
 
 var debouncedSaveMovement = foundry.utils.debounce(saveMovement, 500); 
 		
-var throttleSaveMovement = throttle(saveMovement, 500);
+var throttleSaveMovement = throttle(saveMovement, 1000);
 
 function onTokMessageReceived(tokMessage) {
 	var parsedTokMessages = JSON.parse(tokMessage);
@@ -92,14 +92,16 @@ function moveTokenToLocation(tokenId, tokMessage) {
 
 	var tokenCenteredPositions = {x: positions.x - (actor._object.width/2), y: positions.y - (actor._object.height/2)};
 
-	//throttleSaveMovement(actor, tokenCenteredPositions, rotation, false);
-
+	actor.setPosition(tokenCenteredPositions.x, tokenCenteredPositions.y);
 	actor.data.update({
-		x: positions.x, 
-		y: positions.y,
+		// x: tokenCenteredPositions.x, 
+		// y: tokenCenteredPositions.y,
 		rotation: rotation
-	}, {animate: false});
+	});
+	actor._object.updateSource(); //Updates local vision with rotation (token not rotated)
 
+	//Send movements to backend on occasion
+	throttleSaveMovement(actor, tokenCenteredPositions, rotation, false);
 	//Snap and save after not moving for a while
 	debouncedSaveMovement(actor, tokenCenteredPositions, rotation);
 }
