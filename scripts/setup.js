@@ -92,7 +92,9 @@ function moveTokenToLocation(tokenId, tokMessage) {
 
 	var tokenCenteredPositions = {x: positions.x - (actor._object.width/2), y: positions.y - (actor._object.height/2)};
 
-	throttleSaveMovement(actor, tokenCenteredPositions, rotation, false);
+	//throttleSaveMovement(actor, tokenCenteredPositions, rotation, false);
+
+	actor._object.setPosition(tokenCenteredPositions.x, tokenCenteredPositions.y);
 
 	//Snap and save after not moving for a while
 	debouncedSaveMovement(actor, tokenCenteredPositions, rotation);
@@ -114,14 +116,6 @@ function calculateCanvasPosition(positionX, positionY){
 
 	actualPositionX = topX + distanceDiffX;
 	actualPositionY = topY + distanceDiffY;
-
-	// console.log("tok x/y", positionX, positionY);
-	// console.log("viewPosition", JSON.stringify(viewPosition));
-	// console.log("screen width", window.innerWidth);
-	// console.log("canvasWidth/canvasHeight:", canvasViewWidth, canvasViewHeight);
-	console.log("top x/y", topX, topY);
-	// console.log("diff", distanceDiffX, distanceDiffY);
-	console.log("actualX, actualY",  actualPositionX, actualPositionY);
 
 	return {x: actualPositionX, y: actualPositionY}
 }
