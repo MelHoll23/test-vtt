@@ -79,18 +79,12 @@ function moveTokenToLocation(actorId, tokMessage) {
 	var positions = calculateCanvasPosition(tokMessage.positionX, tokMessage.positionY);
 	var rotation = ((tokMessage.angle + 3) * 60) % 360;
 
-	tokenCenter = actor._object.getCenter(positions.x, positions.y);
+	var tokenCenteredPositions = {x: positions.x - (user._object.width/2), y: positions.y - (user._object.height/2)};
 
 	//TODO Set temporary angle/position until saving the movement
 	//actor._object.rotation = tokMessage.angle;
-	// actor._object.setPosition(tokenCenter.x, tokenCenter.y, {animate: false});
+	actor._object.setPosition(tokenCenter.x, tokenCenter.y);
 
-	actor.update({
-			x: tokenCenter.x, 
-			y: tokenCenter.y,
-			rotation: rotation
-		}, {animate: false});
-	
 	//Snap and save after not moving for a while
 	debouncedSaveMovement(actor, tokenCenter, rotation);
 }
