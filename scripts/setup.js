@@ -83,10 +83,10 @@ function moveTokenToLocation(actorId, tokMessage) {
 
 	//TODO Set temporary angle/position until saving the movement
 	//actor._object.rotation = tokMessage.angle;
-	actor._object.setPosition(tokenCenter.x, tokenCenter.y);
+	actor._object.setPosition(tokenCenteredPositions.x, tokenCenteredPositions.y);
 
 	//Snap and save after not moving for a while
-	debouncedSaveMovement(actor, tokenCenter, rotation);
+	debouncedSaveMovement(actor, tokenCenteredPositions, rotation);
 }
 
 function calculateCanvasPosition(positionX, positionY){
