@@ -61,12 +61,12 @@ var debouncedSaveMovement = foundry.utils.debounce((actor, positions, rotation) 
  }, 500); 
 		
 function onTokMessageReceived(tokMessage) {
-	//console.log(tokMessage);
-	var tokenMap = game.settings.get(MODULE_NAME, 'tokenIdMap');
-
 	var parsedTokMessages = JSON.parse(tokMessage);
 
 	parsedTokMessages.forEach(parsedTokMessage => {
+		var tokenMap = game.settings.get(MODULE_NAME, 'tokenIdMap');
+		console.log(JSON.stringify(tokenMap));
+
 		var tokenId = tokenMap[parsedTokMessage.typeId]; //"aI5BE5F5wS9M3V8n"
 
 		//Check if token is paired already, if so move token to location on board
@@ -74,7 +74,7 @@ function onTokMessageReceived(tokMessage) {
 			moveTokenToLocation(tokenId, parsedTokMessage);
 		} else {
 			removePairing(tokenMap, tokenId); //If the token isn't present, remove it?
-			pairToken(tokenMap, parsedTokMessage);
+			debouncedPairToken(tokenMap, parsedTokMessage);
 		}
 	});
 }
@@ -125,12 +125,14 @@ function calculateCanvasPosition(positionX, positionY){
 }
 
 function tokenIsPresent(tokenId){
-	return canvas.tokens.ownedTokens.map(owned => owned._id).includes(tokenId)
+	return canvas.tokens.ownedTokens.map(owned => owned.data._id).includes(tokenId)
 }
 
 function removePairing(tokenMap, tokenId){
 	delete tokenMap[Object.keys(tokenMap).find(key => tokenMap[key] === tokenId)]
 }
+
+var debouncedPairToken =  foundry.utils.debounce(pairToken, 500);
 
 function pairToken(tokenMap, tokMessage) {
 	var positions = calculateCanvasPosition(tokMessage.positionX, tokMessage.positionY);
@@ -149,16 +151,7 @@ function pairToken(tokenMap, tokMessage) {
 			tokenMap[tokMessage.typeId] = token.data._id;
 			game.settings.set(MODULE_NAME, "tokenIdMap", tokenMap);
 			
-			ui.notifications.info(`Token ${token.data._id} paired!`);
+			ui.notifications.info(`Token '${token.data.name}' paired!`);
 		}
 	});
-}
-
-function setGameSetting(id, value){
-	var currentIsGMSetting = game.user.isGM;
-	game.user.isGM = true;
-	
-	game.settings.set(MODULE_NAME, id, value);
-
-	game.user.isGM = currentIsGMSetting;
 }
