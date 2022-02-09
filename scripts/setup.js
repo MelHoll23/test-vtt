@@ -11,12 +11,21 @@ Hooks.once('init', () => {
 	});
 
     game.settings.register('gameboard', 'actorIdMap', {
-		name: 'OnGameboard',
+		name: 'ActorMap',
 		hint: 'Maps actor ids to the shape id from the gameboard so tokens are paired with shapes', 
 		default: {},
 		type: Object,
 		scope: 'world',
 		config: false
+	});
+
+    game.settings.register('gameboard', 'snapTokenToGrid', {
+		name: 'OnGameboard',
+		hint: 'After moving the token, should the token snap to the grid.', 
+		default: true,
+		type: Boolean,
+		scope: 'world',
+		config: true
 	});
 
     //On Web, show warning for larger image sizes / downscale too large of images
@@ -36,9 +45,12 @@ Hooks.on("canvasInit", () => {
 	//canvas.pan({scale: 1})
 });
 
-var debouncedSaveMovement = foundry.utils.debounce((actorId, positions, rotation) => { 
-	var snappedPosition = canvas.grid.getSnappedPosition(positions.x, positions.y, 1);
-	canvas.scene.tokens.get(actorId).update({
+var debouncedSaveMovement = foundry.utils.debounce((actor, positions, rotation) => { 
+	var snappedPosition = game.settings.get('gameboard', 'snapTokenToGrid') ? 
+							canvas.grid.getSnappedPosition(positions.x, positions.y, 1) : 
+							positions;
+							
+	actor.update({
 			x: snappedPosition.x, 
 			y: snappedPosition.y,
 			rotation: rotation
@@ -67,10 +79,10 @@ function moveTokenToLocation(actorId, tokMessage) {
 	var positions = calculateCanvasPosition(tokMessage.positionX, tokMessage.positionY);
 	var rotation = ((tokMessage.angle + 3) * 60) % 360;
 
-	debouncedSaveMovement(actorId, positions, rotation);
 	//TODO Set temporary angle/position until saving the movement
 	//actor._object.rotation = tokMessage.angle;
-	actor._object.setPosition(positions.x, positions.y);
+	actor._object.setPosition(positions.x, positions.y, {animate: false});
+	debouncedSaveMovement(actor, positions, rotation);
 }
 
 function calculateCanvasPosition(positionX, positionY){
@@ -93,12 +105,12 @@ function calculateCanvasPosition(positionX, positionY){
 	actualPositionX = topX + distanceDiffX;
 	actualPositionY = topY + distanceDiffY;
 
-	console.log("tok x/y", positionX, positionY);
-	console.log("viewPosition", JSON.stringify(viewPosition));
-	console.log("screen width", window.innerWidth);
-	console.log("canvasWidth/canvasHeight:", canvasViewWidth, canvasViewHeight);
+	// console.log("tok x/y", positionX, positionY);
+	// console.log("viewPosition", JSON.stringify(viewPosition));
+	// console.log("screen width", window.innerWidth);
+	// console.log("canvasWidth/canvasHeight:", canvasViewWidth, canvasViewHeight);
 	console.log("top x/y", topX, topY);
-	console.log("diff", distanceDiffX, distanceDiffY);
+	// console.log("diff", distanceDiffX, distanceDiffY);
 	console.log("actualX, actualY",  actualPositionX, actualPositionY);
 
 	return {x: actualPositionX, y: actualPositionY}
