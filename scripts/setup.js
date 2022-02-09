@@ -79,10 +79,23 @@ function moveTokenToLocation(actorId, tokMessage) {
 	var positions = calculateCanvasPosition(tokMessage.positionX, tokMessage.positionY);
 	var rotation = ((tokMessage.angle + 3) * 60) % 360;
 
+	positions = adjustForTokenWidth(positions);
+	tokenCenter = actor._object.getCenter(positions.x, positions.y);
+
 	//TODO Set temporary angle/position until saving the movement
 	//actor._object.rotation = tokMessage.angle;
-	actor._object.setPosition(positions.x, positions.y, {animate: false});
-	debouncedSaveMovement(actor, positions, rotation);
+	// actor._object.setPosition(tokenCenter.x, tokenCenter.y, {animate: false});
+	// debouncedSaveMovement(actor, tokenCenter, rotation);
+
+	var snappedPosition = game.settings.get('gameboard', 'snapTokenToGrid') ? 
+							canvas.grid.getSnappedPosition(positions.x, positions.y, 1) : 
+							positions;
+							
+	actor.update({
+			x: snappedPosition.x, 
+			y: snappedPosition.y,
+			rotation: rotation
+		}, {animate: false});
 }
 
 function calculateCanvasPosition(positionX, positionY){
