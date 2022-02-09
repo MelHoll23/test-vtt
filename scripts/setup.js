@@ -48,7 +48,7 @@ Hooks.on("canvasInit", () => {
 	//canvas.pan({scale: 1})
 });
 
-var debouncedSaveMovement = foundry.utils.debounce((actor, positions, rotation) => { 
+function saveMovement(actor, positions, rotation) { 
 	var snappedPosition = game.settings.get(MODULE_NAME, 'snapTokenToGrid') ? 
 							canvas.grid.getSnappedPosition(positions.x, positions.y, 1) : 
 							positions;
@@ -58,8 +58,12 @@ var debouncedSaveMovement = foundry.utils.debounce((actor, positions, rotation) 
 			y: snappedPosition.y,
 			rotation: rotation
 		}, {animate: false});
- }, 500); 
+ }
+
+var debouncedSaveMovement = foundry.utils.debounce(saveMovement, 500); 
 		
+var throttleSaveMovement = throttle(saveMovement, 500);
+
 function onTokMessageReceived(tokMessage) {
 	var parsedTokMessages = JSON.parse(tokMessage);
 
@@ -89,11 +93,12 @@ function moveTokenToLocation(tokenId, tokMessage) {
 	var tokenCenteredPositions = {x: positions.x - (actor._object.width/2), y: positions.y - (actor._object.height/2)};
 
 	//TODO Set temporary angle/position until saving the movement
-	actor._object.rotation = tokMessage.angle;
-	actor._object.setPosition(tokenCenteredPositions.x, tokenCenteredPositions.y);
+	// actor._object.rotation = tokMessage.angle;
+	// actor._object.setPosition(tokenCenteredPositions.x, tokenCenteredPositions.y);
 
 	//Snap and save after not moving for a while
-	debouncedSaveMovement(actor, tokenCenteredPositions, rotation);
+	//debouncedSaveMovement(actor, tokenCenteredPositions, rotation);
+	throttleSaveMovement(actor, tokenCenteredPositions, rotation);
 }
 
 function calculateCanvasPosition(positionX, positionY){
@@ -154,4 +159,17 @@ function pairToken(tokenMap, tokMessage) {
 			ui.notifications.info(`Token '${token.data.name}' paired!`);
 		}
 	});
+}
+
+function throttle (callback, limit) {
+    var waiting = false;                      
+    return function () {                      
+        if (!waiting) {                       
+            callback.apply(this, arguments);  
+            waiting = true;                   
+            setTimeout(function () {          
+                waiting = false;              
+            }, limit);
+        }
+    }
 }
