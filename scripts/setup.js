@@ -48,8 +48,8 @@ Hooks.on("canvasInit", () => {
 	//canvas.pan({scale: 1})
 });
 
-function saveMovement(actor, positions, rotation) { 
-	var snappedPosition = game.settings.get(MODULE_NAME, 'snapTokenToGrid') ? 
+function saveMovement(actor, positions, rotation, snap = true) { 
+	var snappedPosition = game.settings.get(MODULE_NAME, 'snapTokenToGrid') && snap ? 
 							canvas.grid.getSnappedPosition(positions.x, positions.y, 1) : 
 							positions;
 							
@@ -92,13 +92,10 @@ function moveTokenToLocation(tokenId, tokMessage) {
 
 	var tokenCenteredPositions = {x: positions.x - (actor._object.width/2), y: positions.y - (actor._object.height/2)};
 
-	//TODO Set temporary angle/position until saving the movement
-	// actor._object.rotation = tokMessage.angle;
-	// actor._object.setPosition(tokenCenteredPositions.x, tokenCenteredPositions.y);
+	throttleSaveMovement(actor, tokenCenteredPositions, rotation, false);
 
 	//Snap and save after not moving for a while
-	//debouncedSaveMovement(actor, tokenCenteredPositions, rotation);
-	throttleSaveMovement(actor, tokenCenteredPositions, rotation);
+	debouncedSaveMovement(actor, tokenCenteredPositions, rotation);
 }
 
 function calculateCanvasPosition(positionX, positionY){
