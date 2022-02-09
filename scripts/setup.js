@@ -79,7 +79,7 @@ function moveTokenToLocation(actorId, tokMessage) {
 	var positions = calculateCanvasPosition(tokMessage.positionX, tokMessage.positionY);
 	var rotation = ((tokMessage.angle + 3) * 60) % 360;
 
-	var tokenCenteredPositions = {x: positions.x - (user._object.width/2), y: positions.y - (user._object.height/2)};
+	var tokenCenteredPositions = {x: positions.x - (actor._object.width/2), y: positions.y - (actor._object.height/2)};
 
 	//TODO Set temporary angle/position until saving the movement
 	//actor._object.rotation = tokMessage.angle;
