@@ -94,7 +94,11 @@ function moveTokenToLocation(tokenId, tokMessage) {
 
 	//throttleSaveMovement(actor, tokenCenteredPositions, rotation, false);
 
-	actor._object.setPosition(tokenCenteredPositions.x, tokenCenteredPositions.y);
+	actor.data.update({
+		x: positions.x, 
+		y: positions.y,
+		rotation: rotation
+	}, {animate: false});
 
 	//Snap and save after not moving for a while
 	debouncedSaveMovement(actor, tokenCenteredPositions, rotation);
