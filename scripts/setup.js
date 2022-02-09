@@ -84,17 +84,15 @@ function moveTokenToLocation(actorId, tokMessage) {
 	//TODO Set temporary angle/position until saving the movement
 	//actor._object.rotation = tokMessage.angle;
 	// actor._object.setPosition(tokenCenter.x, tokenCenter.y, {animate: false});
-	// debouncedSaveMovement(actor, tokenCenter, rotation);
 
-	var snappedPosition = game.settings.get('gameboard', 'snapTokenToGrid') ? 
-							canvas.grid.getSnappedPosition(positions.x, positions.y, 1) : 
-							positions;
-							
 	actor.update({
-			x: snappedPosition.x, 
-			y: snappedPosition.y,
+			x: tokenCenter.x, 
+			y: tokenCenter.y,
 			rotation: rotation
 		}, {animate: false});
+	
+	//Snap and save after not moving for a while
+	debouncedSaveMovement(actor, tokenCenter, rotation);
 }
 
 function calculateCanvasPosition(positionX, positionY){
