@@ -1,7 +1,9 @@
+const MODULE_NAME= MODULE_NAME;
+
 Hooks.once('init', () => {
 	console.log("Init Gameboard config settings");
     // Register module settings.
-	game.settings.register('gameboard-support', 'isOnGameboard', {
+	game.settings.register(MODULE_NAME, 'isOnGameboard', {
 		name: 'OnGameboard',
 		hint: 'True if the instance is running on a gameboard. False if running elsewhere.', 
 		default: window.isOnGameboard || false,
@@ -10,7 +12,7 @@ Hooks.once('init', () => {
 		config: false
 	});
 
-    game.settings.register('gameboard-support', 'tokenIdMap', {
+    game.settings.register(MODULE_NAME, 'tokenIdMap', {
 		name: 'TokenMap',
 		hint: 'Maps token ids to the shape id from the gameboard so tokens are paired with shapes', 
 		default: {},
@@ -20,7 +22,7 @@ Hooks.once('init', () => {
 		restricted: false,
 	});
 
-    game.settings.register('gameboard-support', 'snapTokenToGrid', {
+    game.settings.register(MODULE_NAME, 'snapTokenToGrid', {
 		name: 'Snap token after movement',
 		hint: 'After moving the token, the token will snap to the grid.', 
 		default: true,
@@ -47,7 +49,7 @@ Hooks.on("canvasInit", () => {
 });
 
 var debouncedSaveMovement = foundry.utils.debounce((actor, positions, rotation) => { 
-	var snappedPosition = game.settings.get('gameboard', 'snapTokenToGrid') ? 
+	var snappedPosition = game.settings.get(MODULE_NAME, 'snapTokenToGrid') ? 
 							canvas.grid.getSnappedPosition(positions.x, positions.y, 1) : 
 							positions;
 							
@@ -60,7 +62,7 @@ var debouncedSaveMovement = foundry.utils.debounce((actor, positions, rotation) 
 		
 function onTokMessageReceived(tokMessage) {
 	//console.log(tokMessage);
-	var tokenMap = game.settings.get('gameboard', 'tokenIdMap');
+	var tokenMap = game.settings.get(MODULE_NAME, 'tokenIdMap');
 
 	var parsedTokMessages = JSON.parse(tokMessage);
 
@@ -98,7 +100,7 @@ function calculateCanvasPosition(positionX, positionY){
 	var viewPosition = canvas.scene._viewPosition;
 	var scale = viewPosition.scale;
 
-	var isOnGameboard = game.settings.get("gameboard", "isOnGameboard");
+	var isOnGameboard = game.settings.get(MODULE_NAME, "isOnGameboard");
 	var canvasViewWidth =  (isOnGameboard ? 1920 : window.innerWidth) / scale;
 	var canvasViewHeight = (isOnGameboard ? 1920 : window.innerHeight) / scale;
 
@@ -145,7 +147,7 @@ function pairToken(tokenMap, tokMessage) {
 			}
 			//Pair token
 			tokenMap[tokMessage.typeId] = token.data._id;
-			game.settings.set("gameboard", "tokenIdMap", tokenMap);
+			game.settings.set(MODULE_NAME, "tokenIdMap", tokenMap);
 			
 			ui.notifications.info(`Token ${token.data._id} paired!`);
 		}
@@ -156,7 +158,7 @@ function setGameSetting(id, value){
 	var currentIsGMSetting = game.user.isGM;
 	game.user.isGM = true;
 	
-	game.settings.set("gameboard", id, value);
+	game.settings.set(MODULE_NAME, id, value);
 
 	game.user.isGM = currentIsGMSetting;
 }
