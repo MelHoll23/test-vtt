@@ -1,4 +1,4 @@
-const MODULE_NAME= MODULE_NAME;
+const MODULE_NAME = 'gameboard-support';
 
 Hooks.once('init', () => {
 	console.log("Init Gameboard config settings");
