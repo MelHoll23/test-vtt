@@ -1,7 +1,7 @@
 Hooks.once('init', () => {
 	console.log("Init Gameboard config settings");
     // Register module settings.
-	game.settings.register('gameboard', 'isOnGameboard', {
+	game.settings.register('gameboard-support', 'isOnGameboard', {
 		name: 'OnGameboard',
 		hint: 'True if the instance is running on a gameboard. False if running elsewhere.', 
 		default: window.isOnGameboard || false,
@@ -10,21 +10,22 @@ Hooks.once('init', () => {
 		config: false
 	});
 
-    game.settings.register('gameboard', 'tokenIdMap', {
+    game.settings.register('gameboard-support', 'tokenIdMap', {
 		name: 'TokenMap',
 		hint: 'Maps token ids to the shape id from the gameboard so tokens are paired with shapes', 
 		default: {},
 		type: Object,
-		scope: 'world',
-		config: false
+		scope: 'client',
+		config: false,
+		restricted: false,
 	});
 
-    game.settings.register('gameboard', 'snapTokenToGrid', {
+    game.settings.register('gameboard-support', 'snapTokenToGrid', {
 		name: 'Snap token after movement',
 		hint: 'After moving the token, the token will snap to the grid.', 
 		default: true,
 		type: Boolean,
-		scope: 'world',
+		scope: 'client',
 		config: true
 	});
 
@@ -148,4 +149,13 @@ function pairToken(tokenMap, tokMessage) {
 			console.log("Paired!", token.data._id);
 		}
 	});
+}
+
+function setGameSetting(id, value){
+	var currentIsGMSetting = game.user.isGM;
+	game.user.isGM = true;
+	
+	game.settings.set("gameboard", id, value);
+
+	game.user.isGM = currentIsGMSetting;
 }
