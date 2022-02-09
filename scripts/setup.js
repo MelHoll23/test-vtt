@@ -146,7 +146,8 @@ function pairToken(tokenMap, tokMessage) {
 			//Pair token
 			tokenMap[tokMessage.typeId] = token.data._id;
 			game.settings.set("gameboard", "tokenIdMap", tokenMap);
-			console.log("Paired!", token.data._id);
+			
+			ui.notifications.info(`Token ${token.data._id} paired!`);
 		}
 	});
 }
