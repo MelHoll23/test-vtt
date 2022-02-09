@@ -10,9 +10,9 @@ Hooks.once('init', () => {
 		config: false
 	});
 
-    game.settings.register('gameboard', 'actorIdMap', {
-		name: 'ActorMap',
-		hint: 'Maps actor ids to the shape id from the gameboard so tokens are paired with shapes', 
+    game.settings.register('gameboard', 'tokenIdMap', {
+		name: 'TokenMap',
+		hint: 'Maps token ids to the shape id from the gameboard so tokens are paired with shapes', 
 		default: {},
 		type: Object,
 		scope: 'world',
@@ -59,22 +59,26 @@ var debouncedSaveMovement = foundry.utils.debounce((actor, positions, rotation) 
 		
 function onTokMessageReceived(tokMessage) {
 	//console.log(tokMessage);
-	var actorMap = game.settings.get('gameboard', 'actorIdMap');
+	var tokenMap = game.settings.get('gameboard', 'tokenIdMap');
 
-	var parsedTokMessage = JSON.parse(tokMessage)[0];//TODO handle array
-	var actorId = actorMap[parsedTokMessage.typeId]; //"aI5BE5F5wS9M3V8n"
+	var parsedTokMessages = JSON.parse(tokMessage);
 
-	//Check if token is paired already, if so move token to location on board
-	if(actorId) {
-		moveTokenToLocation(actorId, parsedTokMessage);
-	} else {
-		pairToken(actorMap, parsedTokMessage);
-	}
+	parsedTokMessages.forEach(parsedTokMessage => {
+		var tokenId = tokenMap[parsedTokMessage.typeId]; //"aI5BE5F5wS9M3V8n"
+
+		//Check if token is paired already, if so move token to location on board
+		if(tokenId && tokenIsPresent(tokenId)) {
+			moveTokenToLocation(tokenId, parsedTokMessage);
+		} else {
+			removePairing(tokenMap, tokenId); //If the token isn't present, remove it?
+			pairToken(tokenMap, parsedTokMessage);
+		}
+	});
 }
 
-function moveTokenToLocation(actorId, tokMessage) {
+function moveTokenToLocation(tokenId, tokMessage) {
  	//Move token (local vs pushing data)
-	var actor = canvas.scene.tokens.get(actorId);
+	var actor = canvas.scene.tokens.get(tokenId);
 
 	var positions = calculateCanvasPosition(tokMessage.positionX, tokMessage.positionY);
 	var rotation = ((tokMessage.angle + 3) * 60) % 360;
@@ -82,7 +86,7 @@ function moveTokenToLocation(actorId, tokMessage) {
 	var tokenCenteredPositions = {x: positions.x - (actor._object.width/2), y: positions.y - (actor._object.height/2)};
 
 	//TODO Set temporary angle/position until saving the movement
-	//actor._object.rotation = tokMessage.angle;
+	actor._object.rotation = tokMessage.angle;
 	actor._object.setPosition(tokenCenteredPositions.x, tokenCenteredPositions.y);
 
 	//Snap and save after not moving for a while
@@ -117,22 +121,30 @@ function calculateCanvasPosition(positionX, positionY){
 	return {x: actualPositionX, y: actualPositionY}
 }
 
-function pairToken(actorMap, tokMessage) {
+function tokenIsPresent(tokenId){
+	return canvas.tokens.ownedTokens.map(owned => owned._id).includes(tokenId)
+}
+
+function removePairing(tokenMap, tokenId){
+	delete tokenMap[Object.keys(tokenMap).find(key => tokenMap[key] === tokenId)]
+}
+
+function pairToken(tokenMap, tokMessage) {
 	var positions = calculateCanvasPosition(tokMessage.positionX, tokMessage.positionY);
 	//If not paired, if actor is selected and not paired, pair
 	console.log("Trying to pair at ", positions.x, positions.y);
 
-	canvas.tokens.ownedTokens.filter(owned => !Object.values(actorMap).includes(owned.data._id)).forEach((token) => {
+	canvas.tokens.ownedTokens.filter(owned => !Object.values(tokenMap).includes(owned.data._id)).forEach((token) => {
 		let tokenPosition = new PIXI.Rectangle(token.x, token.y, token.w, token.h);
 		console.log(tokenPosition.x, tokenPosition.y);
 		if(tokenPosition.contains(positions.x, positions.y)) {
 			//Unpair if needed
-			if(Object.values(actorMap).includes(token.data._id)){
-				delete actorMap[Object.keys(actorMap).find(key => actorMap[key] === token.data._id)]
+			if(Object.values(tokenMap).includes(token.data._id)) {
+				removePairing(tokenMap, token.data._id);
 			}
 			//Pair token
-			actorMap[tokMessage.typeId] = token.data._id;
-			game.settings.set("gameboard", "actorIdMap", actorMap);
+			tokenMap[tokMessage.typeId] = token.data._id;
+			game.settings.set("gameboard", "tokenIdMap", tokenMap);
 			console.log("Paired!", token.data._id);
 		}
 	});
