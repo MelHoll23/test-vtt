@@ -20,8 +20,8 @@ Hooks.once('init', () => {
 	});
 
     game.settings.register('gameboard', 'snapTokenToGrid', {
-		name: 'OnGameboard',
-		hint: 'After moving the token, should the token snap to the grid.', 
+		name: 'Snap token after movement',
+		hint: 'After moving the token, the token will snap to the grid.', 
 		default: true,
 		type: Boolean,
 		scope: 'world',
@@ -89,12 +89,9 @@ function calculateCanvasPosition(positionX, positionY){
 	var viewPosition = canvas.scene._viewPosition;
 	var scale = viewPosition.scale;
 
-	//var isOnGameboard = game.settings.get("gameboard", "isOnGameboard");
-	// var canvasViewWidth =  (isOnGameboard ? 1920 : window.innerWidth) * (1 + scale);
-	// var canvasViewHeight = (isOnGameboard ? 1920 : window.innerHeight) * (1 + scale);
-
-	var canvasViewWidth =  window.innerWidth * (1 + scale);
-	var canvasViewHeight = window.innerHeight * (1 + scale);
+	var isOnGameboard = game.settings.get("gameboard", "isOnGameboard");
+	var canvasViewWidth =  (isOnGameboard ? 1920 : window.innerWidth) * (1 + scale);
+	var canvasViewHeight = (isOnGameboard ? 1920 : window.innerHeight) * (1 + scale);
 
 	var topX = viewPosition.x - canvasViewWidth/2; 
 	var topY = viewPosition.y - canvasViewHeight/2; 
@@ -114,7 +111,6 @@ function calculateCanvasPosition(positionX, positionY){
 	console.log("actualX, actualY",  actualPositionX, actualPositionY);
 
 	return {x: actualPositionX, y: actualPositionY}
-	//return canvas.grid.getSnappedPosition(actualPositionX, actualPositionY, 1);
 }
 
 function pairToken(actorMap, tokMessage) {
