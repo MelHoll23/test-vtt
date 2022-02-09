@@ -92,7 +92,7 @@ function moveTokenToLocation(tokenId, tokMessage) {
 
 	var tokenCenteredPositions = {x: positions.x - (actor._object.width/2), y: positions.y - (actor._object.height/2)};
 
-	actor.setPosition(tokenCenteredPositions.x, tokenCenteredPositions.y);
+	actor._object.setPosition(tokenCenteredPositions.x, tokenCenteredPositions.y);
 	actor.data.update({
 		// x: tokenCenteredPositions.x, 
 		// y: tokenCenteredPositions.y,
