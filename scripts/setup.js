@@ -90,8 +90,8 @@ function calculateCanvasPosition(positionX, positionY){
 	var scale = viewPosition.scale;
 
 	var isOnGameboard = game.settings.get("gameboard", "isOnGameboard");
-	var canvasViewWidth =  (isOnGameboard ? 1920 : window.innerWidth) * (1 + scale);
-	var canvasViewHeight = (isOnGameboard ? 1920 : window.innerHeight) * (1 + scale);
+	var canvasViewWidth =  (isOnGameboard ? 1920 : window.innerWidth) / scale;
+	var canvasViewHeight = (isOnGameboard ? 1920 : window.innerHeight) / scale;
 
 	var topX = viewPosition.x - canvasViewWidth/2; 
 	var topY = viewPosition.y - canvasViewHeight/2; 
