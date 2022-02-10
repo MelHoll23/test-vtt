@@ -32,20 +32,40 @@ Hooks.once('init', () => {
 	});
 
     game.settings.register(MODULE_NAME, 'squaresNumber', {
-		name: 'Number of scales shown on screen',
-		hint: 'Will set the gameboard view to show this number of squares for the grid.', 
+		name: 'Number of squares shown on screen',
+		hint: 'Will set the gameboard view to show this number of squares on the screen.', 
 		default: 16,
 		type: Number,
 		scope: 'client',
-		config: true
+		config: true, 
+		onChange: () => canvas.ready ? updateCanvasScale() : null
 	});
 
     //On Web, show warning for larger image sizes / downscale too large of images
     //On gameboard
     //change UI
-    //change zoom level + disable zoom (match grid size)
 });
 
+Hooks.once('setup', () => {
+	game.settings.set('core', 'fontSize', 9);
+	game.settings.set('core', 'performanceMode', 'SETTINGS.PerformanceModeLow');
+
+	//Don't throw any errors if they don't have touch-vtt
+	try {
+		game.settings.set('touch-vtt', 'gestureMode', 'split');
+		game.settings.set('touch-vtt', 'directionalArrows', false);
+		game.settings.set('touch-vtt', 'largeButtons', true);
+	} catch{}
+})
+
+function updateCanvasScale(){
+	var squareSize = canvas.grid.w;
+	var multiSquareWidth = squareSize*game.settings.get(MODULE_NAME, 'squaresNumber');
+
+	var scale = window.innerWidth / multiSquareWidth;
+
+	canvas.pan({scale: scale, forceScale: true});
+}
 
 Hooks.on("canvasInit", () => { 
 	console.log("Apply fog of war fix");
@@ -54,7 +74,6 @@ Hooks.on("canvasInit", () => {
 });
 
 Hooks.on("canvasReady", (canvas) => { 
-	//TODO Calculate grid size and scale accordingly, disable zoom
 	//Override to prevent other actions from scaling
 	canvas.pan = ({x=null, y=null, scale=null, forceScale = false}={}) => {  
 		const constrained = canvas._constrainView({x, y, scale});
@@ -78,17 +97,8 @@ Hooks.on("canvasReady", (canvas) => {
 		canvas.hud.align();
 	}
 
-	var squareSize = canvas.grid.w;
-	var multiSquareWidth = squareSize*game.settings.get(MODULE_NAME, 'squaresNumber');
-
-	var scale = window.innerWidth / multiSquareWidth;
-
-	canvas.pan({scale: scale, forceScale: true});
+	updateCanvasScale();
 });
-
-Hooks.on("canvasPan", (canvas, transform) => {
-	console.log("canvasPan", transform);
-})
 
 function saveMovement(actor, positions, rotation, snap = true) { 
 	var snappedPosition = game.settings.get(MODULE_NAME, 'snapTokenToGrid') && snap ? 
@@ -146,13 +156,12 @@ function moveTokenToLocation(tokenId, tokMessage) {
 	debouncedSaveMovement(actor, tokenCenteredPositions, rotation);
 }
 
-function calculateCanvasPosition(positionX, positionY){
+function calculateCanvasPosition(positionX, positionY) {
 	var viewPosition = canvas.scene._viewPosition;
 	var scale = viewPosition.scale;
 
-	var isOnGameboard = game.settings.get(MODULE_NAME, "isOnGameboard");
-	var canvasViewWidth =  (isOnGameboard ? 1920 : window.innerWidth) / scale;
-	var canvasViewHeight = (isOnGameboard ? 1920 : window.innerHeight) / scale;
+	var canvasViewWidth =  window.innerWidth / scale;
+	var canvasViewHeight =  window.innerHeight / scale;
 
 	var topX = viewPosition.x - canvasViewWidth/2; 
 	var topY = viewPosition.y - canvasViewHeight/2; 
