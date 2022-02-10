@@ -35,7 +35,7 @@ Hooks.once('init', () => {
 		name: 'Number of scales shown on screen',
 		hint: 'Will set the gameboard view to show this number of squares for the grid.', 
 		default: 16,
-		type: Int32Array,
+		type: Number,
 		scope: 'client',
 		config: true
 	});
