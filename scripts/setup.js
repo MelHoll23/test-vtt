@@ -56,7 +56,7 @@ Hooks.on("canvasInit", () => {
 	//Override to prevent other actions from scaling
 	canvas.pan = ({x=null, y=null, scale=null, forceScale = false}={}) => {  
 		const constrained = canvas._constrainView({x, y});
-		const scaleChange = constrained.scale !== this.stage.scale.x;
+		const scaleChange = constrained.scale !== canvas.stage.scale.x;
 	   
 		// Set the pivot point
 		canvas.stage.pivot.set(constrained.x, constrained.y);
