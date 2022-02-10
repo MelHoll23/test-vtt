@@ -31,6 +31,15 @@ Hooks.once('init', () => {
 		config: true
 	});
 
+    game.settings.register(MODULE_NAME, 'squaresNumber', {
+		name: 'Number of scales shown on screen',
+		hint: 'Will set the gameboard view to show this number of squares for the grid.', 
+		default: 16,
+		type: Int32Array,
+		scope: 'client',
+		config: true
+	});
+
     //On Web, show warning for larger image sizes / downscale too large of images
     //On gameboard
     //change UI
@@ -44,15 +53,43 @@ Hooks.on("canvasInit", () => {
     SightLayer.MAXIMUM_FOW_TEXTURE_SIZE = 4096 / 2;
 
 	//TODO Calculate grid size and scale accordingly, disable zoom
-	//canvas.grid.w
-	//canvas.pan({scale: 1})
+	//Override to prevent other actions from scaling
+	canvas.pan = ({x=null, y=null, scale=null, forceScale = false}={}) => {  
+		const constrained = canvas._constrainView({x, y});
+		const scaleChange = constrained.scale !== this.stage.scale.x;
+	   
+		// Set the pivot point
+		canvas.stage.pivot.set(constrained.x, constrained.y);
+
+		 // Set the zoom level
+		 if ( scaleChange && forceScale ) {
+			canvas.stage.scale.set(constrained.scale, constrained.scale);
+			canvas.updateBlur(constrained.scale);
+		  }
+	
+		// Update the scene tracked position
+		canvas.scene._viewPosition = constrained;
+	
+		Hooks.callAll("canvasPan", canvas, constrained);
+	
+		// Align the HUD
+		canvas.hud.align();
+	}
+
+	var squareSize = canvas.grid.w;
+	var multiSquareWidth = squareSize*game.settings.get(MODULE_NAME, 'squaresNumber');
+
+	var scale = window.innerWidth / multiSquareWidth;
+
+	canvas.pan({scale: scale, forceScale: true});
 });
 
 function saveMovement(actor, positions, rotation, snap = true) { 
 	var snappedPosition = game.settings.get(MODULE_NAME, 'snapTokenToGrid') && snap ? 
 							canvas.grid.getSnappedPosition(positions.x, positions.y, 1) : 
 							positions;
-							
+				
+	console.log("saveRotation:", rotation);
 	actor.update({
 			x: snappedPosition.x, 
 			y: snappedPosition.y,
@@ -69,7 +106,6 @@ function onTokMessageReceived(tokMessage) {
 
 	parsedTokMessages.forEach(parsedTokMessage => {
 		var tokenMap = game.settings.get(MODULE_NAME, 'tokenIdMap');
-		console.log(JSON.stringify(tokenMap));
 
 		var tokenId = tokenMap[parsedTokMessage.typeId]; //"aI5BE5F5wS9M3V8n"
 
@@ -94,8 +130,6 @@ function moveTokenToLocation(tokenId, tokMessage) {
 
 	actor._object.setPosition(tokenCenteredPositions.x, tokenCenteredPositions.y);
 	actor.data.update({
-		// x: tokenCenteredPositions.x, 
-		// y: tokenCenteredPositions.y,
 		rotation: rotation
 	});
 	actor._object.updateSource(); //Updates local vision with rotation (token not rotated)
@@ -143,7 +177,7 @@ function pairToken(tokenMap, tokMessage) {
 
 	canvas.tokens.ownedTokens.filter(owned => !Object.values(tokenMap).includes(owned.data._id)).forEach((token) => {
 		let tokenPosition = new PIXI.Rectangle(token.x, token.y, token.w, token.h);
-		console.log(tokenPosition.x, tokenPosition.y);
+
 		if(tokenPosition.contains(positions.x, positions.y)) {
 			//Unpair if needed
 			if(Object.values(tokenMap).includes(token.data._id)) {
