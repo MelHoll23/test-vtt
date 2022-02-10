@@ -51,7 +51,9 @@ Hooks.on("canvasInit", () => {
 	console.log("Apply fog of war fix");
     //Fix fog of war crash
     SightLayer.MAXIMUM_FOW_TEXTURE_SIZE = 4096 / 2;
+});
 
+Hooks.on("canvasReady", (canvas) => { 
 	//TODO Calculate grid size and scale accordingly, disable zoom
 	//Override to prevent other actions from scaling
 	canvas.pan = ({x=null, y=null, scale=null, forceScale = false}={}) => {  
@@ -83,6 +85,10 @@ Hooks.on("canvasInit", () => {
 
 	canvas.pan({scale: scale, forceScale: true});
 });
+
+Hooks.on("canvasPan", (canvas, transform) => {
+	console.log("canvasPan", transform);
+})
 
 function saveMovement(actor, positions, rotation, snap = true) { 
 	var snappedPosition = game.settings.get(MODULE_NAME, 'snapTokenToGrid') && snap ? 
