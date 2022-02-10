@@ -57,7 +57,7 @@ Hooks.on("canvasReady", (canvas) => {
 	//TODO Calculate grid size and scale accordingly, disable zoom
 	//Override to prevent other actions from scaling
 	canvas.pan = ({x=null, y=null, scale=null, forceScale = false}={}) => {  
-		const constrained = canvas._constrainView({x, y});
+		const constrained = canvas._constrainView({x, y, scale});
 		const scaleChange = constrained.scale !== canvas.stage.scale.x;
 	   
 		// Set the pivot point
