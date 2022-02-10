@@ -2,17 +2,8 @@ const MODULE_NAME = 'gameboard-support';
 
 Hooks.once('init', () => {
 	console.log("Init Gameboard config settings");
-	console.log("isOnGameBoard?", window.isOnGameboard);
+	console.log("isOnGameboard?", window.isOnGameboard);
     // Register module settings.
-	game.settings.register(MODULE_NAME, 'isOnGameboard', {
-		name: 'OnGameboard',
-		hint: 'True if the instance is running on a gameboard. False if running elsewhere.', 
-		default: window.isOnGameboard || false,
-		type: Boolean,
-		scope: 'client',
-		config: false
-	});
-
     game.settings.register(MODULE_NAME, 'tokenIdMap', {
 		name: 'TokenMap',
 		hint: 'Maps token ids to the shape id from the gameboard so tokens are paired with shapes', 
@@ -42,21 +33,25 @@ Hooks.once('init', () => {
 		onChange: () => canvas.ready ? updateCanvasScale() : null
 	});
 
+	window.isGameboardModuleOn = true;
+
     //On Web, show warning for larger image sizes / downscale too large of images
     //On gameboard
     //change UI
 });
 
 Hooks.once('setup', () => {
-	game.settings.set('core', 'fontSize', 9);
-	game.settings.set('core', 'performanceMode', 'SETTINGS.PerformanceModeLow');
+	if(window.isOnGameboard) {
+		game.settings.set('core', 'fontSize', 9);
+		game.settings.set('core', 'performanceMode', 'SETTINGS.PerformanceModeLow');
 
-	//Don't throw any errors if they don't have touch-vtt
-	try {
-		game.settings.set('touch-vtt', 'gestureMode', 'split');
-		game.settings.set('touch-vtt', 'directionalArrows', false);
-		game.settings.set('touch-vtt', 'largeButtons', true);
-	} catch{}
+		//Don't throw any errors if they don't have touch-vtt
+		try {
+			game.settings.set('touch-vtt', 'gestureMode', 'split');
+			game.settings.set('touch-vtt', 'directionalArrows', false);
+			game.settings.set('touch-vtt', 'largeButtons', true);
+		} catch{}
+	}
 })
 
 function updateCanvasScale(){
@@ -75,30 +70,32 @@ Hooks.on("canvasInit", () => {
 });
 
 Hooks.on("canvasReady", (canvas) => { 
-	//Override to prevent other actions from scaling
-	canvas.pan = ({x=null, y=null, scale=null, forceScale = false}={}) => {  
-		const constrained = canvas._constrainView({x, y, scale});
-		const scaleChange = constrained.scale !== canvas.stage.scale.x;
-	   
-		// Set the pivot point
-		canvas.stage.pivot.set(constrained.x, constrained.y);
+	if(window.isOnGameboard) {
+		//Override to prevent other actions from scaling
+		canvas.pan = ({x=null, y=null, scale=null, forceScale = false}={}) => {  
+			const constrained = canvas._constrainView({x, y, scale});
+			const scaleChange = constrained.scale !== canvas.stage.scale.x;
+		
+			// Set the pivot point
+			canvas.stage.pivot.set(constrained.x, constrained.y);
 
-		 // Set the zoom level
-		 if ( scaleChange && forceScale ) {
-			canvas.stage.scale.set(constrained.scale, constrained.scale);
-			canvas.updateBlur(constrained.scale);
-		  }
-	
-		// Update the scene tracked position
-		canvas.scene._viewPosition = constrained;
-	
-		Hooks.callAll("canvasPan", canvas, constrained);
-	
-		// Align the HUD
-		canvas.hud.align();
+			// Set the zoom level
+			if ( scaleChange && forceScale ) {
+				canvas.stage.scale.set(constrained.scale, constrained.scale);
+				canvas.updateBlur(constrained.scale);
+			}
+		
+			// Update the scene tracked position
+			canvas.scene._viewPosition = constrained;
+		
+			Hooks.callAll("canvasPan", canvas, constrained);
+		
+			// Align the HUD
+			canvas.hud.align();
+		}
+
+		updateCanvasScale();
 	}
-
-	updateCanvasScale();
 });
 
 function saveMovement(actor, positions, rotation, snap = true) { 
@@ -106,7 +103,6 @@ function saveMovement(actor, positions, rotation, snap = true) {
 							canvas.grid.getSnappedPosition(positions.x, positions.y, 1) : 
 							positions;
 				
-	console.log("saveRotation:", rotation);
 	actor.update({
 			x: snappedPosition.x, 
 			y: snappedPosition.y,
