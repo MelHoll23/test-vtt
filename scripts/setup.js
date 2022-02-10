@@ -2,6 +2,7 @@ const MODULE_NAME = 'gameboard-support';
 
 Hooks.once('init', () => {
 	console.log("Init Gameboard config settings");
+	console.log("isOnGameBoard?", window.isOnGameboard);
     // Register module settings.
 	game.settings.register(MODULE_NAME, 'isOnGameboard', {
 		name: 'OnGameboard',
