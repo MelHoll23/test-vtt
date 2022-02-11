@@ -20,7 +20,7 @@ class GameboardTextureLoader extends TextureLoader {
 
             //Show warning if the image is too large
             if(img.height > 4096 || img.width > 4096){
-                ui.notifications.error(`Image ${img.src} is too large to be loaded on Gameboard.`, {permanent: true});
+                ui.notifications.error(`Image ${src} is too large to be loaded on Gameboard.`, {permanent: true});
             }
 
 			const tex = PIXI.BaseTexture.from(img);
