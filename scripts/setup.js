@@ -1,41 +1,11 @@
-const MODULE_NAME = 'gameboard-support';
 
-class MyTextureLoader extends TextureLoader {
-	async loadImageTexture(src) {
-		console.log("Override method", src);
-		const blob = await this._fetchResource(src);
-	
-		// Create the Image element
-		const img = new Image();
-		img.decoding = "async";
-		img.loading = "eager";
-	
-		// Wait for the image to load
-		return new Promise((resolve, reject) => {
-	
-		  // Create the texture on successful load
-		  img.onload = () => {
-			URL.revokeObjectURL(img.src);
-			img.height = img.naturalHeight;
-			img.width = img.naturalWidth;
-			const tex = PIXI.BaseTexture.from(img);
-			this.setCache(src, tex);
-			resolve(tex);
-		  };
-	
-		  // Handle errors for valid URLs due to CORS
-		  img.onerror = err => {
-			URL.revokeObjectURL(img.src);
-			reject(err);
-		  }
-		  img.src = URL.createObjectURL(blob);
-		});
-	  }
-}
+import GameboardTextureLoader from './classes/GameboardTextureLoader.js'
+
+const MODULE_NAME = 'gameboard-support';
 
 Hooks.once('init', () => {
 	console.log("Init Gameboard config settings");
-	console.log("isOnGameboard?", window.isOnGameboard);
+	
     // Register module settings.
     game.settings.register(MODULE_NAME, 'tokenIdMap', {
 		name: 'TokenMap',
@@ -68,11 +38,12 @@ Hooks.once('init', () => {
 
 	window.isGameboardModuleOn = true;
 
-    //On Web, show warning for larger image sizes / downscale too large of images
-    //On gameboard
+	//Set custom loader
+	//Currently shows a warning when loading images that are too large for gameboard.
+	TextureLoader.loader = new GameboardTextureLoader();
+	
+	//On gameboard
     //change UI
-
-	TextureLoader.loader = new MyTextureLoader();
 });
 
 Hooks.once('setup', () => {
