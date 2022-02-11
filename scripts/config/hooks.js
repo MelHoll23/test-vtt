@@ -1,5 +1,6 @@
 import GameboardTextureLoader from '../classes/GameboardTextureLoader.js'
 import { registerSettings } from './settings.js';
+import { MODULE_NAME } from './settings.js';
 
 export function registerHooks() {
     Hooks.once('init', () => {
@@ -62,7 +63,7 @@ export function registerHooks() {
         }
     });
 
-    function updateCanvasScale() {
+    var updateCanvasScale = function () {
         var squareSize = canvas.grid.w;
         var multiSquareWidth = squareSize*game.settings.get(MODULE_NAME, 'squaresNumber');
 
