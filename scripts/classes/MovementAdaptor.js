@@ -13,11 +13,11 @@ export default class TokenMovementAdaptor {
         this.tokenId = this.tokenMap[this.typeId];
     }
 
-    shouldMoveToken(){
+    shouldMoveToken() {
         return this.tokenId && this.tokenIsPresent()
     }
     
-    tokenIsPresent(){
+    tokenIsPresent() {
         return canvas.tokens.ownedTokens.map(owned => owned.data._id).includes(this.tokenId)
     }
         
@@ -44,12 +44,12 @@ export default class TokenMovementAdaptor {
         this.debouncedSaveMovement(actor, tokenCenteredPositions, rotation);
     }
 
-    cleanupAndPairToken(){
+    cleanupAndPairToken() {
         this.removePairing();
         this.debouncedPairToken();
     }
 
-    removePairing(){
+    removePairing() {
         delete this.tokenMap[Object.keys(this.tokenMap)
             .find(key => this.tokenMap[key] === this.tokenId)]
     }
@@ -73,7 +73,7 @@ export default class TokenMovementAdaptor {
         return {x: actualPositionX, y: actualPositionY}
     }
 
-    debouncedPairToken =  foundry.utils.debounce(this.pairToken, 500);
+    debouncedPairToken =  window.foundry.utils.debounce(this.pairToken, 500);
 
     pairToken() {
         var positions = this.calculateCanvasPosition();
@@ -112,7 +112,7 @@ export default class TokenMovementAdaptor {
             }, {animate: false});
     }
 
-    debouncedSaveMovement = foundry.utils.debounce(this.saveMovement, 500); 
+    debouncedSaveMovement = window.foundry.utils.debounce(this.saveMovement, 500); 
             
     throttleSaveMovement = throttle(this.saveMovement, 1000);
 }

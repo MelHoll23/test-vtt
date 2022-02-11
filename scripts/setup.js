@@ -9,7 +9,7 @@ window.onTokMessageReceived = function(tokMessage) {
 	var parsedTokMessages = JSON.parse(tokMessage);
 
 	parsedTokMessages.forEach(parsedTokMessage => {
-		if(window.useMovementAdaptor){ 
+		if(true){ 
 			var tokenMovementAdaptor = new TokenMovementAdaptor(parsedTokMessage);
 
 			//Check if token is paired already, if so move token to location on board
@@ -63,7 +63,7 @@ function moveTokenToLocation(tokenId, tokMessage) {
 	var tokenCenteredPositions = {x: positions.x - (actor._object.width/2), y: positions.y - (actor._object.height/2)};
 
 	console.log('move to', `${tokenCenteredPositions.x}, ${tokenCenteredPositions.y}`);
-	
+
 	actor._object.setPosition(tokenCenteredPositions.x, tokenCenteredPositions.y);
 	actor.data.update({
 		rotation: rotation
