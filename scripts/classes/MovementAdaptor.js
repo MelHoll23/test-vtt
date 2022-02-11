@@ -25,7 +25,7 @@ export default class TokenMovementAdaptor {
         //Move token (local vs pushing data)
         var actor = canvas.scene.tokens.get(this.tokenId);
 
-        var positions = calculateCanvasPosition(this.positionX, this.positionY);
+        var positions = this.calculateCanvasPosition(this.positionX, this.positionY);
         var rotation = ((this.angle + 3) * 60) % 360;
 
         var tokenCenteredPositions = {x: positions.x - (actor._object.width/2), y: positions.y - (actor._object.height/2)};
@@ -37,9 +37,9 @@ export default class TokenMovementAdaptor {
         actor._object.updateSource(); //Updates local vision with rotation (token not rotated)
 
         //Send movements to backend on occasion
-        throttleSaveMovement(actor, tokenCenteredPositions, rotation, false);
+        this.throttleSaveMovement(actor, tokenCenteredPositions, rotation, false);
         //Snap and save after not moving for a while
-        debouncedSaveMovement(actor, tokenCenteredPositions, rotation);
+        this.debouncedSaveMovement(actor, tokenCenteredPositions, rotation);
     }
 
     cleanupAndPairToken(){
@@ -74,7 +74,7 @@ export default class TokenMovementAdaptor {
     debouncedPairToken =  foundry.utils.debounce(this.pairToken, 500);
 
     pairToken() {
-        var positions = calculateCanvasPosition();
+        var positions = this.calculateCanvasPosition();
         //If not paired, if actor is selected and not paired, pair
         console.log("Trying to pair at ", positions.x, positions.y);
 
@@ -84,7 +84,7 @@ export default class TokenMovementAdaptor {
             if(tokenPosition.contains(positions.x, positions.y)) {
                 //Unpair if needed
                 if(Object.values(tokenMap).includes(token.data._id)) {
-                    removePairing(tokenMap, token.data._id);
+                    this.removePairing(tokenMap, token.data._id);
                 }
                 //Pair token
                 tokenMap[tokMessage.typeId] = token.data._id;
