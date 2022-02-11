@@ -35,7 +35,6 @@ window.onTokMessageReceived = function(tokMessage) {
 
 }
 
-
 function saveMovement(actor, positions, rotation, snap = true) { 
 	var snappedPosition = game.settings.get(MODULE_NAME, 'snapTokenToGrid') && snap ? 
 							canvas.grid.getSnappedPosition(positions.x, positions.y, 1) : 

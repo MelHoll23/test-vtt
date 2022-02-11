@@ -11,6 +11,9 @@ export default class TokenMovementAdaptor {
         this.typeId = tokMessage.typeId;
         
         this.tokenId = this.tokenMap[this.typeId];
+
+        this.debouncedSaveMovement = window.foundry.utils.debounce(this.saveMovement, 500);
+        this.throttleSaveMovement = throttle(this.saveMovement, 1000);
     }
 
     shouldMoveToken() {
@@ -111,8 +114,4 @@ export default class TokenMovementAdaptor {
                 rotation: rotation
             }, {animate: false});
     }
-
-    debouncedSaveMovement = window.foundry.utils.debounce(this.saveMovement, 500); 
-            
-    throttleSaveMovement = throttle(this.saveMovement, 1000);
 }
