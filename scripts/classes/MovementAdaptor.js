@@ -1,9 +1,6 @@
 import { MODULE_NAME } from "../config/settings.js";
 import { throttle } from "../config/util.js";
 
-var debouncedSaveMovement = window.foundry.utils.debounce(TokenMovementAdaptor.saveMovement, 500);
-var throttleSaveMovement = throttle(TokenMovementAdaptor.saveMovement, 1000);
-
 export default class TokenMovementAdaptor {
     constructor(tokMessage) {
         this.positionX = tokMessage.positionX;
@@ -115,3 +112,6 @@ export default class TokenMovementAdaptor {
             }, {animate: false});
     }
 }
+
+var debouncedSaveMovement = window.foundry.utils.debounce(TokenMovementAdaptor.saveMovement, 500);
+var throttleSaveMovement = throttle(TokenMovementAdaptor.saveMovement, 1000);
