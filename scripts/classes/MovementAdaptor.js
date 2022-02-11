@@ -78,17 +78,17 @@ export default class TokenMovementAdaptor {
         //If not paired, if actor is selected and not paired, pair
         console.log("Trying to pair at ", positions.x, positions.y);
 
-        canvas.tokens.ownedTokens.filter(owned => !Object.values(tokenMap).includes(owned.data._id)).forEach((token) => {
+        canvas.tokens.ownedTokens.filter(owned => !Object.values(this.tokenMap).includes(owned.data._id)).forEach((token) => {
             let tokenPosition = new PIXI.Rectangle(token.x, token.y, token.w, token.h);
 
             if(tokenPosition.contains(positions.x, positions.y)) {
                 //Unpair if needed
-                if(Object.values(tokenMap).includes(token.data._id)) {
-                    this.removePairing(tokenMap, token.data._id);
+                if(Object.values(this.tokenMap).includes(token.data._id)) {
+                    this.removePairing(this.tokenMap, token.data._id);
                 }
                 //Pair token
-                tokenMap[tokMessage.typeId] = token.data._id;
-                game.settings.set(MODULE_NAME, "tokenIdMap", tokenMap);
+                this.tokenMap[tokMessage.typeId] = token.data._id;
+                game.settings.set(MODULE_NAME, "tokenIdMap", this.tokenMap);
                 
                 ui.notifications.info(`Token '${token.data.name}' paired!`);
             }
