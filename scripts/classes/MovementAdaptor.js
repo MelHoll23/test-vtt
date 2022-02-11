@@ -71,7 +71,7 @@ export default class TokenMovementAdaptor {
         return {x: actualPositionX, y: actualPositionY}
     }
 
-    debouncedPairToken =  foundry.utils.debounce(pairToken, 500);
+    debouncedPairToken =  foundry.utils.debounce(this.pairToken, 500);
 
     pairToken() {
         var positions = calculateCanvasPosition();
@@ -107,7 +107,7 @@ export default class TokenMovementAdaptor {
             }, {animate: false});
     }
 
-    debouncedSaveMovement = foundry.utils.debounce(saveMovement, 500); 
+    debouncedSaveMovement = foundry.utils.debounce(this.saveMovement, 500); 
             
-    throttleSaveMovement = throttle(saveMovement, 1000);
+    throttleSaveMovement = throttle(this.saveMovement, 1000);
 }
