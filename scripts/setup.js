@@ -1,7 +1,7 @@
 import { registerHooks } from "./config/hooks.js";
 import TokenMovementAdaptor from "./classes/MovementAdaptor.js";
 import { throttle } from "./config/util.js"
-import MODULE_NAME from "./config/settings.js"
+import { MODULE_NAME } from "./config/settings.js"
 
 registerHooks();
 
