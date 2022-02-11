@@ -1,5 +1,38 @@
 const MODULE_NAME = 'gameboard-support';
 
+class MyTextureLoader extends TextureLoader {
+	async loadImageTexture(src) {
+		console.log("Override method", src);
+		const blob = await this._fetchResource(src);
+	
+		// Create the Image element
+		const img = new Image();
+		img.decoding = "async";
+		img.loading = "eager";
+	
+		// Wait for the image to load
+		return new Promise((resolve, reject) => {
+	
+		  // Create the texture on successful load
+		  img.onload = () => {
+			URL.revokeObjectURL(img.src);
+			img.height = img.naturalHeight;
+			img.width = img.naturalWidth;
+			const tex = PIXI.BaseTexture.from(img);
+			this.setCache(src, tex);
+			resolve(tex);
+		  };
+	
+		  // Handle errors for valid URLs due to CORS
+		  img.onerror = err => {
+			URL.revokeObjectURL(img.src);
+			reject(err);
+		  }
+		  img.src = URL.createObjectURL(blob);
+		});
+	  }
+}
+
 Hooks.once('init', () => {
 	console.log("Init Gameboard config settings");
 	console.log("isOnGameboard?", window.isOnGameboard);
@@ -38,6 +71,8 @@ Hooks.once('init', () => {
     //On Web, show warning for larger image sizes / downscale too large of images
     //On gameboard
     //change UI
+
+	TextureLoader.loader = new MyTextureLoader();
 });
 
 Hooks.once('setup', () => {
@@ -52,9 +87,39 @@ Hooks.once('setup', () => {
 			game.settings.set('touch-vtt', 'largeButtons', true);
 		} catch{}
 	}
+
+	// FilePicker._onUpload = async (ev) => {
+	// 	const form = ev.target["form"];
+	// 	const upload = form.upload.files[0];
+	// 	const name = upload.name.toLowerCase();
+	
+	// 	// Validate file extension
+	// 	if ( !this.extensions.some(ext => name.endsWith(ext)) ) {
+	// 	  ui.notifications.error(`Incorrect ${this.type} file extension. Supports ${this.extensions.join(" ")}.`);
+	// 	  return false;
+	// 	}
+
+	// 	if()
+	
+	// 	// Dispatch the request
+	// 	const target = form.target.value;
+	// 	const options = { bucket: form.bucket ? form.bucket.value : null };
+	// 	const response = await this.constructor.upload(this.activeSource, target, upload, options);
+	
+	// 	// Handle errors
+	// 	if ( response.error ) {
+	// 	  console.error(response.error);
+	// 	  return ui.notifications.error(response.error);
+	// 	}
+	
+	// 	// Flag the uploaded file as the new request
+	// 	this.request = response.path;
+	// 	return this.browse(target);
+	//   }
+	
 })
 
-function updateCanvasScale(){
+function updateCanvasScale() {
 	var squareSize = canvas.grid.w;
 	var multiSquareWidth = squareSize*game.settings.get(MODULE_NAME, 'squaresNumber');
 
