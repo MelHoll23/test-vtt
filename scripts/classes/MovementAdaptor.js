@@ -10,7 +10,7 @@ export default class TokenMovementAdaptor {
         this.tokenMap = game.settings.get(MODULE_NAME, 'tokenIdMap');
         this.typeId = tokMessage.typeId;
         
-        this.tokenId = this.tokenMap[parsedTokMessage.typeId];
+        this.tokenId = this.tokenMap[this.typeId];
     }
 
     shouldMoveToken(){
