@@ -1,7 +1,7 @@
 class GameboardTextureLoader extends TextureLoader {
     //Override
 	async loadImageTexture(src) {
-		console.log("Override method", src);
+		console.log("Gameboard | Override method", src);
 		const blob = await this._fetchResource(src);
 	
 		// Create the Image element
@@ -20,7 +20,8 @@ class GameboardTextureLoader extends TextureLoader {
 
             //Show warning if the image is too large
             if(img.height > 4096 || img.width > 4096){
-                ui.notifications.error(`Image ${src} is too large to be loaded on Gameboard.`, {permanent: true});
+                console.log("Gameboard | Show warning");
+                ui.notifications.error(`Image ${src} is too large to be loaded on Gameboard. Must be smaller than 4096x4096 px.`, {permanent: true});
             }
 
 			const tex = PIXI.BaseTexture.from(img);
@@ -30,6 +31,7 @@ class GameboardTextureLoader extends TextureLoader {
 	
 		  // Handle errors for valid URLs due to CORS
 		  img.onerror = err => {
+            console.log("Gameboard | Error");
 			URL.revokeObjectURL(img.src);
 			reject(err);
 		  }

@@ -28,7 +28,7 @@ export function registerHooks() {
     })
 
     Hooks.on("canvasInit", () => { 
-        console.log("Apply fog of war fix");
+        console.log("Gameboard | Apply fog of war fix");
         //Fix fog of war crash
         SightLayer.MAXIMUM_FOW_TEXTURE_SIZE = 4096 / 2;
     });

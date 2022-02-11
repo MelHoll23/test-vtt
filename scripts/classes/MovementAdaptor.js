@@ -30,7 +30,7 @@ export default class TokenMovementAdaptor {
 
         var tokenCenteredPositions = {x: positions.x - (actor._object.width/2), y: positions.y - (actor._object.height/2)};
         
-        console.log('move to', `${tokenCenteredPositions.x}, ${tokenCenteredPositions.y}`);
+        console.log('Gameboard | Move to', `${tokenCenteredPositions.x}, ${tokenCenteredPositions.y}`);
 
         actor._object.setPosition(tokenCenteredPositions.x, tokenCenteredPositions.y);
         actor.data.update({
@@ -78,7 +78,7 @@ export default class TokenMovementAdaptor {
     pairToken() {
         var positions = this.calculateCanvasPosition();
         //If not paired, if actor is selected and not paired, pair
-        console.log("Trying to pair at ", positions.x, positions.y);
+        console.log('Gameboard | Trying to pair at ', positions.x, positions.y);
 
         canvas.tokens.ownedTokens.filter(owned => !Object.values(this.tokenMap).includes(owned.data._id)).forEach((token) => {
             let tokenPosition = new PIXI.Rectangle(token.x, token.y, token.w, token.h);
@@ -102,8 +102,8 @@ export default class TokenMovementAdaptor {
                                 canvas.grid.getSnappedPosition(positions.x, positions.y, 1) : 
                                 positions;
 
-        if(snap) console.log('debouncedSave', `${snappedPosition.x}, ${snappedPosition.y}`);
-        if(!snap) console.log('throttleSave', `${snappedPosition.x}, ${snappedPosition.y}`)
+        if(snap) console.log('Gameboard | debouncedSave', `${snappedPosition.x}, ${snappedPosition.y}`);
+        if(!snap) console.log('Gameboard | throttleSave', `${snappedPosition.x}, ${snappedPosition.y}`)
                     
         actor.update({
                 x: snappedPosition.x, 

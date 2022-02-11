@@ -1,7 +1,7 @@
 export const MODULE_NAME = 'gameboard-support';
 
 export function registerSettings() {
-    console.log("Init Gameboard config settings");
+    console.log("Gameboard | Initialize Gameboard config settings");
 
     // Register module settings.
     game.settings.register(MODULE_NAME, 'tokenIdMap', {
