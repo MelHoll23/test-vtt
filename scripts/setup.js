@@ -40,7 +40,8 @@ function saveMovement(actor, positions, rotation, snap = true) {
 	var snappedPosition = game.settings.get(MODULE_NAME, 'snapTokenToGrid') && snap ? 
 							canvas.grid.getSnappedPosition(positions.x, positions.y, 1) : 
 							positions;
-				
+	if(snap) console.log('debouncedSave', `${snappedPosition.x}, ${snappedPosition.y}`);
+	if(!snap) console.log('throttleSave', `${snappedPosition.x}, ${snappedPosition.y}`)
 	actor.update({
 			x: snappedPosition.x, 
 			y: snappedPosition.y,
@@ -61,6 +62,8 @@ function moveTokenToLocation(tokenId, tokMessage) {
 
 	var tokenCenteredPositions = {x: positions.x - (actor._object.width/2), y: positions.y - (actor._object.height/2)};
 
+	console.log('move to', `${tokenCenteredPositions.x}, ${tokenCenteredPositions.y}`);
+	
 	actor._object.setPosition(tokenCenteredPositions.x, tokenCenteredPositions.y);
 	actor.data.update({
 		rotation: rotation
