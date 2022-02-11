@@ -1,5 +1,5 @@
-import { registerHooks } from "./config/hooks";
-import TokenMovementAdaptor from "./classes/MovementAdaptor";
+import { registerHooks } from "./config/hooks.js";
+import TokenMovementAdaptor from "./classes/MovementAdaptor.js";
 
 registerHooks();
 

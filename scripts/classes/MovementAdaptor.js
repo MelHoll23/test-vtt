@@ -1,5 +1,5 @@
-import { MODULE_NAME } from "../config/settings";
-import { throttle } from "./config/util"
+import { MODULE_NAME } from "../config/settings.js";
+import { throttle } from "./config/util.js"
 
 export default class TokenMovementAdaptor {
     constructor(tokMessage) {

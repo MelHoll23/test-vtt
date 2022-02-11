@@ -1,5 +1,5 @@
-import GameboardTextureLoader from './classes/GameboardTextureLoader'
-import { registerSettings } from './settings';
+import GameboardTextureLoader from './classes/GameboardTextureLoader.js'
+import { registerSettings } from './settings.js';
 
 export function registerHooks() {
     Hooks.once('init', () => {
