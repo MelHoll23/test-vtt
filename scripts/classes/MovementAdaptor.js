@@ -1,6 +1,9 @@
 import { MODULE_NAME } from "../config/settings.js";
 import { throttle } from "../config/util.js";
 
+var debouncedSaveMovement = window.foundry.utils.debounce(TokenMovementAdaptor.saveMovement, 500);
+var throttleSaveMovement = throttle(TokenMovementAdaptor.saveMovement, 1000);
+
 export default class TokenMovementAdaptor {
     constructor(tokMessage) {
         this.positionX = tokMessage.positionX;
@@ -11,9 +14,6 @@ export default class TokenMovementAdaptor {
         this.typeId = tokMessage.typeId;
         
         this.tokenId = this.tokenMap[this.typeId];
-
-        this.debouncedSaveMovement = window.foundry.utils.debounce(this.saveMovement, 500);
-        this.throttleSaveMovement = throttle(this.saveMovement, 1000);
     }
 
     shouldMoveToken() {
@@ -42,9 +42,9 @@ export default class TokenMovementAdaptor {
         actor._object.updateSource(); //Updates local vision with rotation (token not rotated)
 
         //Send movements to backend on occasion
-        this.throttleSaveMovement(actor, tokenCenteredPositions, rotation, false);
+        throttleSaveMovement(actor, tokenCenteredPositions, rotation, false);
         //Snap and save after not moving for a while
-        this.debouncedSaveMovement(actor, tokenCenteredPositions, rotation);
+        debouncedSaveMovement(actor, tokenCenteredPositions, rotation);
     }
 
     cleanupAndPairToken() {
@@ -100,7 +100,7 @@ export default class TokenMovementAdaptor {
         });
     }
 
-    saveMovement(actor, positions, rotation, snap = true) { 
+    static saveMovement(actor, positions, rotation, snap = true) { 
         var snappedPosition = game.settings.get(MODULE_NAME, 'snapTokenToGrid') && snap ? 
                                 canvas.grid.getSnappedPosition(positions.x, positions.y, 1) : 
                                 positions;
