@@ -65,8 +65,8 @@ export default class TokenMovementAdaptor {
         var distanceDiffX = this.positionX * canvasViewWidth;
         var distanceDiffY = this.positionY * canvasViewHeight;
 
-        actualPositionX = topX + distanceDiffX;
-        actualPositionY = topY + distanceDiffY;
+        var actualPositionX = topX + distanceDiffX;
+        var actualPositionY = topY + distanceDiffY;
 
         return {x: actualPositionX, y: actualPositionY}
     }
