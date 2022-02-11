@@ -86,8 +86,8 @@ function calculateCanvasPosition(positionX, positionY) {
 	var distanceDiffX = positionX * canvasViewWidth;
 	var distanceDiffY = positionY * canvasViewHeight;
 
-	actualPositionX = topX + distanceDiffX;
-	actualPositionY = topY + distanceDiffY;
+	var actualPositionX = topX + distanceDiffX;
+	var actualPositionY = topY + distanceDiffY;
 
 	return {x: actualPositionX, y: actualPositionY}
 }
