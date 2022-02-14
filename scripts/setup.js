@@ -19,4 +19,10 @@ window.onTokMessageReceived = function(tokMessage) {
 
 }
 
+window.exitToGameboard = function(){
+	if(Gameboard){
+		Gameboard.exit();
+	}
+}
+
 

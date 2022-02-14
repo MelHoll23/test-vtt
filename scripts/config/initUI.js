@@ -1,10 +1,10 @@
 const gameboardUIStyle = `
-li.scene-control{
+#controls ol .scene-control, #controls ol .control-tool{
     width: 60px;
     height: 60px;
 }
 
-li.scene-control .fas{
+li.scene-control .fas, li.control-tool .fas{
     line-height: 2.5;
 }
 
@@ -14,9 +14,16 @@ li.scene-control .fas{
 `;
 
 export function initGameboardUI() {
-    const style = document.createElement('style')
-    style.setAttribute('id', 'gameboard-styles')
-    document.head.append(style)
+    const style = $(`<style id='gameabord-styles' type='text/css'> ${gameboardUIStyle} </style>`)
+    style.appendTo("head");
 
-    style.innerHTML = gameboardUIStyle;
+    const exitButton = $(`<button data-action="setup">
+        <i class="fas fa-door-closed"></i> Exit to Gameboard
+    </button>`)
+    
+    exitButton.on('click', function(){
+        window.exitToGameboard()
+    });
+
+    $('#settings-access').append(exitButton);
 }

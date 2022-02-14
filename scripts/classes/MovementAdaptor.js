@@ -46,7 +46,7 @@ export default class TokenMovementAdaptor {
 
     cleanupAndPairToken() {
         this.removePairing();
-        this.debouncedPairToken();
+        this.throttlePairToken();
     }
 
     removePairing() {
@@ -73,7 +73,7 @@ export default class TokenMovementAdaptor {
         return {x: actualPositionX, y: actualPositionY}
     }
 
-    debouncedPairToken =  window.foundry.utils.debounce(this.pairToken, 500);
+    throttlePairToken =  throttle(this.pairToken, 500);
 
     pairToken() {
         var positions = this.calculateCanvasPosition();
