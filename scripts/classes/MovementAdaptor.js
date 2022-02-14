@@ -32,10 +32,10 @@ export default class TokenMovementAdaptor {
         
         console.log('Gameboard | Move to', `${tokenCenteredPositions.x}, ${tokenCenteredPositions.y}`);
 
-        actor._object.setPosition(tokenCenteredPositions.x, tokenCenteredPositions.y);
+        actor._object.setPosition(tokenCenteredPositions.x, tokenCenteredPositions.y, , {animate: false});
         actor.data.update({
             rotation: rotation
-        });
+        }, {animate: false});
         actor._object.updateSource(); //Updates local vision with rotation (token not rotated)
 
         //Send movements to backend on occasion
@@ -58,8 +58,8 @@ export default class TokenMovementAdaptor {
         var viewPosition = canvas.scene._viewPosition;
         var scale = viewPosition.scale;
 
-        var canvasViewWidth =  window.innerWidth / scale;
-        var canvasViewHeight =  window.innerHeight / scale;
+        var canvasViewWidth =  (window.isOnGameboard ? 1920 : window.innerWidth) / scale;
+	    var canvasViewHeight = (window.isOnGameboard ? 1920 : window.innerHeight) / scale;
 
         var topX = viewPosition.x - canvasViewWidth/2; 
         var topY = viewPosition.y - canvasViewHeight/2; 

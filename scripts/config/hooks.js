@@ -5,16 +5,12 @@ import { MODULE_NAME } from './settings.js';
 
 export function registerHooks() {
     Hooks.once('init', () => {
+        console.log("isOnGameboard", window.isOnGameboard);
         registerSettings();
         
         //Set custom loader
         //Currently shows a warning when loading images that are too large for gameboard.
         TextureLoader.loader = new GameboardTextureLoader();
-
-        //On gameboard
-        if(window.isOnGameboard) {
-            initGameboardUI();
-        }
     });
 
     Hooks.once('setup', () => {
@@ -33,10 +29,19 @@ export function registerHooks() {
         }
     })
 
+    Hooks.on("renderApplication", (app, html, data) => {
+        console.log(app, html, data);
+    })
+
     Hooks.on("canvasInit", () => { 
         console.log("Gameboard | Apply fog of war fix");
         //Fix fog of war crash
         SightLayer.MAXIMUM_FOW_TEXTURE_SIZE = 4096 / 2;
+
+        //On gameboard
+        if(window.isOnGameboard) {
+            initGameboardUI();
+        }
     });
 
     Hooks.on("canvasReady", (canvas) => { 

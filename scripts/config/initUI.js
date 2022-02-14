@@ -1,7 +1,8 @@
 const gameboardUIStyle = `
 #controls ol .scene-control, #controls ol .control-tool{
-    width: 60px;
-    height: 60px;
+    width: 85px;
+    height: 85px;
+    font-size: 35px;
 }
 
 li.scene-control .fas, li.control-tool .fas{
@@ -9,17 +10,33 @@ li.scene-control .fas, li.control-tool .fas{
 }
 
 #controls ol.main-controls {
-    width: 88px;
+    width: 125px;
 }
+
+#sidebar {
+    width: 500px;
+}
+
+#sidebar-tabs {
+    --sidebar-tab-height: 40px;
+    --sidebar-tab-width: 40px;
+}
+
+#sidebar-tabs > .item {
+    font-size: 24px;
+}
+
 `;
 
 export function initGameboardUI() {
-    const style = $(`<style id='gameabord-styles' type='text/css'> ${gameboardUIStyle} </style>`)
+    console.log('Gameboard | Initializing larger UI');
+
+    const style = $(`<style id='gameabord-styles' type='text/css'> ${gameboardUIStyle} </style>`);
     style.appendTo("head");
 
     const exitButton = $(`<button data-action="setup">
         <i class="fas fa-door-closed"></i> Exit to Gameboard
-    </button>`)
+    </button>`);
     
     exitButton.on('click', function(){
         window.exitToGameboard()
