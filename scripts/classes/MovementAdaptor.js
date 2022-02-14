@@ -32,7 +32,7 @@ export default class TokenMovementAdaptor {
         
         console.log('Gameboard | Move to', `${tokenCenteredPositions.x}, ${tokenCenteredPositions.y}`);
 
-        actor._object.setPosition(tokenCenteredPositions.x, tokenCenteredPositions.y, , {animate: false});
+        actor._object.setPosition(tokenCenteredPositions.x, tokenCenteredPositions.y, {animate: false});
         actor.data.update({
             rotation: rotation
         }, {animate: false});
