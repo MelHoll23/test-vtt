@@ -1,4 +1,5 @@
 import GameboardTextureLoader from '../classes/GameboardTextureLoader.js'
+import { initGameboardUI } from './initUI.js';
 import { registerSettings } from './settings.js';
 import { MODULE_NAME } from './settings.js';
 
@@ -11,7 +12,9 @@ export function registerHooks() {
         TextureLoader.loader = new GameboardTextureLoader();
 
         //On gameboard
-        //change UI
+        if(window.isOnGameboard) {
+            initGameboardUI();
+        }
     });
 
     Hooks.once('setup', () => {
@@ -24,7 +27,9 @@ export function registerHooks() {
                 game.settings.set('touch-vtt', 'gestureMode', 'split');
                 game.settings.set('touch-vtt', 'directionalArrows', false);
                 game.settings.set('touch-vtt', 'largeButtons', true);
-            } catch{}
+            } catch{
+                ui.notifications.error('TouctVTT add on not detected. TouchVTT module is required for Gameboard. https://foundryvtt.com/packages/touch-vtt', {permanent: true});
+            }
         }
     })
 
