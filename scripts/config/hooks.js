@@ -1,5 +1,5 @@
 import GameboardTextureLoader from '../classes/GameboardTextureLoader.js'
-import { initGameboardUI } from './initUI.js';
+import { initGameboardUI, SIDEBAR_WIDTH } from './initUI.js';
 import { registerSettings, SQUARES_NUMBER } from './settings.js';
 import { MODULE_NAME } from './settings.js';
 
@@ -24,13 +24,13 @@ export function registerHooks() {
                 game.settings.set('touch-vtt', 'directionalArrows', false);
                 game.settings.set('touch-vtt', 'largeButtons', true);
             } catch{
-                ui.notifications.error('TouctVTT add on not detected. TouchVTT module is required for Gameboard. https://foundryvtt.com/packages/touch-vtt', {permanent: true});
+                ui.notifications.error('TouchVTT add on not detected. TouchVTT module is required for Gameboard. https://foundryvtt.com/packages/touch-vtt', {permanent: true});
             }
         }
     })
 
-    Hooks.on("renderApplication", (app, html, data) => {
-        console.log(app, html, data);
+    Hooks.on('collapseSidebar', (sidebar, collapsed) => {
+        sidebar.element.width(collapsed ? 60: SIDEBAR_WIDTH);
     })
 
     Hooks.on("canvasInit", () => { 
@@ -38,7 +38,7 @@ export function registerHooks() {
         //Fix fog of war crash
         SightLayer.MAXIMUM_FOW_TEXTURE_SIZE = 4096 / 2;
 
-        //On gameboard
+        //Add gameboard specific styles/buttons
         if(window.isOnGameboard) {
             initGameboardUI();
         }
