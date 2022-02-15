@@ -1,6 +1,6 @@
 import { MODULE_NAME, TOKEN_MAP } from "./settings.js";
 
-export const SIDEBAR_WIDTH = 560;
+export const SIDEBAR_WIDTH = 700;
 const MACRO_HEIGHT = 80;
 
 const gameboardUIStyle = `
@@ -24,12 +24,12 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
 }
 
 #sidebar-tabs {
-    --sidebar-tab-height: 40px;
-    --sidebar-tab-width: 40px;
+    --sidebar-tab-height: 60px;
+    --sidebar-tab-width: 50px;
 }
 
 #sidebar-tabs > .item, #sidebar-tabs > .item i[class^=fa]{
-    font-size: 24px;
+    font-size: 36px;
     padding: 5px;
 }
 

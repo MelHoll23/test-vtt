@@ -30,7 +30,7 @@ export function registerHooks() {
     })
 
     Hooks.on('collapseSidebar', (sidebar, collapsed) => {
-        sidebar.element.width(collapsed ? 60: SIDEBAR_WIDTH);
+        sidebar.element.width(collapsed ? 80: SIDEBAR_WIDTH);
     })
 
     Hooks.on("canvasInit", () => { 
