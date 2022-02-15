@@ -81,7 +81,9 @@ export default class TokenMovementAdaptor {
         console.log('Gameboard | Trying to pair at ', positions.x, positions.y);
 
         canvas.tokens.ownedTokens.filter(owned => !Object.values(this.tokenMap).includes(owned.data._id)).forEach((token) => {
-            let tokenPosition = new PIXI.Rectangle(token.x, token.y, token.w, token.h);
+            let centeredPositions = {x: positions.x - (token.w/2), y: positions.y - (token.h/2)};
+        
+            let tokenPosition = new PIXI.Rectangle(centeredPositions.x, centeredPositions.y, token.w, token.h);
 
             if(tokenPosition.contains(positions.x, positions.y)) {
                 //Unpair if needed
