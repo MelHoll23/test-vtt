@@ -1,4 +1,4 @@
-import { MODULE_NAME } from "../config/settings.js";
+import { MODULE_NAME, SNAP_TO_GRID, TOKEN_MAP } from "../config/settings.js";
 import { throttle } from "../config/util.js";
 
 export default class TokenMovementAdaptor {
@@ -7,7 +7,7 @@ export default class TokenMovementAdaptor {
         this.positionY = tokMessage.positionY;
         this.angle = tokMessage.angle;
 
-        this.tokenMap = game.settings.get(MODULE_NAME, 'tokenIdMap');
+        this.tokenMap = game.settings.get(MODULE_NAME, TOKEN_MAP);
         this.typeId = tokMessage.typeId;
         
         this.tokenId = this.tokenMap[this.typeId];
@@ -58,8 +58,6 @@ export default class TokenMovementAdaptor {
         var viewPosition = canvas.scene._viewPosition;
         var scale = viewPosition.scale;
 
-        // var canvasViewWidth =  (window.isOnGameboard ? 1920 : window.innerWidth) / scale;
-	    // var canvasViewHeight = (window.isOnGameboard ? 1920 : window.innerHeight) / scale;
         var canvasViewWidth =  window.innerWidth / scale;
 	    var canvasViewHeight = window.innerHeight / scale;
 
@@ -92,7 +90,7 @@ export default class TokenMovementAdaptor {
                 }
                 //Pair token
                 this.tokenMap[tokMessage.typeId] = token.data._id;
-                game.settings.set(MODULE_NAME, "tokenIdMap", this.tokenMap);
+                game.settings.set(MODULE_NAME, TOKEN_MAP, this.tokenMap);
                 
                 ui.notifications.info(`Token '${token.data.name}' paired!`);
             }
@@ -100,7 +98,7 @@ export default class TokenMovementAdaptor {
     }
 
     static saveMovement(actor, positions, rotation, snap = true) { 
-        var snappedPosition = game.settings.get(MODULE_NAME, 'snapTokenToGrid') && snap ? 
+        var snappedPosition = game.settings.get(MODULE_NAME, SNAP_TO_GRID) && snap ? 
                                 canvas.grid.getSnappedPosition(positions.x, positions.y, 1) : 
                                 positions;
 
