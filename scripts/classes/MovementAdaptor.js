@@ -91,7 +91,7 @@ export default class TokenMovementAdaptor {
                     this.removePairing(this.tokenMap, token.data._id);
                 }
                 //Pair token
-                this.tokenMap[tokMessage.typeId] = token.data._id;
+                this.tokenMap[this.typeId] = token.data._id;
                 game.settings.set(MODULE_NAME, TOKEN_MAP, this.tokenMap);
                 
                 ui.notifications.info(`Token '${token.data.name}' paired!`);
