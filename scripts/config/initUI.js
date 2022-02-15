@@ -1,4 +1,4 @@
-import { MODULE_NAME, TOKEN_MAP } from "./settings";
+import { MODULE_NAME, TOKEN_MAP } from "./settings.js";
 
 const gameboardUIStyle = `
 #controls ol .scene-control, #controls ol .control-tool{
