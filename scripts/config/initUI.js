@@ -1,7 +1,6 @@
 import { MODULE_NAME, TOKEN_MAP } from "./settings.js";
 
 export const SIDEBAR_WIDTH = 700;
-const MACRO_HEIGHT = 80;
 
 const gameboardUIStyle = `
 #controls ol .scene-control, #controls ol .control-tool{
@@ -33,23 +32,10 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
     padding: 5px;
 }
 
-#hotbar .macro .macro-icon {
-    height: ${MACRO_HEIGHT - 2}px;
-    width: ${MACRO_HEIGHT - 2}px;
-}
-
-#hotbar .macro {
-    width: ${MACRO_HEIGHT}px;
-    height: ${MACRO_HEIGHT}px;
-}
-
-#hotbar #macro-list{
-    grid-template-columns: repeat(10, ${MACRO_HEIGHT}px);
-}
-
 #hotbar {
     width: 700px;
-    height: ${MACRO_HEIGHT}px;
+    height: 82px;
+    --macro-size: 80px;
 }
 
 `;

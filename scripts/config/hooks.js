@@ -30,7 +30,9 @@ export function registerHooks() {
     })
 
     Hooks.on('collapseSidebar', (sidebar, collapsed) => {
-        sidebar.element.width(collapsed ? 80: SIDEBAR_WIDTH);
+        if(window.isOnGameboard) {
+            sidebar.element.width(collapsed ? 80: SIDEBAR_WIDTH);
+        }
     })
 
     Hooks.on("canvasInit", () => { 
