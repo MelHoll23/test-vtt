@@ -1,3 +1,5 @@
+import { MODULE_NAME, TOKEN_MAP } from "./settings.js";
+
 const SIDEBAR_WIDTH = 700;
 
 const gameboardUIStyle = `
@@ -68,6 +70,7 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
 .window-app .window-header {
     font-size: 35px;
     flex: 0 0 40px;
+    padding-top: 5px;
 }
 
 .window-app .window-header a {
@@ -77,6 +80,15 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
 .window-app {
     min-width: 50vw !important;
     min-height: 50vw  !important;
+}
+
+.window-app .dialog {
+    min-width: 50vw !important;
+    min-height: 14vw  !important;
+}
+
+:root {
+    --form-field-height = 45px
 }
 
 `;

@@ -1,6 +1,8 @@
 import { registerHooks } from "./config/hooks.js";
 import TokenMovementAdaptor from "./classes/MovementAdaptor.js";
 
+window.gameboardModuleEnabled = true;
+
 registerHooks();
 
 window.onTokMessageReceived = function(tokMessage) {
