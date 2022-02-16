@@ -22,6 +22,10 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
     height: 50%;
 }
 
+#sidebar.collapsed #sidebar-tabs item{
+    display: none;
+}
+
 #sidebar-tabs {
     --sidebar-tab-height: 60px;
     --sidebar-tab-width: 50px;
@@ -36,6 +40,23 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
     width: 700px;
     height: 82px;
     --macro-size: 80px;
+}
+
+.dnd5e.sheet.actor .traits i.fas {
+    font-size: 24px;
+    padding: 5px;
+}
+.dnd5e.sheet .window-content {
+    font-size: 20px;
+}
+
+.window-app .window-header {
+    font-size: 20px;
+    flex: 0 0 30px;
+}
+
+.window-app .window-header a {
+    margin: 0 0 0 20px;
 }
 
 `;
