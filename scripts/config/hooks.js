@@ -1,5 +1,5 @@
 import GameboardTextureLoader from '../classes/GameboardTextureLoader.js'
-import { modifySettingsMenu, initGameboardUI, SIDEBAR_WIDTH } from './gameboardUI.js';
+import { modifySettingsMenu, initGameboardStyles, SIDEBAR_WIDTH } from './gameboardUI.js';
 import { registerSettings, SQUARES_NUMBER } from './settings.js';
 import { MODULE_NAME } from './settings.js';
 
@@ -41,7 +41,7 @@ export function registerHooks() {
             SightLayer.MAXIMUM_FOW_TEXTURE_SIZE = 4096 / 2;
 
             //Add gameboard specific styles/buttons
-            initGameboardUI();
+            initGameboardStyles();
         });
 
         Hooks.on("canvasReady", (canvas) => { 
