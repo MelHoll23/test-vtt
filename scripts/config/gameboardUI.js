@@ -66,8 +66,8 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
 }
 
 .window-app .window-header {
-    font-size: 20px;
-    flex: 0 0 30px;
+    font-size: 35px;
+    flex: 0 0 40px;
 }
 
 .window-app .window-header a {
@@ -75,8 +75,8 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
 }
 
 .window-app {
-    min-width: 50vw;
-    min-height: 50vw;
+    min-width: 50vw !important;
+    min-height: 50vw  !important;
 }
 
 `;
