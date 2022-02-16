@@ -10,14 +10,15 @@ export function registerHooks() {
         //Set custom loader
         //Currently shows a warning when loading images that are too large for gameboard.
         TextureLoader.loader = new GameboardTextureLoader();
+
+        if(window.isOnGameboard) {
+            //Add gameboard specific styles/buttons
+            initGameboardUI()
+        }
     });
 
-    console.log(Gameboard | window.isOnGameboard);
-    if(window.isOnGameboard) {
-        //Add gameboard specific styles/buttons
-        initGameboardUI()
-
-        Hooks.once('setup', () => {
+    Hooks.once('setup', () => {
+        if(window.isOnGameboard) {
             game.settings.set('core', 'fontSize', 9);
             game.settings.set('core', 'performanceMode', 'SETTINGS.PerformanceModeLow');
 
@@ -29,16 +30,19 @@ export function registerHooks() {
             } catch{
                 ui.notifications.error('TouchVTT add on not detected. TouchVTT module is required for Gameboard. https://foundryvtt.com/packages/touch-vtt', {permanent: true});
             }
-        })
+        }
+    })
 
-        Hooks.on("canvasInit", () => { 
+    Hooks.on("canvasInit", () => { 
+        if(window.isOnGameboard) {
             console.log("Gameboard | Apply fog of war fix");
             //Fix fog of war crash
             SightLayer.MAXIMUM_FOW_TEXTURE_SIZE = 4096 / 2;
+        }
+    });
 
-        });
-
-        Hooks.on("canvasReady", (canvas) => { 
+    Hooks.on("canvasReady", (canvas) => { 
+        if(window.isOnGameboard) {
             //Override to prevent other actions from scaling
             canvas.pan = ({x=null, y=null, scale=null, forceScale = false}={}) => {  
                 const constrained = canvas._constrainView({x, y, scale});
@@ -63,8 +67,9 @@ export function registerHooks() {
             }
 
             updateCanvasScale();
-        });
-    }
+        }
+    });
+
 
     var updateCanvasScale = function () {
         var squareSize = canvas.grid.w;
