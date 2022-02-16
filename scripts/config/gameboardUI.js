@@ -1,6 +1,4 @@
-import { MODULE_NAME, TOKEN_MAP } from "./settings.js";
-
-export const SIDEBAR_WIDTH = 700;
+const SIDEBAR_WIDTH = 700;
 
 const gameboardUIStyle = `
 #controls ol .scene-control, #controls ol .control-tool{
@@ -22,8 +20,21 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
     height: 50%;
 }
 
-#sidebar.collapsed #sidebar-tabs item{
+#sidebar .collapse .fas{
+    font-size: 40px;
+    padding-top: 21px;
+}
+
+#sidebar.collapsed #sidebar-tabs .item, #sidebar .action-buttons{
     display: none;
+}
+
+.header-search {
+    font-size: 35px;
+}
+
+.header-search input{
+    height: 40px;
 }
 
 #sidebar-tabs {
@@ -34,6 +45,10 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
 #sidebar-tabs > .item, #sidebar-tabs > .item i[class^=fa]{
     font-size: 36px;
     padding: 5px;
+}
+
+#settings button {
+    line-height: 45px;
 }
 
 #hotbar {
@@ -61,7 +76,28 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
 
 `;
 
-export function initGameboardStyles() {
+export function initGameboardUI() {
+    initStyleHooks();
+    initGameboardStyles();
+}
+
+function initStyleHooks() {
+    Hooks.on('collapseSidebar', (sidebar, collapsed) => {
+        sidebar.element.width(collapsed ? 80: SIDEBAR_WIDTH);
+    })
+
+    Hooks.on('renderSettings', (settings, context, user) => { 
+        modifySettingsMenu(context);
+    })
+
+    Hooks.on('renderChatLog ', (chat, context) => {
+        //Make chat readonly
+        $('#chat-controls', context).remove();
+        $('#chat-form', context).remove();
+    })
+}
+
+function initGameboardStyles() {
     console.log('Gameboard | Initializing UI updates');
 
     //Add gameboard specific styles
@@ -69,7 +105,7 @@ export function initGameboardStyles() {
     style.appendTo("head");
 }
 
-export function modifySettingsMenu(context = window) {
+function modifySettingsMenu(context = window) {
     //Add button to exit out of the app
     const exitButton = $(`<button><i class="fas fa-door-closed"></i> Exit</button>`);
         exitButton.on('click', function(){
@@ -93,8 +129,4 @@ export function modifySettingsMenu(context = window) {
         });
     });
     $('#settings-game', context).append(removePairingButton);
-
-    //Make chat readonly
-    $('#chat-controls', context).remove();
-    $('#chat-form', context).remove();
 }

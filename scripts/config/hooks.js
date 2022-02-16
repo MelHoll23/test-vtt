@@ -1,5 +1,5 @@
 import GameboardTextureLoader from '../classes/GameboardTextureLoader.js'
-import { modifySettingsMenu, initGameboardStyles, SIDEBAR_WIDTH } from './gameboardUI.js';
+import { initGameboardUI } from './gameboardUI.js';
 import { registerSettings, SQUARES_NUMBER } from './settings.js';
 import { MODULE_NAME } from './settings.js';
 
@@ -13,6 +13,9 @@ export function registerHooks() {
     });
 
     if(window.isOnGameboard) {
+        //Add gameboard specific styles/buttons
+        initGameboardUI()
+
         Hooks.once('setup', () => {
             game.settings.set('core', 'fontSize', 9);
             game.settings.set('core', 'performanceMode', 'SETTINGS.PerformanceModeLow');
@@ -27,21 +30,11 @@ export function registerHooks() {
             }
         })
 
-        Hooks.on('collapseSidebar', (sidebar, collapsed) => {
-            sidebar.element.width(collapsed ? 80: SIDEBAR_WIDTH);
-        })
-
-        Hooks.on('renderSettings', (settings, context, user) => { 
-            modifySettingsMenu(context);
-        })
-
         Hooks.on("canvasInit", () => { 
             console.log("Gameboard | Apply fog of war fix");
             //Fix fog of war crash
             SightLayer.MAXIMUM_FOW_TEXTURE_SIZE = 4096 / 2;
 
-            //Add gameboard specific styles/buttons
-            initGameboardStyles();
         });
 
         Hooks.on("canvasReady", (canvas) => { 
