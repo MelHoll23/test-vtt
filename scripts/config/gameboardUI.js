@@ -82,7 +82,7 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
     min-height: 50vw  !important;
 }
 
-.window-app .dialog {
+.window-app.dialog {
     min-width: 50vw !important;
     min-height: 14vw  !important;
 }
