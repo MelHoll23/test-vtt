@@ -82,7 +82,7 @@ export default class TokenMovementAdaptor {
 
         canvas.tokens.ownedTokens.filter(owned => !Object.values(this.tokenMap).includes(owned.data._id)).forEach((token) => {
             let tokenPosition = new PIXI.Rectangle(token.x, token.y, token.w, token.h);
-            
+
             if(tokenPosition.contains(positions.x, positions.y)) {
                 //Unpair if needed
                 if(Object.values(this.tokenMap).includes(token.data._id)) {
@@ -101,9 +101,6 @@ export default class TokenMovementAdaptor {
         var snappedPosition = game.settings.get(MODULE_NAME, SNAP_TO_GRID) && snap ? 
                                 canvas.grid.getSnappedPosition(positions.x, positions.y, 1) : 
                                 positions;
-
-        if(snap) console.log('Gameboard | debouncedSave', `${snappedPosition.x}, ${snappedPosition.y}`);
-        if(!snap) console.log('Gameboard | throttleSave', `${snappedPosition.x}, ${snappedPosition.y}`)
                     
         actor.update({
                 x: snappedPosition.x, 

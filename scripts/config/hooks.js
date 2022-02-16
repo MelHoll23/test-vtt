@@ -1,11 +1,10 @@
 import GameboardTextureLoader from '../classes/GameboardTextureLoader.js'
-import { initGameboardUI, SIDEBAR_WIDTH } from './initUI.js';
+import { modifySettingsMenu, initGameboardUI, SIDEBAR_WIDTH } from './gameboardUI.js';
 import { registerSettings, SQUARES_NUMBER } from './settings.js';
 import { MODULE_NAME } from './settings.js';
 
 export function registerHooks() {
     Hooks.once('init', () => {
-        console.log("isOnGameboard", window.isOnGameboard);
         registerSettings();
         
         //Set custom loader
@@ -13,8 +12,8 @@ export function registerHooks() {
         TextureLoader.loader = new GameboardTextureLoader();
     });
 
-    Hooks.once('setup', () => {
-        if(window.isOnGameboard) {
+    if(window.isOnGameboard) {
+        Hooks.once('setup', () => {
             game.settings.set('core', 'fontSize', 9);
             game.settings.set('core', 'performanceMode', 'SETTINGS.PerformanceModeLow');
 
@@ -26,28 +25,26 @@ export function registerHooks() {
             } catch{
                 ui.notifications.error('TouchVTT add on not detected. TouchVTT module is required for Gameboard. https://foundryvtt.com/packages/touch-vtt', {permanent: true});
             }
-        }
-    })
+        })
 
-    Hooks.on('collapseSidebar', (sidebar, collapsed) => {
-        if(window.isOnGameboard) {
+        Hooks.on('collapseSidebar', (sidebar, collapsed) => {
             sidebar.element.width(collapsed ? 80: SIDEBAR_WIDTH);
-        }
-    })
+        })
 
-    Hooks.on("canvasInit", () => { 
-        console.log("Gameboard | Apply fog of war fix");
-        //Fix fog of war crash
-        SightLayer.MAXIMUM_FOW_TEXTURE_SIZE = 4096 / 2;
+        Hooks.on('renderSettings', (settings, context, user) => { 
+            modifySettingsMenu(context);
+        })
 
-        //Add gameboard specific styles/buttons
-        if(window.isOnGameboard) {
+        Hooks.on("canvasInit", () => { 
+            console.log("Gameboard | Apply fog of war fix");
+            //Fix fog of war crash
+            SightLayer.MAXIMUM_FOW_TEXTURE_SIZE = 4096 / 2;
+
+            //Add gameboard specific styles/buttons
             initGameboardUI();
-        }
-    });
+        });
 
-    Hooks.on("canvasReady", (canvas) => { 
-        if(window.isOnGameboard) {
+        Hooks.on("canvasReady", (canvas) => { 
             //Override to prevent other actions from scaling
             canvas.pan = ({x=null, y=null, scale=null, forceScale = false}={}) => {  
                 const constrained = canvas._constrainView({x, y, scale});
@@ -72,8 +69,8 @@ export function registerHooks() {
             }
 
             updateCanvasScale();
-        }
-    });
+        });
+    }
 
     var updateCanvasScale = function () {
         var squareSize = canvas.grid.w;
