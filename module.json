@@ -6,6 +6,11 @@
     "version": "1.0.0",
     "minimumCoreVersion": "9.0.0",
     "compatibleCoreVersion": "9.0.0",
+    "dependencies": [
+      {
+        "name": "touch-vtt"
+      }
+    ],  
     "esmodules": ["scripts/setup.js"],
     "url": "https://github.com/MelHoll23/test-vtt",
     "manifest": "https://github.com/MelHoll23/test-vtt/main/module.json",

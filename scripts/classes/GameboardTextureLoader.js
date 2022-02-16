@@ -1,7 +1,7 @@
 class GameboardTextureLoader extends TextureLoader {
     //Override
 	async loadImageTexture(src) {
-		console.log("Gameboard | Override method", src);
+		//console.log("Gameboard | Override method", src);
 		const blob = await this._fetchResource(src);
 	
 		// Create the Image element
@@ -11,9 +11,11 @@ class GameboardTextureLoader extends TextureLoader {
 	
 		// Wait for the image to load
 		return new Promise((resolve, reject) => {
+           console.log("Gameboard | Loading image", src);
 	
 		  // Create the texture on successful load
 		  img.onload = () => {
+            console.log("Gameboard | Image onload", src);
 			URL.revokeObjectURL(img.src);
 			img.height = img.naturalHeight;
 			img.width = img.naturalWidth;
