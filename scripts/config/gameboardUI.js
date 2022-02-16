@@ -90,7 +90,7 @@ function initStyleHooks() {
         modifySettingsMenu(context);
     })
 
-    Hooks.on('renderChatLog ', (chat, context) => {
+    Hooks.on('renderChatLog', (chat, context) => {
         //Make chat readonly
         $('#chat-controls', context).remove();
         $('#chat-form', context).remove();
