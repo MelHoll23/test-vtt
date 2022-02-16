@@ -74,6 +74,11 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
     margin: 0 0 0 20px;
 }
 
+.window-app {
+    min-width: 50vw;
+    min-height: 50vw;
+}
+
 `;
 
 export function initGameboardUI() {

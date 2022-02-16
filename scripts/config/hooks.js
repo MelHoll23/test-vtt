@@ -12,6 +12,7 @@ export function registerHooks() {
         TextureLoader.loader = new GameboardTextureLoader();
     });
 
+    console.log(Gameboard | window.isOnGameboard);
     if(window.isOnGameboard) {
         //Add gameboard specific styles/buttons
         initGameboardUI()
