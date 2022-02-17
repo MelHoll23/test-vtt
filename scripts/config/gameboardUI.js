@@ -22,12 +22,15 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
     height: 50%;
 }
 
-#sidebar .collapse .fas{
+#sidebar .collapse .fas {
     font-size: 40px;
     padding-top: 21px;
 }
 
-#sidebar.collapsed #sidebar-tabs .item, #sidebar .action-buttons{
+#sidebar.collapsed #sidebar-tabs .item, 
+#sidebar .action-buttons, 
+#sidebar a.create-document, 
+#sidebar a.create-folder {
     display: none;
 }
 
@@ -44,7 +47,7 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
     --sidebar-tab-width: 50px;
 }
 
-#sidebar-tabs > .item, #sidebar-tabs > .item i[class^=fa]{
+#sidebar-tabs > .item, #sidebar-tabs > .item i[class^=fa] {
     font-size: 36px;
     padding: 5px;
 }
@@ -85,6 +88,10 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
 .window-app.dialog {
     min-width: 50vw !important;
     min-height: 14vw  !important;
+}
+
+li.folder > .folder-header {
+    padding: 20px 6px;
 }
 
 :root {

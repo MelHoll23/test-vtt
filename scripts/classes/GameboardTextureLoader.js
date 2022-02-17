@@ -15,16 +15,17 @@ class GameboardTextureLoader extends TextureLoader {
 	
 		  // Create the texture on successful load
 		  img.onload = () => {
-            console.log("Gameboard | Image onload", src);
-			URL.revokeObjectURL(img.src);
-			img.height = img.naturalHeight;
-			img.width = img.naturalWidth;
-
+            console.log("Gameboard | Image onload", src, img.naturalHeight, img.naturalWidth);
+            
             //Show warning if the image is too large
-            if(img.height > 4096 || img.width > 4096){
+            if(img.naturalHeight > 4096 || img.naturalWidth > 4096){
                 console.log("Gameboard | Show warning");
                 ui.notifications.error(`Image ${src} is too large to be loaded on Gameboard. Must be smaller than 4096x4096 px.`, {permanent: true});
             }
+
+			URL.revokeObjectURL(img.src);
+			img.height = img.naturalHeight;
+			img.width = img.naturalWidth;
 
 			const tex = PIXI.BaseTexture.from(img);
 			this.setCache(src, tex);
