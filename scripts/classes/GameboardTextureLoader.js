@@ -15,7 +15,13 @@ class GameboardTextureLoader extends TextureLoader {
 	
 		  // Create the texture on successful load
 		  img.onload = () => {
-            console.log("Gameboard | Image onload", src, img.naturalHeight, img.naturalWidth);
+            console.log("Gameboard | Image onload", 
+                src, 
+                img.naturalHeight, 
+                img.naturalWidth, 
+                img.height, 
+                img.width, 
+            );
             
             //Show warning if the image is too large
             if(img.naturalHeight > 4096 || img.naturalWidth > 4096){
