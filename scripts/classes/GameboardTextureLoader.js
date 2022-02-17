@@ -34,6 +34,12 @@ class GameboardTextureLoader extends TextureLoader {
 			img.width = img.naturalWidth;
 
 			const tex = PIXI.BaseTexture.from(img);
+            console.log("Gameboard | texture size", 
+                src,
+                tex.height, 
+                tex.width,
+                tex.valid
+            );
 			this.setCache(src, tex);
 			resolve(tex);
 		  };
