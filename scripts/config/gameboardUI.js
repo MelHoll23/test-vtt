@@ -99,6 +99,17 @@ li.folder > .folder-header {
     --sidebar-item-height: 80px;
 }
 
+#playlists h4 {
+    height: 22px;
+}
+
+#playlists .global-control .playlist-header {
+    padding: 20px 6px;
+}
+
+#playlists #global-volume li.sound {
+    padding: 10px 0px;
+}
 `;
 
 export function initGameboardUI() {

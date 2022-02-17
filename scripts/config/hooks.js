@@ -22,7 +22,6 @@ export function registerHooks() {
             game.settings.set('core', 'fontSize', 9);
             game.settings.set('core', 'performanceMode', 'SETTINGS.PerformanceModeLow');
 
-            //Don't throw any errors if they don't have touch-vtt
             try {
                 game.settings.set('touch-vtt', 'gestureMode', 'split');
                 game.settings.set('touch-vtt', 'directionalArrows', false);
@@ -31,10 +30,6 @@ export function registerHooks() {
                 ui.notifications.error('TouchVTT add on not detected. TouchVTT module is required for Gameboard. https://foundryvtt.com/packages/touch-vtt', {permanent: true});
             }
         }
-    })
-
-    Hooks.on('error', (location, err, data) => {
-        console.log('Gameboard | In Error hook', location, err, data);
     })
 
     Hooks.on('targetToken', (user, token, targets) => {
