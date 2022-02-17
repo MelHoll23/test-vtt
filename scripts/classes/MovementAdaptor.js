@@ -24,6 +24,7 @@ export default class TokenMovementAdaptor {
     moveTokenToLocation() {
         //Move token (local vs pushing data)
         var actor = canvas.scene.tokens.get(this.tokenId);
+        actor._object.control({releaseOthers: false});
 
         var positions = this.calculateCanvasPosition(this.positionX, this.positionY);
         var rotation = ((this.angle + 3) * 60) % 360;
