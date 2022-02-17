@@ -88,7 +88,8 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
 }
 
 :root {
-    --form-field-height = 45px
+    --form-field-height: 45px;
+    --sidebar-item-height: 80px;
 }
 
 `;

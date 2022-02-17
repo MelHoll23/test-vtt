@@ -33,15 +33,31 @@ export function registerHooks() {
         }
     })
 
-    Hooks.on("canvasInit", () => { 
+    Hooks.on('error', (location, err, data) => {
+        console.log('Gameboard | In Error hook', location, err, data);
+    })
+
+    Hooks.on('targetToken', (user, token, targets) => {
+        console.log('Gameboard | Targeting token', user, token, targets);
+    })
+
+    Hooks.on('canvasConfig', (canvasConfig) => {
+        console.log('Gameboard | canvasConfig', canvasConfig);
+    })
+
+    Hooks.on('controlToken', (token, controlled) => {
+        console.log('Gameboard | token control', token, controlled);
+    })
+
+    Hooks.on('canvasInit', () => { 
         if(window.isOnGameboard) {
-            console.log("Gameboard | Apply fog of war fix");
+            console.log('Gameboard | Apply fog of war fix');
             //Fix fog of war crash
             SightLayer.MAXIMUM_FOW_TEXTURE_SIZE = 4096 / 2;
         }
     });
 
-    Hooks.on("canvasReady", (canvas) => { 
+    Hooks.on('canvasReady', (canvas) => { 
         if(window.isOnGameboard) {
             //Override to prevent other actions from scaling
             canvas.pan = ({x=null, y=null, scale=null, forceScale = false}={}) => {  
@@ -60,7 +76,7 @@ export function registerHooks() {
                 // Update the scene tracked position
                 canvas.scene._viewPosition = constrained;
             
-                Hooks.callAll("canvasPan", canvas, constrained);
+                Hooks.callAll('canvasPan', canvas, constrained);
             
                 // Align the HUD
                 canvas.hud.align();
