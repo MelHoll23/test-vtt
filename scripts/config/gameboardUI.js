@@ -1,6 +1,6 @@
 import { MODULE_NAME, TOKEN_MAP } from "./settings.js";
 
-const SIDEBAR_WIDTH = 850;
+const SIDEBAR_WIDTH = 970;
 const OUTER_MARGIN = 50;
 const BUTTON_HEIGHT = 80;
 
@@ -77,11 +77,11 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
 }
 
 #navigation .nav-item {
-    line-height: 55px;
-    padding: 15px 8px;
-    max-width: 280px;
+    line-height: 40px;
+    padding: 20px 10px 20px 35px;
+    max-width: 400px;
     height: ${BUTTON_HEIGHT}px;
-    text-overflow: ellipse;
+    text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
 }
@@ -90,6 +90,12 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
     flex: 0 0 ${BUTTON_HEIGHT}px;
     height: ${BUTTON_HEIGHT}px;
     font-size: 36px;
+    padding: 20px;
+}
+
+#navigation #scene-list .scene ul.scene-players {
+    top: 30px;
+    left: 10px;
 }
 `
 
@@ -111,7 +117,7 @@ const sidebarStyles = `
 
 #sidebar-tabs {
     --sidebar-tab-height: ${BUTTON_HEIGHT}px;
-    --sidebar-tab-width: 70px;
+    --sidebar-tab-width: ${BUTTON_HEIGHT}px;
 }
 
 #sidebar-tabs > .item, #sidebar-tabs > .item i[class^=fa] {
