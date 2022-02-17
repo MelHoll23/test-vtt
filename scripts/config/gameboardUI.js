@@ -1,8 +1,54 @@
 import { MODULE_NAME, TOKEN_MAP } from "./settings.js";
 
-const SIDEBAR_WIDTH = 700;
+const SIDEBAR_WIDTH = 850;
+const OUTER_MARGIN = 50;
 
-const gameboardUIStyle = `
+const generalUIStyles = `
+:root {
+    --form-field-height: 45px;
+    --sidebar-item-height: 80px;
+}
+
+#players, 
+#logo,
+#sidebar.collapsed #sidebar-tabs .item, 
+#sidebar .action-buttons, 
+#sidebar a.create-document, 
+#sidebar a.create-folder, 
+.window-header a[class^="header-button configure-"], 
+.form-group.picker, 
+#hotbar .macro-directory {
+    display: none;
+}
+
+#settings button {
+    line-height: 45px;
+}
+
+#hotbar {
+    height: 82px;
+    --macro-size: 80px;
+    position: absolute;
+    margin: ${OUTER_MARGIN}px;
+    left: 0;
+    bottom: 0;
+}
+
+#hotbar .bar-controls {
+    flex: 0 0 60px;
+}
+
+#hotbar #hotbar-directory-controls a {
+    line-height: 80px;
+    font-size: 40px;
+}
+`;
+
+const leftControlStyles = `
+#controls {
+    margin: 80px ${OUTER_MARGIN}px;
+}
+
 #controls ol .scene-control, #controls ol .control-tool{
     width: 85px;
     height: 85px;
@@ -15,11 +61,26 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
 
 #controls ol.main-controls {
     width: 125px;
+    padding-left: 0;
 }
 
+#navigation {
+    margin: ${OUTER_MARGIN}px;
+    position: absolute;
+    left: 0;
+}
+
+#navigation .nav-item {
+    line-height: 50px;
+    padding: 10px 8px;
+}
+`
+
+const sidebarStyles = `
 #sidebar {
     width: ${SIDEBAR_WIDTH}px;
     height: 50%;
+    margin: ${OUTER_MARGIN}px;
 }
 
 #sidebar .collapse .fas {
@@ -27,24 +88,9 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
     padding-top: 21px;
 }
 
-#sidebar.collapsed #sidebar-tabs .item, 
-#sidebar .action-buttons, 
-#sidebar a.create-document, 
-#sidebar a.create-folder {
-    display: none;
-}
-
-.header-search {
-    font-size: 35px;
-}
-
-.header-search input{
-    height: 40px;
-}
-
 #sidebar-tabs {
-    --sidebar-tab-height: 60px;
-    --sidebar-tab-width: 50px;
+    --sidebar-tab-height: 80px;
+    --sidebar-tab-width: 70px;
 }
 
 #sidebar-tabs > .item, #sidebar-tabs > .item i[class^=fa] {
@@ -52,51 +98,17 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
     padding: 5px;
 }
 
-#settings button {
-    line-height: 45px;
+.header-search {
+    font-size: 50px;
 }
 
-#hotbar {
-    width: 700px;
-    height: 82px;
-    --macro-size: 80px;
+.header-search input{
+    height: 60px;
 }
 
-.dnd5e.sheet.actor .traits i.fas {
-    font-size: 24px;
-    padding: 5px;
-}
-.dnd5e.sheet .window-content {
-    font-size: 20px;
-}
-
-.window-app .window-header {
-    font-size: 35px;
-    flex: 0 0 40px;
-    padding-top: 5px;
-}
-
-.window-app .window-header a {
-    margin: 0 0 0 20px;
-}
-
-.window-app {
-    min-width: 50vw !important;
-    min-height: 50vw  !important;
-}
-
-.window-app.dialog {
-    min-width: 50vw !important;
-    min-height: 14vw  !important;
-}
 
 li.folder > .folder-header {
     padding: 20px 6px;
-}
-
-:root {
-    --form-field-height: 45px;
-    --sidebar-item-height: 80px;
 }
 
 #playlists h4 {
@@ -110,7 +122,54 @@ li.folder > .folder-header {
 #playlists #global-volume li.sound {
     padding: 10px 0px;
 }
+
+#compendium li.compendium-pack{
+    line-height: 40px
+}
+
+.directory .directory-list .directory-item h3, 
+.directory .directory-list .directory-item h4 {
+    font-size, 36px;
+}
 `;
+
+const windowStyles = `
+.window-app .window-header {
+    font-size: 35px;
+    flex: 0 0 60px;
+    padding-top: 10px;
+}
+
+.window-app .window-header a.header-button {
+    margin-left: 20px;
+}
+
+.window-app .window-header .window-title {
+    padding-top: 5px;
+}
+
+.window-app {
+    min-width: 50vw !important;
+    min-height: 50vw  !important;
+}
+
+.window-app.dialog {
+    min-width: 50vw !important;
+    min-height: 14vw  !important;
+}
+`;
+
+const characterSheetStyles = `
+.dnd5e.sheet.actor .traits i.fas {
+    font-size: 24px;
+    padding: 5px;
+}
+.dnd5e.sheet .window-content {
+    font-size: 20px;
+}
+`;
+
+const gameboardUIStyle = generalUIStyles + leftControlStyles + sidebarStyles + windowStyles + characterSheetStyles;
 
 export function initGameboardUI() {
     initStyleHooks();
@@ -118,6 +177,14 @@ export function initGameboardUI() {
 }
 
 function initStyleHooks() {
+    Hooks.on('collapseSceneNavigation', (scene, collapsed) => {
+        if(collapsed) { 
+            $('#controls').slideUp(200);
+        } else {
+            $('#controls').slideDown(200);
+        }
+    })
+
     Hooks.on('collapseSidebar', (sidebar, collapsed) => {
         sidebar.element.width(collapsed ? 80: SIDEBAR_WIDTH);
     })

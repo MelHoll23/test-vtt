@@ -108,6 +108,7 @@ export default class TokenMovementAdaptor {
                 y: snappedPosition.y,
                 rotation: rotation
             }, {animate: false});
+        actor._object.rotate(rotation);
     }
 }
 
