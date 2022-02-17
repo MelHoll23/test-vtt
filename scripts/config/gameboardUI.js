@@ -2,11 +2,12 @@ import { MODULE_NAME, TOKEN_MAP } from "./settings.js";
 
 const SIDEBAR_WIDTH = 850;
 const OUTER_MARGIN = 50;
+const BUTTON_HEIGHT = 80;
 
 const generalUIStyles = `
 :root {
     --form-field-height: 45px;
-    --sidebar-item-height: 80px;
+    --sidebar-item-height: ${BUTTON_HEIGHT}px;
 }
 
 #players, 
@@ -17,7 +18,7 @@ const generalUIStyles = `
 #sidebar a.create-folder, 
 .window-header a[class^="header-button configure-"], 
 .form-group.picker, 
-#hotbar .macro-directory {
+#macro-directory {
     display: none;
 }
 
@@ -26,8 +27,8 @@ const generalUIStyles = `
 }
 
 #hotbar {
-    height: 82px;
-    --macro-size: 80px;
+    height: ${BUTTON_HEIGHT + 2}px;
+    --macro-size: ${BUTTON_HEIGHT}px;
     position: absolute;
     margin: ${OUTER_MARGIN}px;
     left: 0;
@@ -35,18 +36,18 @@ const generalUIStyles = `
 }
 
 #hotbar .bar-controls {
-    flex: 0 0 60px;
+    flex: 0 0 ${BUTTON_HEIGHT}px;
 }
 
 #hotbar #hotbar-directory-controls a {
-    line-height: 80px;
+    line-height: ${BUTTON_HEIGHT}px;
     font-size: 40px;
 }
 `;
 
 const leftControlStyles = `
 #controls {
-    margin: 80px ${OUTER_MARGIN}px;
+    margin: 130px ${OUTER_MARGIN}px;
 }
 
 #controls ol .scene-control, #controls ol .control-tool{
@@ -71,8 +72,19 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
 }
 
 #navigation .nav-item {
-    line-height: 50px;
-    padding: 10px 8px;
+    line-height: 60px;
+    padding: 15px 2px;
+    max-width: 290px;
+    height: ${BUTTON_HEIGHT}px
+    text-overflow: ellipse;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+#navigation #nav-toggle {
+    flex: 0 0 ${BUTTON_HEIGHT}px;
+    height: ${BUTTON_HEIGHT}px;
+    font-size: 36px;
 }
 `
 
@@ -83,14 +95,18 @@ const sidebarStyles = `
     margin: ${OUTER_MARGIN}px;
 }
 
+#sidebar .collapse {
+    height: ${BUTTON_HEIGHT}px;
+}
+
 #sidebar .collapse .fas {
     font-size: 40px;
     padding-top: 21px;
 }
 
 #sidebar-tabs {
-    --sidebar-tab-height: 80px;
-    --sidebar-tab-width: 70px;
+    --sidebar-tab-height: ${BUTTON_HEIGHT}px;
+    --sidebar-tab-width: ${BUTTON_HEIGHT}px;
 }
 
 #sidebar-tabs > .item, #sidebar-tabs > .item i[class^=fa] {
@@ -179,14 +195,14 @@ export function initGameboardUI() {
 function initStyleHooks() {
     Hooks.on('collapseSceneNavigation', (scene, collapsed) => {
         if(collapsed) { 
-            $('#controls').slideUp(200);
+            $('#controls').slideUp();
         } else {
-            $('#controls').slideDown(200);
+            $('#controls').slideDown();
         }
     })
 
     Hooks.on('collapseSidebar', (sidebar, collapsed) => {
-        sidebar.element.width(collapsed ? 80: SIDEBAR_WIDTH);
+        sidebar.element.width(collapsed ?  BUTTON_HEIGHT : SIDEBAR_WIDTH);
     })
 
     Hooks.on('renderSettings', (settings, context, user) => { 
