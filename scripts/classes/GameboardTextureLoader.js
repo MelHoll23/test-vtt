@@ -17,6 +17,7 @@ class GameboardTextureLoader extends TextureLoader {
 		  img.onload = () => {
             console.log("Gameboard | Image onload", 
                 src, 
+                window.devicePixelRatio,
                 img.naturalHeight, 
                 img.naturalWidth, 
                 img.height, 
@@ -38,7 +39,10 @@ class GameboardTextureLoader extends TextureLoader {
                 src,
                 tex.height, 
                 tex.width,
-                tex.valid
+                tex.resolution,
+                tex.valid, 
+                tex.resource._height,
+                tex.resource._width,
             );
 			this.setCache(src, tex);
 			resolve(tex);
