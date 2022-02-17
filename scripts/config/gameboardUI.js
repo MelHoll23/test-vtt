@@ -19,7 +19,7 @@ const generalUIStyles = `
 .window-header a[class^="header-button configure-"], 
 .form-group.picker, 
 #macro-directory {
-    display: none;
+    display: none !important;
 }
 
 #settings button {
@@ -42,6 +42,11 @@ const generalUIStyles = `
 #hotbar #hotbar-directory-controls a {
     line-height: ${BUTTON_HEIGHT}px;
     font-size: 40px;
+}
+
+#fps {
+    right: 0;
+    position: absolute;
 }
 `;
 
@@ -72,10 +77,10 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
 }
 
 #navigation .nav-item {
-    line-height: 60px;
-    padding: 15px 2px;
-    max-width: 290px;
-    height: ${BUTTON_HEIGHT}px
+    line-height: 55px;
+    padding: 15px 8px;
+    max-width: 280px;
+    height: ${BUTTON_HEIGHT}px;
     text-overflow: ellipse;
     white-space: nowrap;
     overflow: hidden;
@@ -106,7 +111,7 @@ const sidebarStyles = `
 
 #sidebar-tabs {
     --sidebar-tab-height: ${BUTTON_HEIGHT}px;
-    --sidebar-tab-width: ${BUTTON_HEIGHT}px;
+    --sidebar-tab-width: 70px;
 }
 
 #sidebar-tabs > .item, #sidebar-tabs > .item i[class^=fa] {
