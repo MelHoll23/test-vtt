@@ -78,7 +78,7 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
 
 #navigation .nav-item {
     line-height: 40px;
-    padding: 20px 10px 20px 35px;
+    padding: 20px;
     max-width: 400px;
     height: ${BUTTON_HEIGHT}px;
     text-overflow: ellipsis;
@@ -90,12 +90,16 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
     flex: 0 0 ${BUTTON_HEIGHT}px;
     height: ${BUTTON_HEIGHT}px;
     font-size: 36px;
-    padding: 20px;
 }
 
 #navigation #scene-list .scene ul.scene-players {
-    top: 30px;
+    top: 60px;
     left: 10px;
+}
+
+#navigation #scene-list .scene li.scene-player {
+    height: 20px;
+    width: 20px;
 }
 `
 

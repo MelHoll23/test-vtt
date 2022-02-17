@@ -106,9 +106,8 @@ export default class TokenMovementAdaptor {
         actor.update({
                 x: snappedPosition.x, 
                 y: snappedPosition.y,
-                rotation: rotation
+                rotation: rotation + (Math.random()/10) // needed so the update pushed to the server?
             }, {animate: false});
-        actor._object.rotate(rotation);
     }
 }
 
