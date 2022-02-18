@@ -32,18 +32,6 @@ export function registerHooks() {
         }
     })
 
-    Hooks.on('targetToken', (user, token, targets) => {
-        console.log('Gameboard | Targeting token', user, token, targets);
-    })
-
-    Hooks.on('canvasConfig', (canvasConfig) => {
-        console.log('Gameboard | canvasConfig', canvasConfig);
-    })
-
-    Hooks.on('controlToken', (token, controlled) => {
-        console.log('Gameboard | token control', token, controlled);
-    })
-
     Hooks.on('canvasInit', () => { 
         if(window.isOnGameboard) {
             console.log('Gameboard | Apply fog of war fix');
@@ -76,11 +64,38 @@ export function registerHooks() {
                 // Align the HUD
                 canvas.hud.align();
             }
+            
+            // Prevent opening character sheet on double click
+            Token.prototype._onClickLeft2 = function(event) {} 
+
+            //Make character sheets readonly
+            TokenHUD.prototype._onTokenConfig = (event) => {
+                event.preventDefault();
+                const actor = this.object.document.actor;
+
+                actor.sheet.render(true, {editable: false});
+            }
+
+            SidebarDirectory.prototype._onClickDocumentName = (event) => {
+                event.preventDefault();
+                const element = event.currentTarget;
+                const documentId = element.parentElement.dataset.documentId;
+                const document = this.constructor.collection.get(documentId);
+                const sheet = document.sheet;
+            
+                // If the sheet is already rendered:
+                if ( sheet.rendered ) {
+                    sheet.bringToTop();
+                    return sheet.maximize();
+                }
+            
+                // Otherwise render the sheet
+                else sheet.render(true, {editable: false});
+            }
 
             updateCanvasScale();
         }
     });
-
 
     var updateCanvasScale = function () {
         var squareSize = canvas.grid.w;

@@ -37,7 +37,7 @@ export default class TokenMovementAdaptor {
         actor.data.update({
             rotation: rotation
         }, {animate: false});
-        actor._object.updateSource(); //Updates local vision with rotation (token not rotated)
+        actor._object.updateSource(); //Updates local vision with rotation (token not rotated until saveMovement)
 
         //Send movements to backend on occasion
         throttleSaveMovement(actor, tokenCenteredPositions, rotation, false);

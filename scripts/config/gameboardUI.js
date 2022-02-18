@@ -18,7 +18,8 @@ const generalUIStyles = `
 #sidebar a.create-folder, 
 .window-header a[class^="header-button configure-"], 
 .form-group.picker, 
-#macro-directory {
+#macro-directory, 
+#token-hud .control-icon[data-action="config"] {
     display: none !important;
 }
 
