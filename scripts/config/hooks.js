@@ -2,6 +2,7 @@ import GameboardTextureLoader from '../classes/GameboardTextureLoader.js'
 import { initGameboardUI } from './gameboardUI.js';
 import { registerSettings, SQUARES_NUMBER } from './settings.js';
 import { MODULE_NAME } from './settings.js';
+import { overrideMethods } from './util.js';
 
 export function registerHooks() {
     Hooks.once('init', () => {
@@ -14,6 +15,7 @@ export function registerHooks() {
         if(window.isOnGameboard) {
             //Add gameboard specific styles/buttons
             initGameboardUI()
+            overrideMethods();
         }
     });
 
@@ -65,34 +67,6 @@ export function registerHooks() {
                 canvas.hud.align();
             }
             
-            // Prevent opening character sheet on double click
-            Token.prototype._onClickLeft2 = function(event) {} 
-
-            //Make character sheets readonly
-            TokenHUD.prototype._onTokenConfig = (event) => {
-                event.preventDefault();
-                const actor = this.object.document.actor;
-
-                actor.sheet.render(true, {editable: false});
-            }
-
-            SidebarDirectory.prototype._onClickDocumentName = (event) => {
-                event.preventDefault();
-                const element = event.currentTarget;
-                const documentId = element.parentElement.dataset.documentId;
-                const document = this.constructor.collection.get(documentId);
-                const sheet = document.sheet;
-            
-                // If the sheet is already rendered:
-                if ( sheet.rendered ) {
-                    sheet.bringToTop();
-                    return sheet.maximize();
-                }
-            
-                // Otherwise render the sheet
-                else sheet.render(true, {editable: false});
-            }
-
             updateCanvasScale();
         }
     });
