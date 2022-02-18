@@ -193,17 +193,28 @@ const windowStyles = `
 
 const characterSheetStyles = `
 .dnd5e.sheet.actor .traits i.fas {
-    font-size: 24px;
-    padding: 5px;
+    display: none;
 }
 
-.dnd5e.sheet .window-content, 
-.dnd5e.sheet.actor.character ul.skills-list li.skill h4 {
+.dnd5e.sheet .window-content {
     font-size: 20px;
 }
 
+.dnd5e.sheet.actor.character ul.skills-list li.skill h4 {
+    font-size: 20px;
+    padding: 10px; 0px;
+}
+
 .dnd5e.sheet.actor h4.box-title {
-    font-size: 30px;
+    font-size: 36px;
+}
+
+.dnd5e.sheet.actor ul.attributes li.attribute {
+    height: 80px;
+}
+
+.dnd5e.sheet.actor .resource h4.box-title {
+    height: 33px;
 }
 
 .dnd5e.sheet.actor.character ul.skills-list li.skill {
@@ -215,9 +226,29 @@ const characterSheetStyles = `
     height: unset;
 }
 
+.dnd5e.sheet.actor ul.skills-list li.skill{
+    height: unset;
+}
+
 .dnd5e.sheet.actor ul.skills-list li.skill .skill-name-controls {
     padding: 10px 0px;
 }
+
+.dnd5e.sheet.actor .ability-scores .ability input.ability-score {
+    height: 55px;
+    width: 50px;
+    font-size: 40px;
+}
+
+.dnd5e.sheet.actor .ability-scores .ability .ability-modifiers span.ability-mod, 
+.dnd5e.sheet.actor .ability-scores .ability .ability-modifiers span.ability-save {
+    font-size: 30px;
+}
+
+.dnd5e.sheet .filter-list .filter-item {
+    font-size: 20px;
+}
+
 `;
 
 const gameboardUIStyle = generalUIStyles + leftControlStyles + sidebarStyles + windowStyles + characterSheetStyles;
