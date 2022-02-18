@@ -33,7 +33,7 @@ export default class TokenMovementAdaptor {
         
         console.log('Gameboard | Move to', `${tokenCenteredPositions.x}, ${tokenCenteredPositions.y}`);
 
-        actor._object.setPosition(tokenCenteredPositions.x, tokenCenteredPositions.y, {animate: false});
+        actor._object.setPosition(tokenCenteredPositions.x, tokenCenteredPositions.y, {animate: false, recenter: false});
         actor.data.update({
             rotation: rotation
         }, {animate: false});
@@ -107,7 +107,7 @@ export default class TokenMovementAdaptor {
                 x: snappedPosition.x, 
                 y: snappedPosition.y,
                 rotation: rotation + (Math.random()/10) // needed so the update pushed to the server?
-            }, {animate: false});
+            }, {animate: false, recenter: false});
     }
 }
 

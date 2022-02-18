@@ -8,6 +8,7 @@ const generalUIStyles = `
 :root {
     --form-field-height: 45px;
     --sidebar-item-height: ${BUTTON_HEIGHT}px;
+    --sidebar-width: ${SIDEBAR_WIDTH}px;
 }
 
 #players, 
@@ -18,7 +19,8 @@ const generalUIStyles = `
 #sidebar a.create-folder, 
 .window-header a[class^="header-button configure-"], 
 .form-group.picker, 
-#macro-directory {
+#macro-directory, 
+.item-controls.flexrow {
     display: none !important;
 }
 
@@ -105,7 +107,6 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
 
 const sidebarStyles = `
 #sidebar {
-    width: ${SIDEBAR_WIDTH}px;
     height: 50%;
     margin: ${OUTER_MARGIN}px;
 }
@@ -195,8 +196,27 @@ const characterSheetStyles = `
     font-size: 24px;
     padding: 5px;
 }
-.dnd5e.sheet .window-content {
+
+.dnd5e.sheet .window-content, 
+.dnd5e.sheet.actor.character ul.skills-list li.skill h4 {
     font-size: 20px;
+}
+
+.dnd5e.sheet.actor h4.box-title {
+    font-size: 30px;
+}
+
+.dnd5e.sheet.actor.character ul.skills-list li.skill {
+    align-items: center;
+}
+
+dnd5e.sheet.actor.character ul.skills-list {
+    flex: 0 0 300px;
+    height: unset;
+}
+
+.dnd5e.sheet.actor ul.skills-list li.skill .skill-name-controls {
+    padding: 10px 0px;
 }
 `;
 

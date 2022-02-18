@@ -16,14 +16,14 @@ export function overrideMethods(){
     Token.prototype._onClickLeft2 = function(event) {} 
 
     //Make character sheets readonly
-    TokenHUD.prototype._onTokenConfig = (event) => {
+    TokenHUD.prototype._onTokenConfig = function(event){
         event.preventDefault();
         const actor = this.object.document.actor;
 
         actor.sheet.render(true, {editable: false});
     }
 
-    SidebarDirectory.prototype._onClickDocumentName = (event) => {
+    SidebarDirectory.prototype._onClickDocumentName = function(event) {
         event.preventDefault();
         const element = event.currentTarget;
         const documentId = element.parentElement.dataset.documentId;
