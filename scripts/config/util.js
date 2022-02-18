@@ -39,4 +39,9 @@ export function overrideMethods(){
         // Otherwise render the sheet
         else sheet.render(true, {editable: false});
     }
+
+    //Disabled drag/drop
+    SidebarDirectory.prototype._canDragStart = function() {
+        return false;
+    }
 }

@@ -210,7 +210,7 @@ const characterSheetStyles = `
     align-items: center;
 }
 
-dnd5e.sheet.actor.character ul.skills-list {
+.dnd5e.sheet.actor.character ul.skills-list {
     flex: 0 0 300px;
     height: unset;
 }
