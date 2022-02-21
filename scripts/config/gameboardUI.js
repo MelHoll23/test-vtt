@@ -68,7 +68,7 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
 }
 
 #controls ol.main-controls {
-    width: 125px;
+    width: 105px;
     padding-left: 0;
 }
 
@@ -107,7 +107,7 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
 
 const sidebarStyles = `
 #sidebar {
-    height: 50%;
+    height: 40%;
     margin: ${OUTER_MARGIN}px;
 }
 
@@ -163,6 +163,17 @@ li.folder > .folder-header {
 .directory .directory-list .directory-item h4 {
     font-size, 36px;
 }
+
+.chat-card .card-content{
+    font-size: 20px;
+    font-size: 40px !important;
+    padding: 10px;
+}
+
+#combat #combat-round .encounters a {
+    --control-width: 60px;
+}
+
 `;
 
 const windowStyles = `
