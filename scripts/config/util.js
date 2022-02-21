@@ -44,4 +44,20 @@ export function overrideMethods(){
     SidebarDirectory.prototype._canDragStart = function() {
         return false;
     }
+
+    //Override and remove panning to token logic
+    CombatTracker.prototype._onCombatantMouseDown = function(event) {
+        event.preventDefault();
+    
+        const li = event.currentTarget;
+        const combatant = this.viewed.combatants.get(li.dataset.combatantId);
+        const token = combatant.token;
+        if ( !combatant.actor?.testUserPermission(game.user, "OBSERVED") ) return;
+        const now = Date.now();
+    
+        // Handle double-left click to open sheet
+        const dt = now - this._clickTime;
+        this._clickTime = now;
+        if ( dt <= 250 ) return combatant.actor?.sheet.render(true);
+    }
 }
