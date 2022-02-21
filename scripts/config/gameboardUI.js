@@ -166,14 +166,19 @@ li.folder > .folder-header {
 
 .chat-card .card-content{
     font-size: 20px;
-    font-size: 40px !important;
-    padding: 10px;
 }
 
 #combat #combat-round .encounters a {
     --control-width: 60px;
+    font-size: 40px !important;
+    padding: 10px;
 }
 
+#combat li.combatant .token-name .combatant-control {
+    flex: 0 0 95px;
+    height: 50px;
+    font-size: 50px;
+}
 `;
 
 const windowStyles = `
