@@ -58,9 +58,9 @@ const leftControlStyles = `
 }
 
 #controls ol .scene-control, #controls ol .control-tool{
-    width: 85px;
-    height: 85px;
-    font-size: 35px;
+    width: 85px !important;
+    height: 85px !important;
+    font-size: 35px !important;
 }
 
 li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
@@ -107,6 +107,7 @@ li.scene-control i[class^=fa], li.control-tool i[class^=fa]{
 
 const sidebarStyles = `
 #sidebar {
+    width: var(--sidebar-width);
     height: 40%;
     margin: ${OUTER_MARGIN}px;
 }

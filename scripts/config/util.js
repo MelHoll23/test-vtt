@@ -46,7 +46,7 @@ export function overrideMethods(){
     }
 
     //Override and remove panning to token logic
-    CombatTracker.prototype._onCombatantMouseDown = function(event) {
+    CombatTracker.prototype._onCombatantMouseDown = async function(event) {
         event.preventDefault();
     
         const li = event.currentTarget;
@@ -60,4 +60,35 @@ export function overrideMethods(){
         this._clickTime = now;
         if ( dt <= 250 ) return combatant.actor?.sheet.render(true);
     }
+
+    //Temporarily override panning in setPosition until update provides option to prevent recentering
+    Token.prototype.setPosition = async function(x, y, {animate=true}={}) {
+
+        // Create a Ray for the requested movement
+        let origin = this._movement ? this.position : this._validPosition,
+            target = {x: x, y: y},
+            isVisible = this.isVisible;
+    
+        // Create the movement ray
+        let ray = new Ray(origin, target);
+    
+        // Update the new valid position
+        this._validPosition = target;
+    
+        // Record the Token's new velocity
+        this._velocity = this._updateVelocity(ray);
+    
+        // Update visibility for a non-controlled token which may have moved into the controlled tokens FOV
+        this.visible = isVisible;
+    
+        // Conceal the HUD if it targets this Token
+        if ( this.hasActiveHUD ) this.layer.hud.clear();
+    
+        // Either animate movement to the destination position, or set it directly if animation is disabled
+        if ( animate ) await this.animateMovement(new Ray(this.position, ray.B));
+        else this.position.set(x, y);
+    
+        // Removed pan to token logic
+        return this;
+      }
 }

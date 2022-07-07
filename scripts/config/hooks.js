@@ -46,6 +46,7 @@ export function registerHooks() {
         if(window.isOnGameboard) {
             //Override to prevent other actions from scaling
             canvas.pan = ({x=null, y=null, scale=null, forceScale = false}={}) => {  
+                console.log('pan', x, y, scale);
                 const constrained = canvas._constrainView({x, y, scale});
                 const scaleChange = constrained.scale !== canvas.stage.scale.x;
             

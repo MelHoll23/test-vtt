@@ -40,9 +40,9 @@ export default class TokenMovementAdaptor {
         actor._object.updateSource(); //Updates local vision with rotation (token not rotated until saveMovement)
 
         //Send movements to backend on occasion
-       // throttleSaveMovement(actor, tokenCenteredPositions, rotation, false);
+        throttleSaveMovement(actor, tokenCenteredPositions, rotation, false);
         //Snap and save after not moving for a while
-      //  debouncedSaveMovement(actor, tokenCenteredPositions, rotation);
+        debouncedSaveMovement(actor, tokenCenteredPositions, rotation);
     }
 
     cleanupAndPairToken() {
@@ -107,7 +107,7 @@ export default class TokenMovementAdaptor {
                 x: snappedPosition.x, 
                 y: snappedPosition.y,
                 rotation: rotation + (Math.random()/10) // needed so the update pushed to the server?
-            }, {animate: false, recenter: false});
+            }, {recenter: false});
     }
 }
 
