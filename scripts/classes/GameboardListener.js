@@ -1,4 +1,4 @@
-import { ClientFactory } from "https://lastgameboard.jfrog.io/artifactory/api/npm/npm-virtual/@lastgameboard/boardservice-client";
+import { ClientFactory } from "@lastgameboard/boardservice-client";
 
 export class GameBoardListener {
     userPresences = {};

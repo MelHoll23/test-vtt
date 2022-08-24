@@ -11,7 +11,9 @@
         "name": "touch-vtt"
       }
     ],  
-    "esmodules": ["scripts/setup.js"],
+    "scripts": [
+      "dist/main.js"
+    ],
     "url": "https://github.com/MelHoll23/test-vtt",
     "manifest": "https://github.com/MelHoll23/test-vtt/main/module.json",
     "download": "https://github.com/MelHoll23/test-vtt/archive/main.zip"
