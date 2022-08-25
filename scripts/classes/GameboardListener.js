@@ -30,6 +30,8 @@ export class GameBoardListener {
         }
         console.log(`Gameboard | gameBoardClient connected`);
         this.userPresences = await this.boardClient.getUserPresenceList();
+
+        this.gameSessionStart();
     }
 
     gameSessionStart() {

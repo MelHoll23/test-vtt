@@ -19,9 +19,10 @@ export function registerHooks() {
         }
     });
 
-    Hooks.once('ready', () => {
+    Hooks.on('closeAppllication', () => {
         if(window.isOnGameboard) {
-            window.boardListener.gameSessionStart();
+            console.log('Gameboard | Close application')
+            window.boardListener.disconnect();
         }
     });
 
@@ -78,10 +79,16 @@ export function registerHooks() {
             updateCanvasScale();
         }
     });
-
-    Hooks.once('collapseSidebar', (options) => {
+    
+    Hooks.on('changeSidebarTab', (options) => {
         if(window.isOnGameboard) {
-           console.log('Gameboard | sidebar?', options);
+           console.log('Gameboard | sidebar change?', options);
+        }
+    });
+
+    Hooks.on('collapseSidebar', (options) => {
+        if(window.isOnGameboard) {
+           console.log('Gameboard | sidebar?', options, options._collapsed);
            Gameboard.hideDrawers(options._collapsed);
         }
     });
