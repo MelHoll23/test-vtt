@@ -35,8 +35,6 @@ export class GameBoardListener {
     }
 
     gameSessionStart() {
-        console.log('Gameboard | ', this.userPresences);
-
         window.GameboardAnalytics?.sendEvent(
             this.events.GameSessionStarted,
             JSON.stringify({ userIds: Object.keys(this.userPresences) }),

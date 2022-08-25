@@ -87,7 +87,7 @@ export function registerHooks() {
 
     Hooks.on('collapseSidebar', (options) => {
         if(window.isOnGameboard) {
-           Gameboard.hideDrawers(options.tabs[0].action !== 'settings' || options._collapsed);
+           Gameboard.hideDrawers(options._tabs[0].active !== 'settings' || options._collapsed);
         }
     });
 
