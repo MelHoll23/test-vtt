@@ -3,6 +3,7 @@ import { initGameboardUI } from './gameboardUI.js';
 import { registerSettings, SQUARES_NUMBER } from './settings.js';
 import { MODULE_NAME } from './settings.js';
 import { overrideMethods } from './util.js';
+import { GameBoardListener } from '../classes/GameboardListener.js';
 
 export function registerHooks() {
     Hooks.once('init', () => {
@@ -16,6 +17,11 @@ export function registerHooks() {
             //Add gameboard specific styles/buttons
             initGameboardUI()
             overrideMethods();
+
+            console.log('Gameboard | setup boardListener');
+            window.boardListener = new GameBoardListener();
+            console.log('Gameboard | run boardListener');
+            window.boardListener.run();
         }
     });
 
@@ -81,13 +87,14 @@ export function registerHooks() {
     });
     
     Hooks.on('changeSidebarTab', (options) => {
-        if(window.isOnGameboard) {
-           console.log('Gameboard | sidebar change?', options);
+        if(window.isOnGameboard && options.tabName) {
+            console.log('Gameboard | sidebar change?', options);
+            Gameboard.hideDrawers(options.tabName !== 'settings');
         }
     });
 
     Hooks.on('collapseSidebar', (options) => {
-        if(window.isOnGameboard) {
+        if(window.isOnGameboard && options.tabs[0].action === 'settings') {
            console.log('Gameboard | sidebar?', options, options._collapsed);
            Gameboard.hideDrawers(options._collapsed);
         }

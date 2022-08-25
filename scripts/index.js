@@ -4,12 +4,13 @@ import { GameBoardListener } from "./classes/GameboardListener.js";
 
 window.gameboardModuleEnabled = true;
 
-if(window.isOnGameboard) {
-	console.log('Gameboard | setup boardListener');
-	window.boardListener = new GameBoardListener();
-	console.log('Gameboard | run boardListener');
-	window.boardListener.run();
-}
+console.log('Gameboard | ', window);
+// if(window.isOnGameboard) {
+// 	console.log('Gameboard | setup boardListener');
+// 	window.boardListener = new GameBoardListener();
+// 	console.log('Gameboard | run boardListener');
+// 	window.boardListener.run();
+// }
 
 registerHooks();
 

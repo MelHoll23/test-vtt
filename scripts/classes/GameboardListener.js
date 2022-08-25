@@ -58,7 +58,7 @@ export class GameBoardListener {
     }
 
     onUserPresenceChange(userPresence) {
-        console.log('Gameboard | ', userPresence);
+        console.log('Gameboard | user presence', userPresence);
         if (userPresence.change == ChangeType.REMOVE) {
             delete this.userPresences[userPresence.userId];
         } else if(ChangeType.ADD) {
