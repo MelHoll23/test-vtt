@@ -1,7 +1,7 @@
 import { MODULE_NAME, TOKEN_MAP } from "./settings.js";
 
 const SIDEBAR_WIDTH = 970;
-const OUTER_MARGIN = 50;
+const OUTER_MARGIN = 100;
 const BUTTON_HEIGHT = 80;
 
 const generalUIStyles = `

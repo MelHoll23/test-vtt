@@ -38,7 +38,7 @@ export class GameBoardListener {
         console.log('Gameboard | ', this.userPresences);
 
         window.GameboardAnalytics?.sendEvent(
-            events.GameSessionStarted,
+            this.events.GameSessionStarted,
             JSON.stringify({ userIds: Object.keys(this.userPresences) }),
         );
         this.startTime = performance.now();
@@ -49,7 +49,7 @@ export class GameBoardListener {
 
         const playTime = performance.now() - this.startTime;
         window.GameboardAnalytics?.sendEvent(
-            events.GameSessionEnded,
+            this.events.GameSessionEnded,
             JSON.stringify({
                 userIds: Object.keys(this.userPresences),
                 secondsElapsed: playTime / 1000,
@@ -60,10 +60,13 @@ export class GameBoardListener {
     onUserPresenceChange(userPresence) {
         console.log('Gameboard | user presence', userPresence);
         if (userPresence.change == ChangeType.REMOVE) {
-            delete this.userPresences[userPresence.userId];
+            console.log('Gameboard | ', this.userPresences[userPresence.userId])
+            const index = this.userPresences.map(x => x.userId).indexOf(userPresence.userId);
+            delete this.userPresences[index];
         } else if(ChangeType.ADD) {
-            this.userPresences = userPresence;
+            this.userPresences.push(userPresence);
         }
+        console.log('Gameboard | ', this.userPresences);
     }
 
     onDiceRolled(diceRolled) {}

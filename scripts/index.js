@@ -1,16 +1,7 @@
 import { registerHooks } from "./config/hooks.js";
 import TokenMovementAdaptor from "./classes/MovementAdaptor.js";
-import { GameBoardListener } from "./classes/GameboardListener.js";
 
 window.gameboardModuleEnabled = true;
-
-console.log('Gameboard | ', window);
-// if(window.isOnGameboard) {
-// 	console.log('Gameboard | setup boardListener');
-// 	window.boardListener = new GameBoardListener();
-// 	console.log('Gameboard | run boardListener');
-// 	window.boardListener.run();
-// }
 
 registerHooks();
 
