@@ -3,7 +3,6 @@ import { initGameboardUI } from './gameboardUI.js';
 import { registerSettings, SQUARES_NUMBER } from './settings.js';
 import { MODULE_NAME } from './settings.js';
 import { overrideMethods } from './util.js';
-import { GameBoardListener } from '../classes/GameboardListener.js';
 
 export function registerHooks() {
     Hooks.once('init', () => {
@@ -17,9 +16,6 @@ export function registerHooks() {
             //Add gameboard specific styles/buttons
             initGameboardUI()
             overrideMethods();
-
-            window.boardListener = new GameBoardListener();
-            window.boardListener.run();
         }
     });
 

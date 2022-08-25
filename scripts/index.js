@@ -4,6 +4,11 @@ import { GameBoardListener } from "./classes/GameboardListener.js";
 
 window.gameboardModuleEnabled = true;
 
+if(window.isOnGameboard) {
+	window.boardListener = new GameBoardListener();
+	window.boardListener.run();
+}
+
 registerHooks();
 
 window.onTokMessageReceived = function(tokMessage) {
