@@ -29,11 +29,11 @@ export class GameBoardListener {
             console.log(JSON.stringify(e));
         }
         console.log(`Gameboard | gameBoardClient connected`);
-        this.userPresences = await this.getUserPresence();
+        this.userPresences = await this.boardClient.getUserPresenceList();
     }
 
     gameSessionStart() {
-        console.log('Gameboard | ', userPresences);
+        console.log('Gameboard | ', this.userPresences);
 
         window.GameboardAnalytics?.sendEvent(
             events.GameSessionStarted,

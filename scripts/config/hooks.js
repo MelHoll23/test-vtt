@@ -82,10 +82,10 @@ export function registerHooks() {
         }
     });
 
-    Hooks.once('Sidebar', (hidden) => {
+    Hooks.once('collapseSidebar', (options) => {
         if(window.isOnGameboard) {
-           console.log('Gameboard | sidebar?', hidden);
-           Gameboard.hideDrawers(!hidden);
+           console.log('Gameboard | sidebar?', options);
+           Gameboard.hideDrawers(!options[1]);
         }
     });
 

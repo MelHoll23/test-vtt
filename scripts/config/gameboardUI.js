@@ -311,6 +311,7 @@ function modifySettingsMenu(context = window) {
     //Add button to exit out of the app
     const exitButton = $(`<button><i class="fas fa-door-closed"></i> Exit</button>`);
         exitButton.on('click', function(){
+        window.boardListener.disconnect();
         window.exitToGameboard()
     });
     $('#settings-access', context).append(exitButton);
