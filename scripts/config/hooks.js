@@ -16,6 +16,15 @@ export function registerHooks() {
             //Add gameboard specific styles/buttons
             initGameboardUI()
             overrideMethods();
+
+            window.boardListener = new GameBoardListener();
+            window.boardListener.run();
+        }
+    });
+
+    Hooks.once('ready', () => {
+        if(window.isOnGameboard) {
+            window.boardListener.gameSessionStart();
         }
     });
 
@@ -70,6 +79,13 @@ export function registerHooks() {
             }
             
             updateCanvasScale();
+        }
+    });
+
+    Hooks.once('Sidebar', (hidden) => {
+        if(window.isOnGameboard) {
+           console.log('Gameboard | sidebar?', hidden);
+           Gameboard.hideDrawers(!hidden);
         }
     });
 
