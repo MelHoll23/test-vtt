@@ -25,13 +25,6 @@ export function registerHooks() {
         }
     });
 
-    Hooks.on('closeAppllication', () => {
-        if(window.isOnGameboard) {
-            console.log('Gameboard | Close application')
-            window.boardListener.disconnect();
-        }
-    });
-
     Hooks.once('setup', () => {
         if(window.isOnGameboard) {
             game.settings.set('core', 'fontSize', 9);

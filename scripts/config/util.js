@@ -90,5 +90,5 @@ export function overrideMethods(){
     
         // Removed pan to token logic
         return this;
-      }
+    }
 }

@@ -308,6 +308,16 @@ function initGameboardStyles() {
 }
 
 function modifySettingsMenu(context = window) {
+    //Remove logout to add analytics logic before logout
+    $('[data-action=logout]').remove();
+    const logoutButton = $(`<button><i class="fas fa-door-closed"></i> Log Out</button>`);
+        logoutButton.on('click', function(){
+            window.boardListener.disconnect();
+            ui.menu.items.logout.onClick();
+        }
+    );
+    $('#settings-access', context).append(logoutButton);
+
     //Add button to exit out of the app
     const exitButton = $(`<button><i class="fas fa-door-closed"></i> Exit</button>`);
         exitButton.on('click', function(){
