@@ -1,4 +1,4 @@
-import { ClientFactory } from "@lastgameboard/boardservice-client";
+import { ChangeType, ClientFactory } from "@lastgameboard/boardservice-client";
 
 export class GameBoardListener {
     userPresences = {};
@@ -29,43 +29,40 @@ export class GameBoardListener {
             console.log(JSON.stringify(e));
         }
         console.log(`Gameboard | gameBoardClient connected`);
-    }
-
-    getUserPresence() {
-        try {       
-            return await this.boardClient?.getUserPresenceList() || null;
-        } catch {
-            return null;
-        }
+        this.userPresences = await this.getUserPresence();
     }
 
     gameSessionStart() {
-        const userPresences = this.getUserPresence();
         console.log('Gameboard | ', userPresences);
 
         window.GameboardAnalytics?.sendEvent(
             events.GameSessionStarted,
-            userPresences ? JSON.stringify({ userIds: Object.keys(this.userPresences) }) : '',
+            JSON.stringify({ userIds: Object.keys(this.userPresences) }),
         );
         this.startTime = performance.now();
     }
 
     disconnect() {
         if (this.startTime === undefined) return;
-        const userPresences = this.getUserPresence();
-        console.log(userPresences);
 
         const playTime = performance.now() - this.startTime;
         window.GameboardAnalytics?.sendEvent(
             events.GameSessionEnded,
             JSON.stringify({
-                userIds: userPresences ? Object.keys(this.userPresences) : [],
+                userIds: Object.keys(this.userPresences),
                 secondsElapsed: playTime / 1000,
             }),
         );
     }
 
-    onUserPresenceChange(userPresence) {}
+    onUserPresenceChange(userPresence) {
+        console.log('Gameboard | ', userPresence);
+        if (userPresence.change == ChangeType.REMOVE) {
+            delete this.userPresences[userPresence.userId];
+        } else if(ChangeType.ADD) {
+            this.userPresences = userPresence;
+        }
+    }
 
     onDiceRolled(diceRolled) {}
 
