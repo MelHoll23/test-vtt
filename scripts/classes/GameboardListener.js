@@ -26,7 +26,7 @@ export class GameBoardListener {
         try {
             await this.boardClient.connectionManager.connect();
         } catch (e) {
-            console.log(JSON.stringify(e));
+            console.log('Gameboard | ' + JSON.stringify(e));
         }
         console.log(`Gameboard | gameBoardClient connected`);
         this.userPresences = await this.boardClient.getUserPresenceList();
@@ -58,15 +58,13 @@ export class GameBoardListener {
     }
 
     onUserPresenceChange(userPresence) {
-        console.log('Gameboard | user presence', userPresence);
+        console.log('Gameboard | user presence change', userPresence);
         if (userPresence.change == ChangeType.REMOVE) {
-            console.log('Gameboard | ', this.userPresences[userPresence.userId])
             const index = this.userPresences.map(x => x.userId).indexOf(userPresence.userId);
             delete this.userPresences[index];
         } else if(ChangeType.ADD) {
             this.userPresences.push(userPresence);
         }
-        console.log('Gameboard | ', this.userPresences);
     }
 
     onDiceRolled(diceRolled) {}

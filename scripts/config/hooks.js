@@ -88,15 +88,13 @@ export function registerHooks() {
     
     Hooks.on('changeSidebarTab', (options) => {
         if(window.isOnGameboard && options.tabName) {
-            console.log('Gameboard | sidebar change?', options);
             Gameboard.hideDrawers(options.tabName !== 'settings');
         }
     });
 
     Hooks.on('collapseSidebar', (options) => {
-        if(window.isOnGameboard && options.tabs[0].action === 'settings') {
-           console.log('Gameboard | sidebar?', options, options._collapsed);
-           Gameboard.hideDrawers(options._collapsed);
+        if(window.isOnGameboard) {
+           Gameboard.hideDrawers(options.tabs[0].action !== 'settings' || options._collapsed);
         }
     });
 

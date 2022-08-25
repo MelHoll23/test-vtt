@@ -1,7 +1,7 @@
 import { MODULE_NAME, TOKEN_MAP } from "./settings.js";
 
 const SIDEBAR_WIDTH = 970;
-const OUTER_MARGIN = 100;
+const OUTER_MARGIN = 85;
 const BUTTON_HEIGHT = 80;
 
 const generalUIStyles = `
@@ -54,7 +54,7 @@ const generalUIStyles = `
 
 const leftControlStyles = `
 #controls {
-    margin: 130px ${OUTER_MARGIN}px;
+    margin: 180px ${OUTER_MARGIN}px;
 }
 
 #controls ol .scene-control, #controls ol .control-tool{
