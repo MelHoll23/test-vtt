@@ -3,6 +3,7 @@ import { initGameboardUI } from './gameboardUI.js';
 import { registerSettings, SQUARES_NUMBER } from './settings.js';
 import { MODULE_NAME } from './settings.js';
 import { overrideMethods } from './util.js';
+import { GameBoardListener } from '../classes/GameboardListener.js';
 
 export function registerHooks() {
     Hooks.once('init', () => {
@@ -85,7 +86,7 @@ export function registerHooks() {
     Hooks.once('collapseSidebar', (options) => {
         if(window.isOnGameboard) {
            console.log('Gameboard | sidebar?', options);
-           Gameboard.hideDrawers(!options[1]);
+           Gameboard.hideDrawers(options._collapsed);
         }
     });
 
