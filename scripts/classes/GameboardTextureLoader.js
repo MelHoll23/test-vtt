@@ -1,10 +1,10 @@
 class GameboardTextureLoader extends TextureLoader {
     //Override
 	async loadImageTexture(src) {
-		const fetchResourceMethod = this._fetchResource ?
-										this._fetchResource(src) : 
-										TextureLoader.fetchResource(src);
-		const blob = await fetchResourceMethod(src);
+		const fetchResourceFunc = this._fetchResource ?
+										this._fetchResource : 
+										TextureLoader.fetchResource;
+		const blob = await fetchResourceFunc(src);
 
 		// Create the Image element
 		const img = new Image();
