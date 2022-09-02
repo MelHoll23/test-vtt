@@ -44,13 +44,13 @@ export function registerHooks() {
         if(window.isOnGameboard) {
             console.log('Gameboard | Apply fog of war fix');
             //Fix fog of war crash
-            SightLayer.MAXIMUM_FOW_TEXTURE_SIZE = 4096 / 2;
+            if(SightLayer) SightLayer.MAXIMUM_FOW_TEXTURE_SIZE = 4096 / 2;
         }
     });
 
     Hooks.on('canvasReady', (canvas) => { 
         if(window.isOnGameboard) {
-                //Override to prevent other actions from scaling
+            //Override to prevent other actions from scaling
             const originalPan = canvas.pan;
 
             canvas.pan = ({x=null, y=null, scale=null, forceScale = false}={}) => { 
