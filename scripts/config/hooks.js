@@ -51,7 +51,7 @@ export function registerHooks() {
     Hooks.on('canvasReady', (canvas) => { 
         if(window.isOnGameboard) {
             //Override to prevent other actions from scaling
-            const originalPan = canvas.pan;
+            const originalPan = canvas.pan.bind(canvas);
 
             canvas.pan = ({x=null, y=null, scale=null, forceScale = false}={}) => { 
                 if((x == null || y == null) && !forceScale) return;
