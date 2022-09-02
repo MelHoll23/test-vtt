@@ -50,29 +50,16 @@ export function registerHooks() {
 
     Hooks.on('canvasReady', (canvas) => { 
         if(window.isOnGameboard) {
-            //Override to prevent other actions from scaling
-            canvas.pan = ({x=null, y=null, scale=null, forceScale = false}={}) => {  
-                if((x == null || y == null) && !forceScale) return;
-                
-                const constrained = canvas._constrainView({x, y, scale});
-                const scaleChange = constrained.scale !== canvas.stage.scale.x;
-            
-                // Set the pivot point
-                canvas.stage.pivot.set(constrained.x, constrained.y);
+                //Override to prevent other actions from scaling
+            const originalPan = canvas.pan;
 
-                // Set the zoom level
-                if ( scaleChange && forceScale ) {
-                    canvas.stage.scale.set(constrained.scale, constrained.scale);
-                    canvas.updateBlur(constrained.scale);
+            canvas.pan = ({x=null, y=null, scale=null, forceScale = false}={}) => { 
+                if((x == null || y == null) && !forceScale) return;
+                if(!forceScale) {
+                    originalPan(x, y, scale);
+                } else {
+                    originalPan(x, y, canvas.stage.scale.x)
                 }
-            
-                // Update the scene tracked position
-                canvas.scene._viewPosition = constrained;
-            
-                Hooks.callAll('canvasPan', canvas, constrained);
-            
-                // Align the HUD
-                canvas.hud.align();
             }
             
             updateCanvasScale();
