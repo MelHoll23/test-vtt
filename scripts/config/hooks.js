@@ -50,19 +50,16 @@ export function registerHooks() {
 
     Hooks.on('canvasReady', (canvas) => { 
         if(window.isOnGameboard) {
+            updateCanvasScale();
+
             //Override to prevent other actions from scaling
             const originalPan = canvas.pan.bind(canvas);
 
-            canvas.pan = ({x=null, y=null, scale=null, forceScale = false}={}) => { 
-                if((x == null || y == null) && !forceScale) return;
-                if(!forceScale) {
-                    originalPan({x, y, scale});
-                } else {
-                    originalPan({x, y, scale: canvas.stage.scale.x})
-                }
+            canvas.pan = ({x=null, y=null, scale=null}={}) => { 
+                if((x == null || y == null)) return;
+                originalPan({x, y, scale: canvas.stage.scale.x})
             }
             
-            updateCanvasScale();
         }
     });
     
@@ -84,6 +81,6 @@ export function registerHooks() {
 
         var scale = window.innerWidth / multiSquareWidth;
 
-        canvas.pan({scale: scale, forceScale: true});
+        canvas.pan({scale: scale});
     }
 }
