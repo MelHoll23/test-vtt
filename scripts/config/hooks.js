@@ -56,9 +56,9 @@ export function registerHooks() {
             canvas.pan = ({x=null, y=null, scale=null, forceScale = false}={}) => { 
                 if((x == null || y == null) && !forceScale) return;
                 if(!forceScale) {
-                    originalPan(x, y, scale);
+                    originalPan({x, y, scale});
                 } else {
-                    originalPan(x, y, canvas.stage.scale.x)
+                    originalPan({x, y, scale: canvas.stage.scale.x})
                 }
             }
             
