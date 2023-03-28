@@ -4,8 +4,8 @@
     "description": "Testing a module that enables Foundry to be played on the LastGameboard",
     "author": "LastGameboard",
     "version": "1.0.1",
-    "minimumCoreVersion": "9.0.0",
-    "compatibleCoreVersion": "9.0.0",
+    "minimumCoreVersion": "11.0.0",
+    "compatibleCoreVersion": "11.0.0",
     "dependencies": [
       {
         "name": "touch-vtt"

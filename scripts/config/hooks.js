@@ -1,4 +1,5 @@
 import GameboardTextureLoader from '../classes/GameboardTextureLoader.js'
+import GameboardTextureLoaderV11 from '../classes/GameboardTextureLoaderV11.js';
 import { initGameboardUI } from './gameboardUI.js';
 import { registerSettings, SQUARES_NUMBER } from './settings.js';
 import { MODULE_NAME } from './settings.js';
@@ -9,10 +10,13 @@ export function registerHooks() {
     Hooks.once('init', () => {
         registerSettings();
         
-        //Set custom loader
-        //Currently shows a warning when loading images that are too large for gameboard.
-        // TextureLoader.loader = new GameboardTextureLoader();
-        console.log('Gameboard | Ignore GameboardTextureLoader (for now)');
+        // Set custom loader
+        // Currently shows a warning when loading images that are too large for gameboard.
+        if(game.release.generation <= 10) { 
+            TextureLoader.loader = new GameboardTextureLoader();
+        } else {
+            TextureLoader.loader = new GameboardTextureLoaderV11();
+        }
 
         if(window.isOnGameboard) {
             //Add gameboard specific styles/buttons
