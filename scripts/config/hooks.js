@@ -11,7 +11,7 @@ export function registerHooks() {
         
         //Set custom loader
         //Currently shows a warning when loading images that are too large for gameboard.
-        TextureLoader.loader = new GameboardTextureLoader();
+        // TextureLoader.loader = new GameboardTextureLoader();
 
         if(window.isOnGameboard) {
             //Add gameboard specific styles/buttons
