@@ -31,7 +31,7 @@ export default class TokenMovementAdaptor {
 
         var tokenCenteredPositions = {x: positions.x - (actor._object.width/2), y: positions.y - (actor._object.height/2)};
         
-        console.log('Gameboard | 4 | Move to', `${tokenCenteredPositions.x}, ${tokenCenteredPositions.y}`);
+        console.log('Gameboard | 5 | Move to', `${tokenCenteredPositions.x}, ${tokenCenteredPositions.y}`);
 
         // actor.update({
         //     x: tokenCenteredPositions.x,
@@ -122,9 +122,9 @@ export default class TokenMovementAdaptor {
                 x: snappedPosition.x, 
                 y: snappedPosition.y,
                 rotation: rotation + (Math.random()/10) // needed so the update pushed to the server?
-            }, {recenter: false});
+            }, {animate: false, recenter: false});
     }
 }
 
 var debouncedSaveMovement = window.foundry.utils.debounce(TokenMovementAdaptor.saveMovement, 500);
-var throttleSaveMovement = throttle(TokenMovementAdaptor.saveMovement, 50);
+var throttleSaveMovement = throttle(TokenMovementAdaptor.saveMovement, 0);
