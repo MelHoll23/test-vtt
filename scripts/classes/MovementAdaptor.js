@@ -31,7 +31,7 @@ export default class TokenMovementAdaptor {
 
         var tokenCenteredPositions = {x: positions.x - (actor._object.width/2), y: positions.y - (actor._object.height/2)};
         
-        console.log('Gameboard | 2 | Move to', `${tokenCenteredPositions.x}, ${tokenCenteredPositions.y}`);
+        console.log('Gameboard | 3 | Move to', `${tokenCenteredPositions.x}, ${tokenCenteredPositions.y}`);
 
         // actor.update({
         //     x: tokenCenteredPositions.x,
@@ -47,10 +47,10 @@ export default class TokenMovementAdaptor {
         // });
         // actor._object.updateSource(); //Updates local vision with rotation (token not rotated until saveMovement)
 
-        actor.data.update({
-            rotation: rotation
-        });
-        actor._object.updateSource(); //Updates local vision with rotation (token not rotated until saveMovement)
+        // actor.data.update({
+        //     rotation: rotation
+        // });
+        // actor._object.updateSource(); //Updates local vision with rotation (token not rotated until saveMovement)
 
         //Send movements to backend on occasion
         throttleSaveMovement(actor, tokenCenteredPositions, rotation, false);
@@ -115,6 +115,8 @@ export default class TokenMovementAdaptor {
         var snappedPosition = game.settings.get(MODULE_NAME, SNAP_TO_GRID) && snap ? 
                                 canvas.grid.getSnappedPosition(positions.x, positions.y, 1) : 
                                 positions;
+
+        console.log('Gameboard | Updating to: ', snappedPosition.x, snappedPosition.y, rotation);
                     
         actor.update({
                 x: snappedPosition.x, 
@@ -125,4 +127,4 @@ export default class TokenMovementAdaptor {
 }
 
 var debouncedSaveMovement = window.foundry.utils.debounce(TokenMovementAdaptor.saveMovement, 500);
-var throttleSaveMovement = throttle(TokenMovementAdaptor.saveMovement, 200);
+var throttleSaveMovement = throttle(TokenMovementAdaptor.saveMovement, 100);
