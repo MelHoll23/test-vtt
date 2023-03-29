@@ -31,19 +31,21 @@ export default class TokenMovementAdaptor {
 
         var tokenCenteredPositions = {x: positions.x - (actor._object.width/2), y: positions.y - (actor._object.height/2)};
         
-        console.log('Gameboard | Move to', `${tokenCenteredPositions.x}, ${tokenCenteredPositions.y}`);
+        console.log('Gameboard | 1 | Move to', `${tokenCenteredPositions.x}, ${tokenCenteredPositions.y}`);
 
-        actor.update({
-            x: tokenCenteredPositions.x,
-            y:  tokenCenteredPositions.y,
-            rotation: rotation 
-        }, {recenter: false});
+        // actor.update({
+        //     x: tokenCenteredPositions.x,
+        //     y:  tokenCenteredPositions.y,
+        //     rotation: rotation 
+        // }, {recenter: false});
 
         // actor._object.setPosition(tokenCenteredPositions.x, tokenCenteredPositions.y, {recenter: false});
-        // actor.data.update({
-        //     rotation: rotation
-        // });
-        // actor._object.updateSource(); //Updates local vision with rotation (token not rotated until saveMovement)
+        actor.data.update({
+            x: tokenCenteredPositions.x,
+            y:  tokenCenteredPositions.y,
+            rotation: rotation
+        });
+        actor._object.updateSource(); //Updates local vision with rotation (token not rotated until saveMovement)
 
         //Send movements to backend on occasion
         // throttleSaveMovement(actor, tokenCenteredPositions, rotation, false);
