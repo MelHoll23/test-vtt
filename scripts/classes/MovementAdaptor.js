@@ -31,7 +31,7 @@ export default class TokenMovementAdaptor {
 
         var tokenCenteredPositions = {x: positions.x - (actor._object.width/2), y: positions.y - (actor._object.height/2)};
         
-        console.log('Gameboard | 3 | Move to', `${tokenCenteredPositions.x}, ${tokenCenteredPositions.y}`);
+        console.log('Gameboard | 4 | Move to', `${tokenCenteredPositions.x}, ${tokenCenteredPositions.y}`);
 
         // actor.update({
         //     x: tokenCenteredPositions.x,
@@ -127,4 +127,4 @@ export default class TokenMovementAdaptor {
 }
 
 var debouncedSaveMovement = window.foundry.utils.debounce(TokenMovementAdaptor.saveMovement, 500);
-var throttleSaveMovement = throttle(TokenMovementAdaptor.saveMovement, 100);
+var throttleSaveMovement = throttle(TokenMovementAdaptor.saveMovement, 50);
