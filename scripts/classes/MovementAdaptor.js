@@ -18,7 +18,11 @@ export default class TokenMovementAdaptor {
     }
     
     tokenIsPresent() {
-        return canvas.tokens.ownedTokens.map(owned => owned.data._id).includes(this.tokenId)
+        if(game.release.generation <= 10) { 
+            return canvas.tokens.ownedTokens.map(owned => owned.data._id).includes(this.tokenId);
+        } else {
+            return canvas.tokens.ownedTokens.map(owned => owned.id).includes(this.tokenId);
+        }
     }
         
     moveTokenToLocation() {
@@ -35,8 +39,6 @@ export default class TokenMovementAdaptor {
             tokenCenteredPositions = {x: positions.x - (actor._object.hitArea.width/2), y: positions.y - (actor._object.hitArea.height/2)};
         }
         
-        console.log("actorWidth:", actor._object.width, actor._object.hitArea.width);
-
         console.log('Gameboard | Move to', `${tokenCenteredPositions.x}, ${tokenCenteredPositions.y}`);
 
         if(game.release.generation <= 10) { 
@@ -50,11 +52,18 @@ export default class TokenMovementAdaptor {
             //Send movements to backend on occasion
             throttleSaveMovement(actor, tokenCenteredPositions, rotation, false);
         } else {
-            actor.update({
-                x: tokenCenteredPositions.x,
-                y:  tokenCenteredPositions.y,
+            // actor.update({
+            //     x: tokenCenteredPositions.x,
+            //     y:  tokenCenteredPositions.y,
+            //     rotation: rotation
+            // }, {animate: false, pan: false});
+
+            actor.data.update({
                 rotation: rotation
-            }, {animate: false, pan: false});
+            });
+            actor._object.updateSource();
+
+            smallThrottleSaveMovement(actor, tokenCenteredPositions, rotation, false);
         }
 
         //Snap and save after not moving for a while
@@ -157,3 +166,4 @@ export default class TokenMovementAdaptor {
 
 var debouncedSaveMovement = window.foundry.utils.debounce(TokenMovementAdaptor.saveMovement, 500);
 var throttleSaveMovement = throttle(TokenMovementAdaptor.saveMovement, 1000);
+var smallThrottleSaveMovement = throttle(TokenMovementAdaptor.saveMovement, 100);
