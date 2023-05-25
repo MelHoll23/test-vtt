@@ -58,13 +58,6 @@ export default class TokenMovementAdaptor {
             //     rotation: rotation
             // }, {animate: false, pan: false});
 
-            actor._object.update({
-                x: tokenCenteredPositions.x,
-                y:  tokenCenteredPositions.y,
-                rotation: rotation
-            });
-            actor._object.updateSource();
-
             smallThrottleSaveMovement(actor, tokenCenteredPositions, rotation, false);
         }
 
