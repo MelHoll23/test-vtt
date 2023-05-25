@@ -44,11 +44,12 @@ export default class TokenMovementAdaptor {
             //Send movements to backend on occasion
             throttleSaveMovement(actor, tokenCenteredPositions, rotation, false);
         } else {
-            actor.update({
-                x: tokenCenteredPositions.x,
-                y:  tokenCenteredPositions.y,
-                rotation: rotation 
-            }, {animate: false, pan: false});
+            // actor.update({
+            //     x: tokenCenteredPositions.x,
+            //     y:  tokenCenteredPositions.y,
+            //     rotation: rotation + (Math.random()/10)
+            // }, {animate: false, pan: false});
+            smallThrottleSaveMovement(actor, tokenCenteredPositions, rotation, false);
         }
 
         //Snap and save after not moving for a while
@@ -113,7 +114,8 @@ export default class TokenMovementAdaptor {
                                 canvas.grid.getSnappedPosition(positions.x, positions.y, 1) : 
                                 positions;
 
-        var options = {anime: false};                            
+        var options = {animate: false};  
+
         if(game.release.generation <= 10) {   
             options.recenter = false;
         } else {
@@ -130,3 +132,4 @@ export default class TokenMovementAdaptor {
 
 var debouncedSaveMovement = window.foundry.utils.debounce(TokenMovementAdaptor.saveMovement, 500);
 var throttleSaveMovement = throttle(TokenMovementAdaptor.saveMovement, 1000);
+var smallThrottleSaveMovement = throttle(TokenMovementAdaptor.saveMovement, 100);
