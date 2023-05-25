@@ -30,6 +30,10 @@ export default class TokenMovementAdaptor {
         var rotation = ((this.angle + 3) * 60) % 360;
 
         var tokenCenteredPositions = {x: positions.x - (actor._object.width/2), y: positions.y - (actor._object.height/2)};
+
+        if(game.release.generation > 10){
+            tokenCenteredPositions = {x: positions.x - (actor._object.hitArea.width/2), y: positions.y - (actor._object.hitArea.height/2)};
+        }
         
         console.log('Gameboard | Move to', `${tokenCenteredPositions.x}, ${tokenCenteredPositions.y}`);
 
@@ -91,21 +95,39 @@ export default class TokenMovementAdaptor {
         //If not paired, if actor is selected and not paired, pair
         console.log('Gameboard | Trying to pair at ', positions.x, positions.y);
 
-        canvas.tokens.ownedTokens.filter(owned => !Object.values(this.tokenMap).includes(owned.data._id)).forEach((token) => {
-            let tokenPosition = new PIXI.Rectangle(token.x, token.y, token.w, token.h);
+        if(game.release.generation <= 10) { 
+            canvas.tokens.ownedTokens.filter(owned => !Object.values(this.tokenMap).includes(owned.data._id)).forEach((token) => {
+                let tokenPosition = new PIXI.Rectangle(token.x, token.y, token.w, token.h);
 
-            if(tokenPosition.contains(positions.x, positions.y)) {
-                //Unpair if needed
-                if(Object.values(this.tokenMap).includes(token.data._id)) {
-                    this.removePairing(this.tokenMap, token.data._id);
+                if(tokenPosition.contains(positions.x, positions.y)) {
+                    //Unpair if needed
+                    if(Object.values(this.tokenMap).includes(token.data._id)) {
+                        this.removePairing(this.tokenMap, token.data._id);
+                    }
+                    //Pair token
+                    this.tokenMap[this.typeId] = token.data._id;
+                    game.settings.set(MODULE_NAME, TOKEN_MAP, this.tokenMap);
+                    
+                    ui.notifications.info(`Token '${token.data.name}' paired!`);
                 }
-                //Pair token
-                this.tokenMap[this.typeId] = token.data._id;
-                game.settings.set(MODULE_NAME, TOKEN_MAP, this.tokenMap);
-                
-                ui.notifications.info(`Token '${token.data.name}' paired!`);
-            }
-        });
+            });
+        } else {
+            canvas.tokens.ownedTokens.filter(owned => !Object.values(this.tokenMap).includes(owned.id)).forEach((token) => {
+                let tokenPosition = new PIXI.Rectangle(token.x, token.y, token.w, token.h);
+
+                if(tokenPosition.contains(positions.x, positions.y)) {
+                    //Unpair if needed
+                    if(Object.values(this.tokenMap).includes(token.id)) {
+                        this.removePairing(this.tokenMap, token.id);
+                    }
+                    //Pair token
+                    this.tokenMap[this.typeId] = token.id;
+                    game.settings.set(MODULE_NAME, TOKEN_MAP, this.tokenMap);
+                    
+                    ui.notifications.info(`Token '${token.name}' paired!`);
+                }
+            });
+        }
     }
 
     static saveMovement(actor, positions, rotation, snap = true) { 
