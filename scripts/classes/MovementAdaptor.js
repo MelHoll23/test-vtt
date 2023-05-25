@@ -58,7 +58,9 @@ export default class TokenMovementAdaptor {
             //     rotation: rotation
             // }, {animate: false, pan: false});
 
-            actor.data.update({
+            actor._object.update({
+                x: tokenCenteredPositions.x,
+                y:  tokenCenteredPositions.y,
                 rotation: rotation
             });
             actor._object.updateSource();
