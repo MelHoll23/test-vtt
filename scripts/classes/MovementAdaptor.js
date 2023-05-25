@@ -44,12 +44,12 @@ export default class TokenMovementAdaptor {
             //Send movements to backend on occasion
             throttleSaveMovement(actor, tokenCenteredPositions, rotation, false);
         } else {
-            // actor.update({
-            //     x: tokenCenteredPositions.x,
-            //     y:  tokenCenteredPositions.y,
-            //     rotation: rotation + (Math.random()/10)
-            // }, {animate: false, pan: false});
-            smallThrottleSaveMovement(actor, tokenCenteredPositions, rotation, false);
+            actor.update({
+                x: tokenCenteredPositions.x,
+                y:  tokenCenteredPositions.y,
+                rotation: rotation + (Math.random()/10)
+            }, {animate: false, pan: false});
+            // smallThrottleSaveMovement(actor, tokenCenteredPositions, rotation, false);
         }
 
         //Snap and save after not moving for a while
