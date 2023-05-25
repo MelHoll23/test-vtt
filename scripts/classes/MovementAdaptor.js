@@ -35,6 +35,8 @@ export default class TokenMovementAdaptor {
             tokenCenteredPositions = {x: positions.x - (actor._object.hitArea.width/2), y: positions.y - (actor._object.hitArea.height/2)};
         }
         
+        console.log("actorWidth:", actor._object.width, actor._object.hitArea.width);
+
         console.log('Gameboard | Move to', `${tokenCenteredPositions.x}, ${tokenCenteredPositions.y}`);
 
         if(game.release.generation <= 10) { 
