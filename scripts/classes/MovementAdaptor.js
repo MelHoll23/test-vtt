@@ -48,7 +48,7 @@ export default class TokenMovementAdaptor {
                 x: tokenCenteredPositions.x,
                 y:  tokenCenteredPositions.y,
                 rotation: rotation 
-            }, {animate: false, recenter: false});
+            }, {animate: false, pan: false});
         }
 
         //Snap and save after not moving for a while
@@ -112,12 +112,19 @@ export default class TokenMovementAdaptor {
         var snappedPosition = game.settings.get(MODULE_NAME, SNAP_TO_GRID) && snap ? 
                                 canvas.grid.getSnappedPosition(positions.x, positions.y, 1) : 
                                 positions;
-                    
+
+        var options = {anime: false};                            
+        if(game.release.generation <= 10) {   
+            options.recenter = false;
+        } else {
+            options.pan = false;
+        }
+
         actor.update({
                 x: snappedPosition.x, 
                 y: snappedPosition.y,
                 rotation: rotation + (Math.random()/10) // needed so the update pushed to the server?
-            }, {animate: false, recenter: false});
+            }, options);
     }
 }
 
