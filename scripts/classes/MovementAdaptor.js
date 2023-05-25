@@ -52,13 +52,11 @@ export default class TokenMovementAdaptor {
             //Send movements to backend on occasion
             throttleSaveMovement(actor, tokenCenteredPositions, rotation, false);
         } else {
-            // actor.update({
-            //     x: tokenCenteredPositions.x,
-            //     y:  tokenCenteredPositions.y,
-            //     rotation: rotation
-            // }, {animate: false, pan: false});
-
-            smallThrottleSaveMovement(actor, tokenCenteredPositions, rotation, false);
+            actor.update({
+                x: tokenCenteredPositions.x,
+                y:  tokenCenteredPositions.y,
+                rotation: rotation
+            }, {animate: false, pan: false});
         }
 
         //Snap and save after not moving for a while
@@ -161,4 +159,3 @@ export default class TokenMovementAdaptor {
 
 var debouncedSaveMovement = window.foundry.utils.debounce(TokenMovementAdaptor.saveMovement, 500);
 var throttleSaveMovement = throttle(TokenMovementAdaptor.saveMovement, 1000);
-var smallThrottleSaveMovement = throttle(TokenMovementAdaptor.saveMovement, 100);

@@ -46,10 +46,10 @@ export function registerHooks() {
     })
 
     Hooks.on('canvasInit', () => { 
-        if(window.isOnGameboard) {
+        if(window.isOnGameboard && typeof SightLayer !== 'undefined') {
             console.log('Gameboard | Apply fog of war fix');
             //Fix fog of war crash
-            if(SightLayer) SightLayer.MAXIMUM_FOW_TEXTURE_SIZE = 4096 / 2;
+            SightLayer.MAXIMUM_FOW_TEXTURE_SIZE = 4096 / 2;
         }
     });
 
