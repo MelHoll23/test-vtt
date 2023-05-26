@@ -4,7 +4,7 @@
     "description": "Testing a module that enables Foundry to be played on the LastGameboard",
     "author": "LastGameboard",
     "version": "1.0.2",
-    "minimumCoreVersion": "11.0.0",
+    "minimumCoreVersion": "9.0.0",
     "compatibleCoreVersion": "11.0.0",
     "dependencies": [
       {
