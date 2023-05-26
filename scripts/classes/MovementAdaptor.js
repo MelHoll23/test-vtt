@@ -18,7 +18,7 @@ export default class TokenMovementAdaptor {
     }
     
     tokenIsPresent() {
-        if(game.release.generation <= 10) { 
+        if(game.release.generation < 10) { 
             return canvas.tokens.ownedTokens.map(owned => owned.data._id).includes(this.tokenId);
         } else {
             return canvas.tokens.ownedTokens.map(owned => owned.id).includes(this.tokenId);
@@ -35,13 +35,13 @@ export default class TokenMovementAdaptor {
 
         var tokenCenteredPositions = {x: positions.x - (actor._object.width/2), y: positions.y - (actor._object.height/2)};
 
-        if(game.release.generation > 10){
+        if(game.release.generation >= 10){
             tokenCenteredPositions = {x: positions.x - (actor._object.hitArea.width/2), y: positions.y - (actor._object.hitArea.height/2)};
         }
         
         console.log('Gameboard | Move to', `${tokenCenteredPositions.x}, ${tokenCenteredPositions.y}`);
 
-        if(game.release.generation <= 10) { 
+        if(game.release.generation < 10) { 
             actor._object.setPosition(tokenCenteredPositions.x, tokenCenteredPositions.y, {recenter: false});
 
             actor.data.update({
@@ -52,11 +52,6 @@ export default class TokenMovementAdaptor {
             //Send movements to backend on occasion
             throttleSaveMovement(actor, tokenCenteredPositions, rotation, false);
         } else {
-            // actor.update({
-            //     x: tokenCenteredPositions.x,
-            //     y:  tokenCenteredPositions.y,
-            //     rotation: rotation
-            // }, {animate: false, pan: false});
             smallThrottleSaveMovement(actor, tokenCenteredPositions, rotation, false);
         }
 
@@ -143,7 +138,7 @@ export default class TokenMovementAdaptor {
         var options = {animate: false};
         var rotationAdjust = (Math.random()/10);
 
-        if(game.release.generation <= 10) {   
+        if(game.release.generation < 10) {   
             options.recenter = false;
         } else {
             options.pan = false;
