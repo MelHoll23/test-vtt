@@ -51,8 +51,17 @@ export default class TokenMovementAdaptor {
 
             //Send movements to backend on occasion
             throttleSaveMovement(actor, tokenCenteredPositions, rotation, false);
-        } else {
+        } else if(game.release.generation === 10){
             smallThrottleSaveMovement(actor, tokenCenteredPositions, rotation, false);
+        } else {
+            const update = {x: tokenCenteredPositions.x, y: tokenCenteredPositions.y, rotation: rotation};
+            token.updateSource(update); // Update token data locally
+
+            // Update vision and lighting attributes
+            token.object.refreshSource();
+            token.object.renderFlags.set({refreshPosition: true});
+
+            throttleSaveMovement(actor, tokenCenteredPositions, rotation, false);
         }
 
         //Snap and save after not moving for a while
@@ -141,6 +150,10 @@ export default class TokenMovementAdaptor {
             pan: false
         };
         var rotationAdjust = game.release.generation < 10 ? (Math.random()/10) : 0;
+
+        if(game.release.generation === 11) {
+            options.diff = false;
+        }
 
         actor.update({
                 x: snappedPosition.x, 
