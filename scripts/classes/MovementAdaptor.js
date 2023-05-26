@@ -135,15 +135,12 @@ export default class TokenMovementAdaptor {
                                 canvas.grid.getSnappedPosition(positions.x, positions.y, 1) : 
                                 positions;
 
-        var options = {animate: false};
-        var rotationAdjust = (Math.random()/10);
-
-        if(game.release.generation < 10) {   
-            options.recenter = false;
-        } else {
-            options.pan = false;
-            rotationAdjust = 0;
-        }
+        var options = {
+            animate: false, 
+            recenter: false, 
+            pan: false
+        };
+        var rotationAdjust = game.release.generation < 10 ? (Math.random()/10) : 0;
 
         actor.update({
                 x: snappedPosition.x, 
