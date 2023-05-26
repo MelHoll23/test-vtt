@@ -55,11 +55,11 @@ export default class TokenMovementAdaptor {
             smallThrottleSaveMovement(actor, tokenCenteredPositions, rotation, false);
         } else {
             const update = {x: tokenCenteredPositions.x, y: tokenCenteredPositions.y, rotation: rotation};
-            token.updateSource(update); // Update token data locally
+            actor.updateSource(update); // Update token data locally
 
             // Update vision and lighting attributes
-            token.object.refreshSource();
-            token.object.renderFlags.set({refreshPosition: true});
+            actor.object.refreshSource();
+            actor.object.renderFlags.set({refreshPosition: true});
 
             throttleSaveMovement(actor, tokenCenteredPositions, rotation, false);
         }
