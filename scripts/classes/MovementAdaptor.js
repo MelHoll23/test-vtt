@@ -58,8 +58,8 @@ export default class TokenMovementAdaptor {
             actor.updateSource(update); // Update token data locally
 
             // Update vision and lighting attributes
-            actor.object.refreshSource();
             actor.object.renderFlags.set({refreshPosition: true});
+            actor.object.updateSource();
 
             throttleSaveMovement(actor, tokenCenteredPositions, rotation, false);
         }
